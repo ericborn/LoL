@@ -14,11 +14,12 @@ import pandas as pd
 import seaborn as sns
 import statsmodels.api as sm
 import matplotlib.pyplot as plt
+from sklearn import tree
+from sklearn import svm
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 from sklearn.feature_selection import RFE
 from sklearn.linear_model import LassoCV
-from sklearn import tree
 from sklearn.naive_bayes import GaussianNB
 from sklearn.preprocessing import StandardScaler
 from sklearn.neighbors import KNeighborsClassifier
@@ -976,11 +977,206 @@ if accuracy[max_index] > highest_accuracy:
     best_set = current_set
 
 ####
-# end ols dataset
+# end rfe dataset
 ####
+    
+####
+# Start lasso dataset
+####
+
+current_set = 'lasso'
+
+# Create empty lists to store the models error rate and 
+# accuracy across various K's
+error_rate = []
+accuracy = []
+k_value = []
+
+# For loop to test the model using various neighbor sizes
+# with k neighbors set to 3 to 25
+try:
+    for k in range (3, 27, 2):
+        # Create the classifier with neighbors set to k from the loop
+        knn_classifier = KNeighborsClassifier(n_neighbors = k)
+       
+        # Train the classifier
+        knn_classifier.fit(lasso_scaled_df_train_x, 
+                           lasso_scaled_df_train_y)
+        
+        # Perform predictions
+        pred_k = knn_classifier.predict(lasso_scaled_df_test_x)
+        
+        # Store error rate and accuracy for particular K value
+        k_value.append(k)
+        error_rate.append(round(np.mean(
+                pred_k != lasso_scaled_df_test_y) * 100, 2))
+        
+        accuracy.append(round(sum(
+                pred_k == lasso_scaled_df_test_y) / len(pred_k) * 100, 2))
+        
+except Exception as e:
+    print(e)
+    print('failed to build the KNN classifier.')
+
+for i in range (0,12):
+    print('The accuracy on the lasso data when K =', k_value[i], 
+          'is:', accuracy[i])
+    
+# create a plot to display the accuracy of the model across K
+fig = plt.figure(figsize=(10, 4))
+ax = plt.gca()
+plt.plot(range(3, 27, 2), accuracy, color ='blue',
+         marker = 'o', markerfacecolor = 'black', markersize = 10)
+plt.title('Accuracy vs. k for the lasso dataset')
+plt.xlabel('Number of neighbors: k')
+plt.ylabel('Accuracy')
+
+max_index = accuracy.index(max(accuracy))
+
+print('The most accurate k for the lasso attribute selection is', 
+      k_value[max_index], 'at', accuracy[max_index],'%')
+
+if accuracy[max_index] > highest_accuracy:
+    highest_accuracy = accuracy[max_index]
+    best_set = current_set
+
+####
+# end lasso dataset
+####
+
+print(highest_accuracy, best_set)
 
 #######
 # End KNN
+#######
+
+#######
+# Start linear SVM
+#######
+
+####
+# Start pear five dataset
+####
+
+# create a linear SVM classifier
+svm_classifier_linear = svm.SVC(kernel = 'linear')
+
+# fit the classifier on training data
+svm_classifier_linear.fit(pear_five_scaled_df_train_x, 
+                          pear_five_scaled_df_train_y)
+
+# Predict using 2018 feature data
+prediction_linear = svm_classifier_linear.predict(pear_five_scaled_df_test_x)
+
+# calculate error rate
+accuracy_rate_linear = 100-(round(np.mean(prediction_linear != 
+                                         pear_five_scaled_df_test_y) * 100, 2))
+
+print('The linear SVM classifier has an accuracy of', accuracy_rate_linear,'%',
+      'on the pearson five attribute set')
+
+####
+# End pear five dataset
+####
+
+####
+# Start pear ten dataset
+####
+
+# create a linear SVM classifier
+svm_classifier_linear = svm.SVC(kernel = 'linear')
+
+# fit the classifier on training data
+svm_classifier_linear.fit(pear_ten_scaled_df_train_x, 
+                          pear_ten_scaled_df_train_y)
+
+# Predict using 2018 feature data
+prediction_linear = svm_classifier_linear.predict(pear_ten_scaled_df_test_x)
+
+# calculate error rate
+accuracy_rate_linear = 100-(round(np.mean(prediction_linear != 
+                                         pear_ten_scaled_df_test_y) * 100, 2))
+
+print('The linear SVM classifier has an accuracy of', accuracy_rate_linear,'%',
+      'on the pearson ten attribute set')
+####
+# End pear ten dataset
+####
+
+####
+# Start ols ten dataset
+####
+
+# create a linear SVM classifier
+svm_classifier_linear = svm.SVC(kernel = 'linear')
+
+# fit the classifier on training data
+svm_classifier_linear.fit(ols_scaled_df_train_x, 
+                          ols_scaled_df_train_y)
+
+# Predict using 2018 feature data
+prediction_linear = svm_classifier_linear.predict(ols_scaled_df_test_x)
+
+# calculate error rate
+accuracy_rate_linear = 100-(round(np.mean(prediction_linear != 
+                                         ols_scaled_df_test_y) * 100, 2))
+
+print('The linear SVM classifier has an accuracy of', accuracy_rate_linear,'%',
+      'on the ols attribute set')
+####
+# End ols ten dataset
+####
+
+####
+# Start rfe ten dataset
+####
+
+# create a linear SVM classifier
+svm_classifier_linear = svm.SVC(kernel = 'linear')
+
+# fit the classifier on training data
+svm_classifier_linear.fit(rfe_scaled_df_train_x, 
+                          rfe_scaled_df_train_y)
+
+# Predict using 2018 feature data
+prediction_linear = svm_classifier_linear.predict(rfe_scaled_df_test_x)
+
+# calculate error rate
+accuracy_rate_linear = 100-(round(np.mean(prediction_linear != 
+                                         rfe_scaled_df_test_y) * 100, 2))
+
+print('The linear SVM classifier has an accuracy of', accuracy_rate_linear,'%',
+      'on the rfe attribute set')
+####
+# End rfe ten dataset
+####
+
+####
+# Start lasso ten dataset
+####
+
+# create a linear SVM classifier
+svm_classifier_linear = svm.SVC(kernel = 'linear')
+
+# fit the classifier on training data
+svm_classifier_linear.fit(lasso_scaled_df_train_x, 
+                          lasso_scaled_df_train_y)
+
+# Predict using 2018 feature data
+prediction_linear = svm_classifier_linear.predict(lasso_scaled_df_test_x)
+
+# calculate error rate
+accuracy_rate_linear = 100-(round(np.mean(prediction_linear != 
+                                         lasso_scaled_df_test_y) * 100, 2))
+
+print('The linear SVM classifier has an accuracy of', accuracy_rate_linear,'%',
+      'on the lasso attribute set')
+####
+# End lasso ten dataset
+####
+
+#######
+# End linear SVM
 #######
 
 ################
