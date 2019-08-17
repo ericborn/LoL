@@ -19,10 +19,11 @@ from sklearn import svm
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 from sklearn.feature_selection import RFE
-from sklearn.linear_model import LassoCV
+from sklearn.linear_model import LassoCV, LogisticRegression
 from sklearn.naive_bayes import GaussianNB
 from sklearn.preprocessing import StandardScaler
 from sklearn.neighbors import KNeighborsClassifier
+from sklearn.ensemble import RandomForestClassifier
 #from sklearn.metrics import confusion_matrix, recall_score
 
 # set seaborn to dark backgrounds
@@ -1362,7 +1363,7 @@ print('The poly SVM classifier has an accuracy of', accuracy_rate_poly,'%',
 ####
 
 ####
-# Start ols ten dataset
+# Start ols dataset
 ####
 
 # create a poly SVM classifier
@@ -1382,11 +1383,11 @@ accuracy_rate_poly = 100-(round(np.mean(prediction_poly !=
 print('The poly SVM classifier has an accuracy of', accuracy_rate_poly,'%',
       'on the ols attribute set')
 ####
-# End ols ten dataset
+# End ols dataset
 ####
 
 ####
-# Start rfe ten dataset
+# Start rfe dataset
 ####
 
 # create a poly SVM classifier
@@ -1406,11 +1407,11 @@ accuracy_rate_poly = 100-(round(np.mean(prediction_poly !=
 print('The poly SVM classifier has an accuracy of', accuracy_rate_poly,'%',
       'on the rfe attribute set')
 ####
-# End rfe ten dataset
+# End rfe dataset
 ####
 
 ####
-# Start lasso ten dataset
+# Start lasso dataset
 ####
 
 # create a poly SVM classifier
@@ -1430,12 +1431,578 @@ accuracy_rate_poly = 100-(round(np.mean(prediction_poly !=
 print('The poly SVM classifier has an accuracy of', accuracy_rate_poly,'%',
       'on the lasso attribute set')
 ####
-# End lasso ten dataset
+# End lasso dataset
 ####
 
 #######
 # End poly SVM
 #######
+
+#############
+# End SVM
+#############
+
+#############
+# Start Random Forest
+#############
+
+####
+# Start pear five dataset
+####
+
+pred_list = []
+
+# Create a random forest classifier that trains and predicts labels
+# using from 1 to 25 trees and from 1 to 10 depth of each tree
+# set random state to 1337 for repeatability
+for trees in range(1, 26):
+    for depth in range(1, 11):
+        rf_clf = RandomForestClassifier(n_estimators = trees, 
+                                    max_depth = depth, criterion ='entropy',
+                                    random_state = 1337)
+        rf_clf.fit(pear_five_scaled_df_train_x, pear_five_scaled_df_train_y)
+        pred_list.append([trees, depth, 
+                    round(np.mean(rf_clf.predict(pear_five_scaled_df_test_x) 
+                    != pear_five_scaled_df_test_y) 
+                    * 100, 2)])
+
+# create a dataframe from the classifer data
+forest_df = pd.DataFrame(pred_list, columns = ['estimators', 'depth', 'error_rate'])
+
+# Plot the classifier data
+sns.lineplot(x='estimators', y='error_rate', hue='depth', data=forest_df, palette="tab10",
+             legend='full', ci = None)
+plt.title('Random Forest error rates using pearson five attributes')
+plt.ylabel('Error Rate')
+plt.xlabel('Estimators')
+plt.show()
+
+print(forest_df.loc[forest_df['error_rate'] == min(forest_df.error_rate)])
+
+####
+# End pear five dataset
+####
+
+####
+# Start pear ten dataset
+####
+
+pred_list = []
+
+# Create a random forest classifier that trains and predicts labels
+# using from 1 to 25 trees and from 1 to 10 depth of each tree
+# set random state to 1337 for repeatability
+for trees in range(1, 26):
+    for depth in range(1, 11):
+        rf_clf = RandomForestClassifier(n_estimators = trees, 
+                                    max_depth = depth, criterion ='entropy',
+                                    random_state = 1337)
+        rf_clf.fit(pear_ten_scaled_df_train_x, pear_ten_scaled_df_train_y)
+        pred_list.append([trees, depth, 
+                    round(np.mean(rf_clf.predict(pear_ten_scaled_df_test_x) 
+                    != pear_ten_scaled_df_test_y) 
+                    * 100, 2)])
+
+# create a dataframe from the classifer data
+forest_df = pd.DataFrame(pred_list, columns = ['estimators', 'depth', 'error_rate'])
+
+# Plot the classifier data
+sns.lineplot(x='estimators', y='error_rate', hue='depth', data=forest_df, palette="tab10",
+             legend='full', ci = None)
+plt.title('Random Forest error rates using pearson ten attributes')
+plt.ylabel('Error Rate')
+plt.xlabel('Estimators')
+plt.show()
+
+print(forest_df.loc[forest_df['error_rate'] == min(forest_df.error_rate)])
+
+####
+# End pear ten dataset
+####
+
+####
+# Start ols dataset
+####
+
+pred_list = []
+
+# Create a random forest classifier that trains and predicts labels
+# using from 1 to 25 trees and from 1 to 10 depth of each tree
+# set random state to 1337 for repeatability
+for trees in range(1, 26):
+    for depth in range(1, 11):
+        rf_clf = RandomForestClassifier(n_estimators = trees, 
+                                    max_depth = depth, criterion ='entropy',
+                                    random_state = 1337)
+        rf_clf.fit(ols_scaled_df_train_x, ols_scaled_df_train_y)
+        pred_list.append([trees, depth, 
+                    round(np.mean(rf_clf.predict(ols_scaled_df_test_x) 
+                    != ols_scaled_df_test_y) 
+                    * 100, 2)])
+
+# create a dataframe from the classifer data
+forest_df = pd.DataFrame(pred_list, columns = ['estimators', 'depth', 'error_rate'])
+
+# Plot the classifier data
+sns.lineplot(x='estimators', y='error_rate', hue='depth', data=forest_df, palette="tab10",
+             legend='full', ci = None)
+plt.title('Random Forest error rates using ols attributes')
+plt.ylabel('Error Rate')
+plt.xlabel('Estimators')
+plt.show()
+
+print(forest_df.loc[forest_df['error_rate'] == min(forest_df.error_rate)])
+
+####
+# End ols dataset
+####
+
+####
+# Start rfe dataset
+####
+
+pred_list = []
+
+# Create a random forest classifier that trains and predicts labels
+# using from 1 to 25 trees and from 1 to 10 depth of each tree
+# set random state to 1337 for repeatability
+for trees in range(1, 26):
+    for depth in range(1, 11):
+        rf_clf = RandomForestClassifier(n_estimators = trees, 
+                                    max_depth = depth, criterion ='entropy',
+                                    random_state = 1337)
+        rf_clf.fit(rfe_scaled_df_train_x, rfe_scaled_df_train_y)
+        pred_list.append([trees, depth, 
+                    round(np.mean(rf_clf.predict(rfe_scaled_df_test_x) 
+                    != rfe_scaled_df_test_y) 
+                    * 100, 2)])
+
+# create a dataframe from the classifer data
+forest_df = pd.DataFrame(pred_list, columns = ['estimators', 'depth', 'error_rate'])
+
+# Plot the classifier data
+sns.lineplot(x='estimators', y='error_rate', hue='depth', data=forest_df, palette="tab10",
+             legend='full', ci = None)
+plt.title('Random Forest error rates using rfe attributes')
+plt.ylabel('Error Rate')
+plt.xlabel('Estimators')
+plt.show()
+
+print(forest_df.loc[forest_df['error_rate'] == min(forest_df.error_rate)])
+
+####
+# End rfe dataset
+####
+
+####
+# Start lasso dataset
+####
+
+pred_list = []
+
+# Create a random forest classifier that trains and predicts labels
+# using from 1 to 25 trees and from 1 to 10 depth of each tree
+# set random state to 1337 for repeatability
+for trees in range(1, 26):
+    for depth in range(1, 11):
+        rf_clf = RandomForestClassifier(n_estimators = trees, 
+                                    max_depth = depth, criterion ='entropy',
+                                    random_state = 1337)
+        rf_clf.fit(lasso_scaled_df_train_x, lasso_scaled_df_train_y)
+        pred_list.append([trees, depth, 
+                    round(np.mean(rf_clf.predict(lasso_scaled_df_train_y) 
+                    != rfe_scaled_df_test_y) 
+                    * 100, 2)])
+
+# create a dataframe from the classifer data
+forest_df = pd.DataFrame(pred_list, columns = ['estimators', 'depth', 'error_rate'])
+
+# Plot the classifier data
+sns.lineplot(x='estimators', y='error_rate', hue='depth', data=forest_df, palette="tab10",
+             legend='full', ci = None)
+plt.title('Random Forest error rates using rfe attributes')
+plt.ylabel('Error Rate')
+plt.xlabel('Estimators')
+plt.show()
+
+print(forest_df.loc[forest_df['error_rate'] == min(forest_df.error_rate)])
+
+####
+# End lasso dataset
+####
+
+#############
+# End Random Forest
+#############
+
+#############
+# Start log regression liblinear solver
+#############
+
+####
+# Start pear five dataset
+####
+
+# Create a logistic classifier
+# set solver to avoid the warning
+log_reg_classifier = LogisticRegression(solver = 'liblinear')
+
+# Train the classifier on 2017 data
+log_reg_classifier.fit(pear_five_scaled_df_train_x, 
+                       pear_five_scaled_df_train_y)
+
+# Predict using 2018 feature data
+prediction = log_reg_classifier.predict(pear_five_scaled_df_test_x)
+
+accuracy = np.mean(prediction == pear_five_scaled_df_test_y)
+print('\nThe accuracy for log regression liblinear on pearson five attributes is:')
+print(round(accuracy * 100, 2), '%')
+
+####
+# End pear five dataset
+####
+
+####
+# Start pear ten dataset
+####
+
+# Create a logistic classifier
+# set solver to avoid the warning
+log_reg_classifier = LogisticRegression(solver = 'liblinear')
+
+# Train the classifier on 2017 data
+log_reg_classifier.fit(pear_ten_scaled_df_train_x, 
+                       pear_ten_scaled_df_train_y)
+
+# Predict using 2018 feature data
+prediction = log_reg_classifier.predict(pear_ten_scaled_df_test_x)
+
+accuracy = np.mean(prediction == pear_ten_scaled_df_test_y)
+print('\nThe accuracy for log regression liblinear on pearson ten attributes is:')
+print(round(accuracy * 100, 2), '%')
+
+####
+# End pear ten dataset
+####
+
+####
+# Start ols dataset
+####
+
+# Create a logistic classifier
+# set solver to avoid the warning
+log_reg_classifier = LogisticRegression(solver = 'liblinear')
+
+# Train the classifier on 2017 data
+log_reg_classifier.fit(ols_scaled_df_train_x, 
+                       ols_scaled_df_train_y)
+
+# Predict using 2018 feature data
+prediction = log_reg_classifier.predict(ols_scaled_df_test_x)
+
+accuracy = np.mean(prediction == ols_scaled_df_test_y)
+print('\nThe accuracy for log regression liblinear on ols attributes is:')
+print(round(accuracy * 100, 2), '%')
+
+####
+# End ols dataset
+####
+
+####
+# Start rfe dataset
+####
+
+# Create a logistic classifier
+# set solver to avoid the warning
+log_reg_classifier = LogisticRegression(solver = 'liblinear')
+
+# Train the classifier on 2017 data
+log_reg_classifier.fit(rfe_scaled_df_train_x, 
+                       rfe_scaled_df_train_y)
+
+# Predict using 2018 feature data
+prediction = log_reg_classifier.predict(rfe_scaled_df_test_x)
+
+accuracy = np.mean(prediction == rfe_scaled_df_test_y)
+print('\nThe accuracy for log regression liblinear on rfe attributes is:')
+print(round(accuracy * 100, 2), '%')
+
+####
+# End rfe dataset
+####
+
+####
+# Start lasso dataset
+####
+
+# Create a logistic classifier
+# set solver to avoid the warning
+log_reg_classifier = LogisticRegression(solver = 'liblinear')
+
+# Train the classifier on 2017 data
+log_reg_classifier.fit(lasso_scaled_df_train_x, 
+                       lasso_scaled_df_train_y)
+
+# Predict using 2018 feature data
+prediction = log_reg_classifier.predict(lasso_scaled_df_test_x)
+
+accuracy = np.mean(prediction == lasso_scaled_df_test_y)
+print('\nThe accuracy for log regression liblinear on lasso attributes is:')
+print(round(accuracy * 100, 2), '%')
+
+####
+# End lasso dataset
+####
+
+#############
+# End log regression liblinear solver
+#############
+
+#############
+# Start log regression sag solver
+#############
+
+####
+# Start pear five dataset
+####
+
+# Create a logistic classifier
+# set solver to avoid the warning
+log_reg_classifier = LogisticRegression(solver = 'sag')
+
+# Train the classifier on 2017 data
+log_reg_classifier.fit(pear_five_scaled_df_train_x, 
+                       pear_five_scaled_df_train_y)
+
+# Predict using 2018 feature data
+prediction = log_reg_classifier.predict(pear_five_scaled_df_test_x)
+
+accuracy = np.mean(prediction == pear_five_scaled_df_test_y)
+print('\nThe accuracy for log regression sag on pearson five attributes is:')
+print(round(accuracy * 100, 2), '%')
+
+####
+# End pear five dataset
+####
+
+####
+# Start pear ten dataset
+####
+
+# Create a logistic classifier
+# set solver to avoid the warning
+log_reg_classifier = LogisticRegression(solver = 'sag')
+
+# Train the classifier on 2017 data
+log_reg_classifier.fit(pear_ten_scaled_df_train_x, 
+                       pear_ten_scaled_df_train_y)
+
+# Predict using 2018 feature data
+prediction = log_reg_classifier.predict(pear_ten_scaled_df_test_x)
+
+accuracy = np.mean(prediction == pear_ten_scaled_df_test_y)
+print('\nThe accuracy for log regression sag on pearson ten attributes is:')
+print(round(accuracy * 100, 2), '%')
+
+####
+# End pear ten dataset
+####
+
+####
+# Start ols dataset
+####
+
+# Create a logistic classifier
+# set solver to avoid the warning
+log_reg_classifier = LogisticRegression(solver = 'sag')
+
+# Train the classifier on 2017 data
+log_reg_classifier.fit(ols_scaled_df_train_x, 
+                       ols_scaled_df_train_y)
+
+# Predict using 2018 feature data
+prediction = log_reg_classifier.predict(ols_scaled_df_test_x)
+
+accuracy = np.mean(prediction == ols_scaled_df_test_y)
+print('\nThe accuracy for log regression sag on ols attributes is:')
+print(round(accuracy * 100, 2), '%')
+
+####
+# End ols dataset
+####
+
+####
+# Start rfe dataset
+####
+
+# Create a logistic classifier
+# set solver to avoid the warning
+log_reg_classifier = LogisticRegression(solver = 'sag')
+
+# Train the classifier on 2017 data
+log_reg_classifier.fit(rfe_scaled_df_train_x, 
+                       rfe_scaled_df_train_y)
+
+# Predict using 2018 feature data
+prediction = log_reg_classifier.predict(rfe_scaled_df_test_x)
+
+accuracy = np.mean(prediction == rfe_scaled_df_test_y)
+print('\nThe accuracy for log regression sag on rfe attributes is:')
+print(round(accuracy * 100, 2), '%')
+
+####
+# End rfe dataset
+####
+
+####
+# Start lasso dataset
+####
+
+# Create a logistic classifier
+# set solver to avoid the warning
+log_reg_classifier = LogisticRegression(solver = 'sag')
+
+# Train the classifier on 2017 data
+log_reg_classifier.fit(lasso_scaled_df_train_x, 
+                       lasso_scaled_df_train_y)
+
+# Predict using 2018 feature data
+prediction = log_reg_classifier.predict(lasso_scaled_df_test_x)
+
+accuracy = np.mean(prediction == lasso_scaled_df_test_y)
+print('\nThe accuracy for log regression sag on lasso attributes is:')
+print(round(accuracy * 100, 2), '%')
+
+####
+# End lasso dataset
+####
+
+#############
+# End log regression sag solver
+#############
+
+#############
+# Start log regression newton-cg solver
+#############
+
+####
+# Start pear five dataset
+####
+
+# Create a logistic classifier
+# set solver to avoid the warning
+log_reg_classifier = LogisticRegression(solver = 'newton-cg')
+
+# Train the classifier on 2017 data
+log_reg_classifier.fit(pear_five_scaled_df_train_x, 
+                       pear_five_scaled_df_train_y)
+
+# Predict using 2018 feature data
+prediction = log_reg_classifier.predict(pear_five_scaled_df_test_x)
+
+accuracy = np.mean(prediction == pear_five_scaled_df_test_y)
+print('\nThe accuracy for log regression newton-cg on pearson five attributes is:')
+print(round(accuracy * 100, 2), '%')
+
+####
+# End pear five dataset
+####
+
+####
+# Start pear ten dataset
+####
+
+# Create a logistic classifier
+# set solver to avoid the warning
+log_reg_classifier = LogisticRegression(solver = 'newton-cg')
+
+# Train the classifier on 2017 data
+log_reg_classifier.fit(pear_ten_scaled_df_train_x, 
+                       pear_ten_scaled_df_train_y)
+
+# Predict using 2018 feature data
+prediction = log_reg_classifier.predict(pear_ten_scaled_df_test_x)
+
+accuracy = np.mean(prediction == pear_ten_scaled_df_test_y)
+print('\nThe accuracy for log regression newton-cg on pearson ten attributes is:')
+print(round(accuracy * 100, 2), '%')
+
+####
+# End pear ten dataset
+####
+
+####
+# Start ols dataset
+####
+
+# Create a logistic classifier
+# set solver to avoid the warning
+log_reg_classifier = LogisticRegression(solver = 'newton-cg')
+
+# Train the classifier on 2017 data
+log_reg_classifier.fit(ols_scaled_df_train_x, 
+                       ols_scaled_df_train_y)
+
+# Predict using 2018 feature data
+prediction = log_reg_classifier.predict(ols_scaled_df_test_x)
+
+accuracy = np.mean(prediction == ols_scaled_df_test_y)
+print('\nThe accuracy for log regression newton-cg on ols attributes is:')
+print(round(accuracy * 100, 2), '%')
+
+####
+# End ols dataset
+####
+
+####
+# Start rfe dataset
+####
+
+# Create a logistic classifier
+# set solver to avoid the warning
+log_reg_classifier = LogisticRegression(solver = 'newton-cg')
+
+# Train the classifier on 2017 data
+log_reg_classifier.fit(rfe_scaled_df_train_x, 
+                       rfe_scaled_df_train_y)
+
+# Predict using 2018 feature data
+prediction = log_reg_classifier.predict(rfe_scaled_df_test_x)
+
+accuracy = np.mean(prediction == rfe_scaled_df_test_y)
+print('\nThe accuracy for log regression newton-cg on rfe attributes is:')
+print(round(accuracy * 100, 2), '%')
+
+####
+# End rfe dataset
+####
+
+####
+# Start lasso dataset
+####
+
+# Create a logistic classifier
+# set solver to avoid the warning
+log_reg_classifier = LogisticRegression(solver = 'newton-cg')
+
+# Train the classifier on 2017 data
+log_reg_classifier.fit(lasso_scaled_df_train_x, 
+                       lasso_scaled_df_train_y)
+
+# Predict using 2018 feature data
+prediction = log_reg_classifier.predict(lasso_scaled_df_test_x)
+
+accuracy = np.mean(prediction == lasso_scaled_df_test_y)
+print('\nThe accuracy for log regression newton-cg on lasso attributes is:')
+print(round(accuracy * 100, 2), '%')
+
+####
+# End lasso dataset
+####
+
+#############
+# End log regression newton-cg solver
+#############
 
 ################
 # End building scaled algorithms
