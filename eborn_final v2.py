@@ -1179,6 +1179,264 @@ print('The linear SVM classifier has an accuracy of', accuracy_rate_linear,'%',
 # End linear SVM
 #######
 
+#######
+# Start rbf SVM
+#######
+
+####
+# Start pear five dataset
+####
+
+# create a rbf SVM classifier
+svm_classifier_rbf = svm.SVC(kernel = 'rbf')
+
+# fit the classifier on training data
+svm_classifier_rbf.fit(pear_five_scaled_df_train_x, 
+                          pear_five_scaled_df_train_y)
+
+# Predict using 2018 feature data
+prediction_rbf = svm_classifier_rbf.predict(pear_five_scaled_df_test_x)
+
+# calculate error rate
+accuracy_rate_rbf = 100-(round(np.mean(prediction_rbf != 
+                                         pear_five_scaled_df_test_y) * 100, 2))
+
+print('The rbf SVM classifier has an accuracy of', accuracy_rate_rbf,'%',
+      'on the pearson five attribute set')
+
+####
+# End pear five dataset
+####
+
+####
+# Start pear ten dataset
+####
+
+# create a rbf SVM classifier
+svm_classifier_rbf = svm.SVC(kernel = 'rbf')
+
+# fit the classifier on training data
+svm_classifier_rbf.fit(pear_ten_scaled_df_train_x, 
+                          pear_ten_scaled_df_train_y)
+
+# Predict using 2018 feature data
+prediction_rbf = svm_classifier_rbf.predict(pear_ten_scaled_df_test_x)
+
+# calculate error rate
+accuracy_rate_rbf = 100-(round(np.mean(prediction_rbf != 
+                                         pear_ten_scaled_df_test_y) * 100, 2))
+
+print('The rbf SVM classifier has an accuracy of', accuracy_rate_rbf,'%',
+      'on the pearson ten attribute set')
+####
+# End pear ten dataset
+####
+
+####
+# Start ols ten dataset
+####
+
+# create a rbf SVM classifier
+svm_classifier_rbf = svm.SVC(kernel = 'rbf')
+
+# fit the classifier on training data
+svm_classifier_rbf.fit(ols_scaled_df_train_x, 
+                          ols_scaled_df_train_y)
+
+# Predict using 2018 feature data
+prediction_rbf = svm_classifier_rbf.predict(ols_scaled_df_test_x)
+
+# calculate error rate
+accuracy_rate_rbf = 100-(round(np.mean(prediction_rbf != 
+                                         ols_scaled_df_test_y) * 100, 2))
+
+print('The rbf SVM classifier has an accuracy of', accuracy_rate_rbf,'%',
+      'on the ols attribute set')
+####
+# End ols ten dataset
+####
+
+####
+# Start rfe ten dataset
+####
+
+# create a rbf SVM classifier
+svm_classifier_rbf = svm.SVC(kernel = 'rbf')
+
+# fit the classifier on training data
+svm_classifier_rbf.fit(rfe_scaled_df_train_x, 
+                          rfe_scaled_df_train_y)
+
+# Predict using 2018 feature data
+prediction_rbf = svm_classifier_rbf.predict(rfe_scaled_df_test_x)
+
+# calculate error rate
+accuracy_rate_rbf = 100-(round(np.mean(prediction_rbf != 
+                                         rfe_scaled_df_test_y) * 100, 2))
+
+print('The rbf SVM classifier has an accuracy of', accuracy_rate_rbf,'%',
+      'on the rfe attribute set')
+####
+# End rfe ten dataset
+####
+
+####
+# Start lasso ten dataset
+####
+
+# create a rbf SVM classifier
+svm_classifier_rbf = svm.SVC(kernel = 'rbf')
+
+# fit the classifier on training data
+svm_classifier_rbf.fit(lasso_scaled_df_train_x, 
+                          lasso_scaled_df_train_y)
+
+# Predict using 2018 feature data
+prediction_rbf = svm_classifier_rbf.predict(lasso_scaled_df_test_x)
+
+# calculate error rate
+accuracy_rate_rbf = 100-(round(np.mean(prediction_rbf != 
+                                         lasso_scaled_df_test_y) * 100, 2))
+
+print('The rbf SVM classifier has an accuracy of', accuracy_rate_rbf,'%',
+      'on the lasso attribute set')
+####
+# End lasso ten dataset
+####
+
+#######
+# End rbf SVM
+#######
+
+#######
+# Start poly SVM
+#######
+
+####
+# Start pear five dataset
+####
+
+# create a poly SVM classifier
+svm_classifier_poly = svm.SVC(kernel = 'poly')
+
+# fit the classifier on training data
+svm_classifier_poly.fit(pear_five_scaled_df_train_x, 
+                          pear_five_scaled_df_train_y)
+
+# Predict using 2018 feature data
+prediction_poly = svm_classifier_poly.predict(pear_five_scaled_df_test_x)
+
+# calculate error rate
+accuracy_rate_poly = 100-(round(np.mean(prediction_poly != 
+                                         pear_five_scaled_df_test_y) * 100, 2))
+
+print('The poly SVM classifier has an accuracy of', accuracy_rate_poly,'%',
+      'on the pearson five attribute set')
+
+####
+# End pear five dataset
+####
+
+####
+# Start pear ten dataset
+####
+
+# create a poly SVM classifier
+svm_classifier_poly = svm.SVC(kernel = 'poly')
+
+# fit the classifier on training data
+svm_classifier_poly.fit(pear_ten_scaled_df_train_x, 
+                          pear_ten_scaled_df_train_y)
+
+# Predict using 2018 feature data
+prediction_poly = svm_classifier_poly.predict(pear_ten_scaled_df_test_x)
+
+# calculate error rate
+accuracy_rate_poly = 100-(round(np.mean(prediction_poly != 
+                                         pear_ten_scaled_df_test_y) * 100, 2))
+
+print('The poly SVM classifier has an accuracy of', accuracy_rate_poly,'%',
+      'on the pearson ten attribute set')
+####
+# End pear ten dataset
+####
+
+####
+# Start ols ten dataset
+####
+
+# create a poly SVM classifier
+svm_classifier_poly = svm.SVC(kernel = 'poly')
+
+# fit the classifier on training data
+svm_classifier_poly.fit(ols_scaled_df_train_x, 
+                          ols_scaled_df_train_y)
+
+# Predict using 2018 feature data
+prediction_poly = svm_classifier_poly.predict(ols_scaled_df_test_x)
+
+# calculate error rate
+accuracy_rate_poly = 100-(round(np.mean(prediction_poly != 
+                                         ols_scaled_df_test_y) * 100, 2))
+
+print('The poly SVM classifier has an accuracy of', accuracy_rate_poly,'%',
+      'on the ols attribute set')
+####
+# End ols ten dataset
+####
+
+####
+# Start rfe ten dataset
+####
+
+# create a poly SVM classifier
+svm_classifier_poly = svm.SVC(kernel = 'poly')
+
+# fit the classifier on training data
+svm_classifier_poly.fit(rfe_scaled_df_train_x, 
+                          rfe_scaled_df_train_y)
+
+# Predict using 2018 feature data
+prediction_poly = svm_classifier_poly.predict(rfe_scaled_df_test_x)
+
+# calculate error rate
+accuracy_rate_poly = 100-(round(np.mean(prediction_poly != 
+                                         rfe_scaled_df_test_y) * 100, 2))
+
+print('The poly SVM classifier has an accuracy of', accuracy_rate_poly,'%',
+      'on the rfe attribute set')
+####
+# End rfe ten dataset
+####
+
+####
+# Start lasso ten dataset
+####
+
+# create a poly SVM classifier
+svm_classifier_poly = svm.SVC(kernel = 'poly')
+
+# fit the classifier on training data
+svm_classifier_poly.fit(lasso_scaled_df_train_x, 
+                          lasso_scaled_df_train_y)
+
+# Predict using 2018 feature data
+prediction_poly = svm_classifier_poly.predict(lasso_scaled_df_test_x)
+
+# calculate error rate
+accuracy_rate_poly = 100-(round(np.mean(prediction_poly != 
+                                         lasso_scaled_df_test_y) * 100, 2))
+
+print('The poly SVM classifier has an accuracy of', accuracy_rate_poly,'%',
+      'on the lasso attribute set')
+####
+# End lasso ten dataset
+####
+
+#######
+# End poly SVM
+#######
+
 ################
 # End building scaled algorithms
 ################
