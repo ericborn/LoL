@@ -9,22 +9,22 @@ Predicting the winning team in the video game League of Legends
 
 import os
 from sys import exit
-#from matplotlib import rcParams, pyplot as plt
 import numpy as np
 import pandas as pd
 import seaborn as sns
 import statsmodels.api as sm
+import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 from sklearn.feature_selection import RFE
 from sklearn.linear_model import LassoCV
 from sklearn import tree
 from sklearn.naive_bayes import GaussianNB
-from sklearn.neighbors import KNeighborsClassifier
 from sklearn.preprocessing import StandardScaler
+from sklearn.neighbors import KNeighborsClassifier
 #from sklearn.metrics import confusion_matrix, recall_score
 
-
+# set seaborn to dark backgrounds
 sns.set_style("darkgrid")
 
 # setup input directory and filename
@@ -305,6 +305,93 @@ lasso_df = lol_df[coef[coef.values != 0].index]
 ################
 
 ################
+# Start building scaled dataframes
+################
+
+# Setup scalers X datasets
+scaler = StandardScaler()
+scaler.fit(pear_five_df)
+pear_five_df_scaled = scaler.transform(pear_five_df)
+
+# pear_five split dataset into 33% test 66% training
+(pear_five_scaled_df_train_x, pear_five_scaled_df_test_x, 
+ pear_five_scaled_df_train_y, pear_five_scaled_df_test_y) = (
+        train_test_split(pear_five_df_scaled, lol_y, test_size = 0.33, 
+                         random_state=1337))
+
+#pear_five_scaled_df_train_x
+#pear_five_scaled_df_test_x
+#pear_five_scaled_df_train_y
+#pear_five_scaled_df_test_y
+
+# Setup scalers X dataset
+scaler = StandardScaler()
+scaler.fit(pear_ten_df)
+pear_ten_df_scaled = scaler.transform(pear_ten_df)
+
+# pear_ten split dataset into 33% test 66% training
+(pear_ten_scaled_df_train_x, pear_ten_scaled_df_test_x,
+ pear_ten_scaled_df_train_y, pear_ten_scaled_df_test_y) = (
+        train_test_split(pear_ten_df_scaled, lol_y, test_size = 0.33, 
+                         random_state=1337))
+
+#pear_ten_scaled_df_train_x
+#pear_ten_scaled_df_test_x
+#pear_ten_scaled_df_train_y
+#pear_ten_scaled_df_test_y
+
+# Setup scalers X dataset
+scaler = StandardScaler()
+scaler.fit(ols_df)
+ols_df_scaled = scaler.transform(ols_df)
+
+# ols_df split dataset into 33% test 66% training
+(ols_scaled_df_train_x, ols_scaled_df_test_x, ols_scaled_df_train_y,
+ ols_scaled_df_test_y) = (
+        train_test_split(ols_df_scaled, lol_y, test_size = 0.33, 
+                         random_state=1337))
+
+#ols_scaled_df_train_x
+#ols_scaled_df_test_x
+#ols_scaled_df_train_y
+#ols_scaled_df_test_y
+
+# Setup scalers X dataset
+scaler = StandardScaler()
+scaler.fit(rfe_df)
+rfe_df_scaled = scaler.transform(rfe_df)
+
+# ols_df split dataset into 33% test 66% training
+(rfe_scaled_df_train_x, rfe_scaled_df_test_x, 
+ rfe_scaled_df_train_y, rfe_scaled_df_test_y) = (
+        train_test_split(rfe_df_scaled, lol_y, test_size = 0.33, 
+                         random_state=1337))
+#rfe_scaled_df_train_x
+#rfe_scaled_df_test_x
+#rfe_scaled_df_train_y
+#rfe_scaled_df_test_y
+
+# Setup scalers X dataset
+scaler = StandardScaler()
+scaler.fit(lasso_df)
+lasso_df_scaled = scaler.transform(lasso_df)
+
+# lasso split dataset into 33% test 66% training
+(lasso_scaled_df_train_x, lasso_scaled_df_test_x, lasso_scaled_df_train_y, 
+lasso_scaled_df_test_y) = (train_test_split(lasso_df_scaled, lol_y, 
+                                             test_size = 0.33, 
+                                             random_state=1337))
+#lasso_scaled_df_train_x
+#lasso_scaled_df_test_x
+#lasso_scaled_df_train_y
+#lasso_scaled_df_test_y
+
+################
+# End building scaled dataframes
+################
+
+
+################
 # Start building test/train datasets with various attribute selections
 ################
 
@@ -320,57 +407,57 @@ pear_five_df_train_x, pear_five_df_test_x, pear_five_df_train_y, pear_five_df_te
         train_test_split(pear_five_df, lol_y, test_size = 0.33, 
                          random_state=1337))
 
-pear_five_df_train_x
-pear_five_df_test_x
-pear_five_df_train_y
-pear_five_df_test_y
+#pear_five_df_train_x
+#pear_five_df_test_x
+#pear_five_df_train_y
+#pear_five_df_test_y
 
 # pear_ten split dataset into 33% test 66% training
 pear_ten_df_train_x, pear_ten_df_test_x, pear_ten_df_train_y, pear_ten_df_test_y = (
         train_test_split(pear_ten_df, lol_y, test_size = 0.33, 
                          random_state=1337))
 
-pear_ten_df_train_x
-pear_ten_df_test_x
-pear_ten_df_train_y
-pear_ten_df_test_y
+#pear_ten_df_train_x
+#pear_ten_df_test_x
+#pear_ten_df_train_y
+#pear_ten_df_test_y
 
 # ols_df split dataset into 33% test 66% training
 ols_df_train_x, ols_df_test_x, ols_df_train_y, ols_df_test_y = (
         train_test_split(ols_df, lol_y, test_size = 0.33, 
                          random_state=1337))
 
-ols_df_train_x
-ols_df_test_x
-ols_df_train_y
-ols_df_test_y
+#ols_df_train_x
+#ols_df_test_x
+#ols_df_train_y
+#ols_df_test_y
 
 # ols_df split dataset into 33% test 66% training
 rfe_df_train_x, rfe_df_test_x, rfe_df_train_y, rfe_df_test_y = (
         train_test_split(rfe_df, lol_y, test_size = 0.33, 
                          random_state=1337))
 
-rfe_df_train_x
-rfe_df_test_x
-rfe_df_train_y
-rfe_df_test_y
+#rfe_df_train_x
+#rfe_df_test_x
+#rfe_df_train_y
+#rfe_df_test_y
 
 # ols_df split dataset into 33% test 66% training
 lasso_df_train_x, lasso_df_test_x, lasso_df_train_y, lasso_df_test_y = (
         train_test_split(lasso_df, lol_y, test_size = 0.33, 
                          random_state=1337))
 
-lasso_df_train_x
-lasso_df_test_x
-lasso_df_train_y
-lasso_df_test_y
+#lasso_df_train_x
+#lasso_df_test_x
+#lasso_df_train_y
+#lasso_df_test_y
 
 ################
 # End building test/train datasets with various attribute selections
 ################
 
 ################
-# Start building algorithms
+# Start building non-scaled algorithms
 ################
 
 #######
@@ -626,91 +713,276 @@ print('lasso_df_gnb_acc:', lasso_df_gnb_acc)
 #######
 
 ################
-# End building algorithms
+# End building non-scaled algorithms
 ################
 
 ################
-# Start building scaled dataframes
+# Start building scaled algorithms
 ################
 
-# Setup scalers X datasets
-scaler = StandardScaler()
-scaler.fit(pear_five_df)
-pear_five_df_scaled = scaler.transform(pear_five_df)
+#######
+# Start KNN
+#######
 
-# pear_five split dataset into 33% test 66% training
-(pear_five_scaled_df_train_x, pear_five_scaled_df_test_x, 
- pear_five_scaled_df_train_y, pear_five_scaled_df_test_y) = (
-        train_test_split(pear_five_df_scaled, lol_y, test_size = 0.33, 
-                         random_state=1337))
+####
+# Start pear-five dataset
+####
 
-pear_five_scaled_df_train_x
-pear_five_scaled_df_test_x
-pear_five_scaled_df_train_y
-pear_five_scaled_df_test_y
+current_set = 'pear-five'
 
-# Setup scalers X dataset
-scaler = StandardScaler()
-scaler.fit(pear_ten_df)
-pear_ten_df_scaled = scaler.transform(pear_ten_df)
+# Create empty lists to store the models error rate and 
+# accuracy across various K's
+error_rate = []
+accuracy = []
+k_value = []
 
-# pear_ten split dataset into 33% test 66% training
-(pear_ten_scaled_df_train_x, pear_ten_scaled_df_test_x,
- pear_ten_scaled_df_train_y, pear_ten_scaled_df_test_y) = (
-        train_test_split(pear_ten_df_scaled, lol_y, test_size = 0.33, 
-                         random_state=1337))
+# For loop to test the model using various neighbor sizes
+# with k neighbors set to 3 to 25
+try:
+    for k in range (3, 27, 2):
+        # Create the classifier with neighbors set to k from the loop
+        knn_classifier = KNeighborsClassifier(n_neighbors = k)
+       
+        # Train the classifier
+        knn_classifier.fit(pear_five_scaled_df_train_x, 
+                           pear_five_scaled_df_train_y)
+        
+        # Perform predictions
+        pred_k = knn_classifier.predict(pear_five_scaled_df_test_x)
+        
+        # Store error rate and accuracy for particular K value
+        k_value.append(k)
+        error_rate.append(round(np.mean(
+                pred_k != pear_five_scaled_df_test_y) * 100, 2))
+        
+        accuracy.append(round(sum(
+                pred_k == pear_five_scaled_df_test_y) / len(pred_k) * 100, 2))
+        
+except Exception as e:
+    print(e)
+    print('failed to build the KNN classifier.')
 
-pear_ten_scaled_df_train_x
-pear_ten_scaled_df_test_x
-pear_ten_scaled_df_train_y
-pear_ten_scaled_df_test_y
+for i in range (0,12):
+    print('The accuracy on the pearson five data when K =', k_value[i], 
+          'is:', accuracy[i])
+    
+# create a plot to display the accuracy of the model across K
+fig = plt.figure(figsize=(10, 4))
+ax = plt.gca()
+plt.plot(range(3, 27, 2), accuracy, color ='blue',
+         marker = 'o', markerfacecolor = 'black', markersize = 10)
+plt.title('Accuracy vs. k for the pearson five dataset')
+plt.xlabel('Number of neighbors: k')
+plt.ylabel('Accuracy')
 
-# Setup scalers X dataset
-scaler = StandardScaler()
-scaler.fit(ols_df)
-ols_df_scaled = scaler.transform(ols_df)
+max_index = accuracy.index(max(accuracy))
 
-# ols_df split dataset into 33% test 66% training
-(ols_scaled_df_train_x, ols_scaled_df_test_x, ols_scaled_df_train_y,
- ols_scaled_df_test_y) = (
-        train_test_split(ols_df_scaled, lol_y, test_size = 0.33, 
-                         random_state=1337))
+highest_accuracy = accuracy[max_index]
+best_set = 'pearson five'
 
-ols_scaled_df_train_x
-ols_scaled_df_test_x
-ols_scaled_df_train_y
-ols_scaled_df_test_y
+print('The most accurate k for the pearson five attribute selection is', 
+      k_value[max_index], 'at', accuracy[max_index],'%')
 
-# Setup scalers X dataset
-scaler = StandardScaler()
-scaler.fit(rfe_df)
-rfe_df_scaled = scaler.transform(rfe_df)
+####
+# end pear-five dataset
+####
 
-# ols_df split dataset into 33% test 66% training
-(rfe_scaled_df_train_x, rfe_scaled_df_test_x, 
- rfe_scaled_df_train_y, rfe_scaled_df_test_y) = (
-        train_test_split(rfe_df_scaled, lol_y, test_size = 0.33, 
-                         random_state=1337))
-rfe_scaled_df_train_x
-rfe_scaled_df_test_x
-rfe_scaled_df_train_y
-rfe_scaled_df_test_y
+####
+# Start pear-ten dataset
+####
 
-# Setup scalers X dataset
-scaler = StandardScaler()
-scaler.fit(lasso_df)
-lasso_df_scaled = scaler.transform(lasso_df)
+current_set = 'pear-ten'
 
-# lasso split dataset into 33% test 66% training
-(lasso_scaled_df_train_x, lasso_scaled_df_test_x, lasso_scaled_df_train_y, 
-lasso_scaled_df_test_y) = (train_test_split(lasso_df_scaled, lol_y, 
-                                             test_size = 0.33, 
-                                             random_state=1337))
-lasso_scaled_df_train_x
-lasso_scaled_df_test_x
-lasso_scaled_df_train_y
-lasso_scaled_df_test_y
+# Create empty lists to store the models error rate and 
+# accuracy across various K's
+error_rate = []
+accuracy = []
+k_value = []
+
+# For loop to test the model using various neighbor sizes
+# with k neighbors set to 3 to 25
+try:
+    for k in range (3, 27, 2):
+        # Create the classifier with neighbors set to k from the loop
+        knn_classifier = KNeighborsClassifier(n_neighbors = k)
+       
+        # Train the classifier
+        knn_classifier.fit(pear_ten_scaled_df_train_x, 
+                           pear_ten_scaled_df_train_y)
+        
+        # Perform predictions
+        pred_k = knn_classifier.predict(pear_ten_scaled_df_test_x)
+        
+        # Store error rate and accuracy for particular K value
+        k_value.append(k)
+        error_rate.append(round(np.mean(
+                pred_k != pear_ten_scaled_df_test_y) * 100, 2))
+        
+        accuracy.append(round(sum(
+                pred_k == pear_ten_scaled_df_test_y) / len(pred_k) * 100, 2))
+        
+except Exception as e:
+    print(e)
+    print('failed to build the KNN classifier.')
+
+for i in range (0,12):
+    print('The accuracy on the pearson ten data when K =', k_value[i], 
+          'is:', accuracy[i])
+    
+# create a plot to display the accuracy of the model across K
+fig = plt.figure(figsize=(10, 4))
+ax = plt.gca()
+plt.plot(range(3, 27, 2), accuracy, color ='blue',
+         marker = 'o', markerfacecolor = 'black', markersize = 10)
+plt.title('Accuracy vs. k for the pearson ten dataset')
+plt.xlabel('Number of neighbors: k')
+plt.ylabel('Accuracy')
+
+max_index = accuracy.index(max(accuracy))
+
+print('The most accurate k for the pearson ten attribute selection is', 
+      k_value[max_index], 'at', accuracy[max_index],'%')
+
+if accuracy[max_index] > highest_accuracy:
+    highest_accuracy = accuracy[max_index]
+    best_set = current_set
+
+####
+# end pear-ten dataset
+####
+
+####
+# Start ols dataset
+####
+
+current_set = 'ols'
+
+# Create empty lists to store the models error rate and 
+# accuracy across various K's
+error_rate = []
+accuracy = []
+k_value = []
+
+# For loop to test the model using various neighbor sizes
+# with k neighbors set to 3 to 25
+try:
+    for k in range (3, 27, 2):
+        # Create the classifier with neighbors set to k from the loop
+        knn_classifier = KNeighborsClassifier(n_neighbors = k)
+       
+        # Train the classifier
+        knn_classifier.fit(ols_scaled_df_train_x, 
+                           ols_scaled_df_train_y)
+        
+        # Perform predictions
+        pred_k = knn_classifier.predict(ols_scaled_df_test_x)
+        
+        # Store error rate and accuracy for particular K value
+        k_value.append(k)
+        error_rate.append(round(np.mean(
+                pred_k != ols_scaled_df_test_y) * 100, 2))
+        
+        accuracy.append(round(sum(
+                pred_k == ols_scaled_df_test_y) / len(pred_k) * 100, 2))
+        
+except Exception as e:
+    print(e)
+    print('failed to build the KNN classifier.')
+
+for i in range (0,12):
+    print('The accuracy on the ols data when K =', k_value[i], 
+          'is:', accuracy[i])
+    
+# create a plot to display the accuracy of the model across K
+fig = plt.figure(figsize=(10, 4))
+ax = plt.gca()
+plt.plot(range(3, 27, 2), accuracy, color ='blue',
+         marker = 'o', markerfacecolor = 'black', markersize = 10)
+plt.title('Accuracy vs. k for the ols dataset')
+plt.xlabel('Number of neighbors: k')
+plt.ylabel('Accuracy')
+
+max_index = accuracy.index(max(accuracy))
+
+print('The most accurate k for the ols attribute selection is', 
+      k_value[max_index], 'at', accuracy[max_index],'%')
+
+if accuracy[max_index] > highest_accuracy:
+    highest_accuracy = accuracy[max_index]
+    best_set = current_set
+
+####
+# end ols dataset
+####
+    
+####
+# Start rfe dataset
+####
+
+current_set = 'rfe'
+
+# Create empty lists to store the models error rate and 
+# accuracy across various K's
+error_rate = []
+accuracy = []
+k_value = []
+
+# For loop to test the model using various neighbor sizes
+# with k neighbors set to 3 to 25
+try:
+    for k in range (3, 27, 2):
+        # Create the classifier with neighbors set to k from the loop
+        knn_classifier = KNeighborsClassifier(n_neighbors = k)
+       
+        # Train the classifier
+        knn_classifier.fit(rfe_scaled_df_train_x, 
+                           rfe_scaled_df_train_y)
+        
+        # Perform predictions
+        pred_k = knn_classifier.predict(rfe_scaled_df_test_x)
+        
+        # Store error rate and accuracy for particular K value
+        k_value.append(k)
+        error_rate.append(round(np.mean(
+                pred_k != rfe_scaled_df_test_y) * 100, 2))
+        
+        accuracy.append(round(sum(
+                pred_k == rfe_scaled_df_test_y) / len(pred_k) * 100, 2))
+        
+except Exception as e:
+    print(e)
+    print('failed to build the KNN classifier.')
+
+for i in range (0,12):
+    print('The accuracy on the rfe data when K =', k_value[i], 
+          'is:', accuracy[i])
+    
+# create a plot to display the accuracy of the model across K
+fig = plt.figure(figsize=(10, 4))
+ax = plt.gca()
+plt.plot(range(3, 27, 2), accuracy, color ='blue',
+         marker = 'o', markerfacecolor = 'black', markersize = 10)
+plt.title('Accuracy vs. k for the rfe dataset')
+plt.xlabel('Number of neighbors: k')
+plt.ylabel('Accuracy')
+
+max_index = accuracy.index(max(accuracy))
+
+print('The most accurate k for the rfe attribute selection is', 
+      k_value[max_index], 'at', accuracy[max_index],'%')
+
+if accuracy[max_index] > highest_accuracy:
+    highest_accuracy = accuracy[max_index]
+    best_set = current_set
+
+####
+# end ols dataset
+####
+
+#######
+# End KNN
+#######
 
 ################
-# End building scaled dataframes
+# End building scaled algorithms
 ################
