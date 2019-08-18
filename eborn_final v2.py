@@ -514,6 +514,28 @@ print('\nLasso test win ratios\n','team 1 : team 2\n',
 # Start building non-scaled algorithms
 ################
 
+attributes = ['Pearson Five', 'Pearson Ten', 'OLS', 'RFE', 'Lasso']
+classifiers = ['Decision Tree', 'Random Forest', 'SVM', 'Naive Bayes', 'KNN',
+               'Logistic Regression', 'Linear Regression']
+
+prediction_df = pd.DataFrame(columns =['classifier', 'details', 'attributes', 
+                                       'accuracy'])
+
+prediction_df = prediction_df.append({'classifier' : 'Decision Tree',
+                                      'details' : 'None',
+                                      'attributes' : 'Pearson Five',
+                                      'accuracy' : 0}, 
+                                      ignore_index=True)
+
+# Build out a dataframe to store
+for i in range(1, len(classifiers)):
+    for k in range(1, len(attributes)):
+        prediction_df = prediction_df.append({'classifier' : classifiers[i],
+                                      'details' : 'None',
+                                      'attributes' : attributes[k],
+                                      'accuracy' : 0}, 
+                                      ignore_index=True)
+
 #######
 # Start decision tree
 #######
@@ -622,18 +644,6 @@ lasso_df_tree_acc = 100-(round(np.mean(lasso_df_prediction
 
 ####
 # End lasso_df
-####
-
-####
-# Start prediction prints
-####
-print('pear_five_tree_acc:', pear_five_tree_acc)
-print('pear_ten_tree_acc:', pear_ten_tree_acc)
-print('ols_df_tree_acc:', ols_df_tree_acc)
-print('rfe_df_tree_acc:', rfe_df_tree_acc)
-print('lasso_df_tree_acc:', lasso_df_tree_acc)
-####
-# End prediction prints
 ####
 
 #######
@@ -750,17 +760,6 @@ lasso_df_gnb_acc = 100-(round(np.mean(lasso_df_prediction
 # End lasso_df
 ####
 
-####
-# Start prediction prints
-####
-print('pear_five_gnb_acc:', pear_five_gnb_acc)
-print('pear_ten_gnb_acc:', pear_ten_gnb_acc)
-print('ols_df_gnb_acc:', ols_df_gnb_acc)
-print('rfe_df_gnb_acc:', rfe_df_gnb_acc)
-print('lasso_df_gnb_acc:', lasso_df_gnb_acc)
-####
-# End prediction prints
-####
 
 #######
 # End naive bayes
@@ -2059,3 +2058,40 @@ print(round(accuracy * 100, 2), '%')
 ################
 # End building scaled algorithms
 ################
+
+####
+# Start prediction prints
+####
+
+###
+# Decision Tree
+###
+print('Accuracy using Decision tree on the pearson five attributes:', 
+      pear_five_tree_acc)
+print('Accuracy using Decision tree on the pearson ten attributes:',  
+      pear_ten_tree_acc)
+print('Accuracy using Decision tree on the ols attributes:', 
+      ols_df_tree_acc)
+print('Accuracy using Decision tree on the rfe attributes:', 
+      rfe_df_tree_acc)
+print('Accuracy using Decision tree on the lasso attributes:', 
+      lasso_df_tree_acc)
+
+###
+# Naive Bayes
+###
+print('Accuracy using Naive Bayes on the pearson five attributes:', 
+      pear_five_gnb_acc)
+print('Accuracy using Naive Bayes on the pearson ten attributes:', 
+      pear_ten_gnb_acc)
+print('Accuracy using Naive Bayes on the ols attributes:', 
+      ols_df_gnb_acc)
+print('Accuracy using Naive Bayes on the rfe attributes:', 
+      rfe_df_gnb_acc)
+print('Accuracy using Naive Bayes on the lasso attributes:', 
+      lasso_df_gnb_acc)
+
+
+####
+# End prediction prints
+####
