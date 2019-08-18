@@ -37,11 +37,11 @@ csv_file = os.path.join(input_dir, data + '.csv')
 # read csv file into dataframe
 try:
     lol_df = pd.read_csv(csv_file)
-    print('opened file for ticker: ', data,'\n')
+    print('opened file for ticker: ', data, '\n')
 
 except Exception as e:
     print(e)
-    exit('failed to read LoL data from: '+ str(data)+'.csv')
+    exit('Failed to read LoL data from: '+ str(data)+'.csv')
 
 # describe the total rows and columns
 print('The total length of the dataframe is', lol_df.shape[0], 'rows',
@@ -53,10 +53,9 @@ print('The total length of the dataframe is', lol_df.shape[0], 'rows',
 lol_df['win'] = lol_df['winner'].apply(lambda x: 0 if x == 1 else 1)
 
 # remove columns gameId, creationTime, seasonId and winner
-lol_df.drop(lol_df.columns[[0,1,3,4]], 
-                     axis = 1, inplace = True)
+lol_df.drop(lol_df.columns[[0,1,3,4]], axis = 1, inplace = True)
 
-# there are -1's stored in the t1 and t2 ban columns that need to
+# There are -1's stored in the t1 and t2 ban columns that need to
 # be replaced before the chi-squared can be run
 # for loop cycles through t1_ban1, t1_ban2, etc. for both teams
 # and sets the row to a 0 instead of a -1. goes through team1 and 2
@@ -83,14 +82,6 @@ for team in range(1, 3):
 
 # view row 89, all columns
 #lol_df.iloc[89,:]
-
-# store wins in variable for each time
-team1 = sum(lol_df.win == 0)
-team2 = sum(lol_df.win == 1)
-
-# create a ratio of the wins
-ratio = round(team1 / team2, 4)
-print('\nTeam win ratios\n','team 1 : team 2\n', str(ratio)+' :   1')
 
 # 58 columns remaining
 lol_df.head()
@@ -144,17 +135,16 @@ print(relevant_features_ten)
 #print(lol_df[["t2_towerKills","t2_inhibitorKills"]].corr())
 #print(lol_df[["t2_towerKills","firstInhibitor"]].corr())
 
-# removed win column
 # create dataframe top 5 correlated attributes
 pear_five_df = lol_df[['firstInhibitor', 't1_towerKills', 't1_inhibitorKills', 
-                      't2_towerKills', 't2_inhibitorKills']] #,'win']]
+                      't2_towerKills', 't2_inhibitorKills']]
 
-# removed win column
+
 # create dataframe top 10 correlated attributes
 pear_ten_df = lol_df[['firstTower','firstInhibitor', 't1_towerKills',
                        't1_inhibitorKills', 't1_baronKills', 't1_dragonKills',
                        't2_towerKills', 't2_inhibitorKills', 't2_baronKills',
-                       't2_dragonKills']] #, 'win']]
+                       't2_dragonKills']]
 
 ########
 # End Pearsons corerelation
@@ -173,26 +163,26 @@ pmax = 1
 # OLS model and eliminiates the highest value from the list of columns
 # loop breaks if all columns remaining have less than 0.05 p value
 # or all columns are removed
-while (len(cols)>0):
-    p = []
-    ols_x1 = lol_x[cols]
-    ols_x1 = sm.add_constant(ols_x1)
-    model = sm.OLS(lol_y,ols_x1).fit()
-    p = pd.Series(model.pvalues.values[1:], index = cols)      
-    pmax = max(p)
-    feature_with_p_max = p.idxmax()
-    if(pmax > 0.05):
-        cols.remove(feature_with_p_max)
-    else:
-        break
-
+try:
+    while (len(cols)>0):
+        p = []
+        ols_x1 = lol_x[cols]
+        ols_x1 = sm.add_constant(ols_x1)
+        model = sm.OLS(lol_y,ols_x1).fit()
+        p = pd.Series(model.pvalues.values[1:], index = cols)
+        pmax = max(p)
+        feature_with_p_max = p.idxmax()
+        if(pmax > 0.05):
+            cols.remove(feature_with_p_max)
+        else:
+            break
+except Exception as e:
+    print(e)
+    exit('Failed to reduce features for ols dataset')
+    
 # sets and prints the remaining unremoved features
 selected_features_BE = cols
 print(selected_features_BE)
-
-# removed win column
-# Appends win column for prediction purposes
-#selected_features_BE.append('win')
 
 # creates a dataframe with the ols selected columns
 ols_df = lol_df[selected_features_BE]
@@ -235,7 +225,7 @@ ols_df = lol_df[selected_features_BE]
 #print("Score with %d features: %f" % (nof, high_score))
 
 ######!!!!!!!!!
-# doesnt have to be run every time
+# only used to determine optimum number of attributes
 ######
 
 # setup column list and regression model
@@ -256,14 +246,7 @@ selected_features_rfe = temp[temp==True].index
 # output the selected features
 print(selected_features_rfe)
 
-# removed win column
-# create index object for win column
-#win_df = pd.Index(['win'])
-
-# Appends win column for prediction purposes
-# selected_features_rfe = selected_features_rfe.append([win_df])
-
-# creates a dataframe with the ols selected columns
+# creates a dataframe with the rfe selected columns
 rfe_df = lol_df[selected_features_rfe]
 
 ########
@@ -294,9 +277,6 @@ print("Lasso picked " + str(sum(coef != 0)) +
 
 # creates a dataframe based on the 32 columns selected from lasso
 lasso_df = lol_df[coef[coef.values != 0].index]
-
-# removed win column add
-#lasso_df['win'] = lol_df.win
 
 ########
 # End lasso method
@@ -392,20 +372,20 @@ lasso_scaled_df_test_y) = (train_test_split(lasso_df_scaled, lol_y,
 # End building scaled dataframes
 ################
 
-
 ################
 # Start building test/train datasets with various attribute selections
 ################
 
 # dataframes with selected attribtues from 5 methods for attribute eliminiation
-pear_five_df
-pear_ten_df
-ols_df
-rfe_df
-lasso_df
+#pear_five_df
+#pear_ten_df
+#ols_df
+#rfe_df
+#lasso_df
 
 # pear_five split dataset into 33% test 66% training
-pear_five_df_train_x, pear_five_df_test_x, pear_five_df_train_y, pear_five_df_test_y = (
+(pear_five_df_train_x, pear_five_df_test_x, 
+pear_five_df_train_y, pear_five_df_test_y) = (
         train_test_split(pear_five_df, lol_y, test_size = 0.33, 
                          random_state=1337))
 
@@ -415,7 +395,8 @@ pear_five_df_train_x, pear_five_df_test_x, pear_five_df_train_y, pear_five_df_te
 #pear_five_df_test_y
 
 # pear_ten split dataset into 33% test 66% training
-pear_ten_df_train_x, pear_ten_df_test_x, pear_ten_df_train_y, pear_ten_df_test_y = (
+(pear_ten_df_train_x, pear_ten_df_test_x, 
+ pear_ten_df_train_y, pear_ten_df_test_y) = (
         train_test_split(pear_ten_df, lol_y, test_size = 0.33, 
                          random_state=1337))
 
@@ -457,6 +438,77 @@ lasso_df_train_x, lasso_df_test_x, lasso_df_train_y, lasso_df_test_y = (
 ################
 # End building test/train datasets with various attribute selections
 ################
+
+####
+# Create counts of the win totals for team 1 and team 2
+####
+# store wins in variable for each time
+team1 = sum(lol_df.win == 0)
+team2 = sum(lol_df.win == 1)
+pear_five_train_team1 = sum(pear_five_df_train_y == 0)
+pear_five_test_team1  = sum(pear_five_df_test_y == 0)
+pear_ten_train_team1  = sum(pear_ten_df_train_y == 0)
+pear_ten_test_team1   = sum(pear_ten_df_test_y == 0)
+ols_train_team1       = sum(ols_df_train_y == 0)
+ols_test_team1        = sum(ols_df_test_y == 0)
+rfe_train_team1       = sum(rfe_df_train_y == 0)
+rfe_test_team1        = sum(rfe_df_test_y == 0)
+lasso_train_team1     = sum(lasso_df_train_y == 0)
+lasso_test_team1      = sum(lasso_df_test_y == 0)
+
+
+pear_five_train_team2 = sum(pear_five_df_train_y == 1)
+pear_five_test_team2  = sum(pear_five_df_test_y == 1)
+pear_ten_train_team2  = sum(pear_ten_df_train_y == 1)
+pear_ten_test_team2   = sum(pear_ten_df_test_y == 1)
+ols_train_team2       = sum(ols_df_train_y == 1)
+ols_test_team2        = sum(ols_df_test_y == 1)
+rfe_train_team2       = sum(rfe_df_train_y == 1)
+rfe_test_team2        = sum(rfe_df_test_y == 1)
+lasso_train_team2     = sum(lasso_df_train_y == 1)
+lasso_test_team2      = sum(lasso_df_test_y == 1)
+
+# create a ratio of the wins
+ratio = round(team1 / team2, 4)
+
+pear_five_train_ratio = round(pear_five_train_team1 / pear_five_train_team2, 4)
+pear_five_test_ratio  = round(pear_five_test_team1 / pear_five_test_team2, 4)
+
+pear_ten_train_ratio = round(pear_five_train_team1 / pear_five_train_team2, 4)
+pear_ten_test_ratio  = round(pear_five_test_team1 / pear_five_test_team2, 4)
+
+ols_train_ratio = round(ols_train_team1 / ols_train_team2, 4)
+ols_test_ratio  = round(ols_test_team1 / ols_test_team2, 4)
+
+rfe_train_ratio = round(rfe_train_team1 / rfe_train_team2, 4)
+rfe_test_ratio  = round(rfe_test_team1 / rfe_test_team2, 4)
+
+lasso_train_ratio = round(lasso_train_team1 / lasso_train_team2, 4)
+lasso_test_ratio  = round(lasso_test_team1 / lasso_test_team2, 4)
+
+# Print win ratios
+print('\nOriginal dataset win ratios\n','team 1 : team 2\n', str(ratio)+
+      ' :   1')
+print('\nPearson five training win ratios\n','team 1 : team 2\n', 
+      str(pear_five_train_ratio)+' :   1')
+print('\nPearson five test win ratios\n','team 1 : team 2\n', 
+      str(pear_five_test_ratio)+' :   1')
+print('\nPearson ten training win ratios\n','team 1 : team 2\n', 
+      str(pear_ten_train_ratio)+' :   1')
+print('\nPearson ten test win ratios\n','team 1 : team 2\n', 
+      str(pear_ten_test_ratio)+' :   1')
+print('\nOls training win ratios\n','team 1 : team 2\n', 
+      str(ols_train_ratio)+' :   1')
+print('\nOls test win ratios\n','team 1 : team 2\n', 
+      str(ols_test_ratio)+' :   1')
+print('\nRfe training win ratios\n','team 1 : team 2\n', 
+      str(rfe_train_ratio)+' :   1')
+print('\nRfe test win ratios\n','team 1 : team 2\n', 
+      str(rfe_test_ratio)+' :   1')
+print('\nLasso training win ratios\n','team 1 : team 2\n', 
+      str(lasso_train_ratio)+' :   1')
+print('\nLasso test win ratios\n','team 1 : team 2\n', 
+      str(lasso_test_ratio)+' :   1')
 
 ################
 # Start building non-scaled algorithms
