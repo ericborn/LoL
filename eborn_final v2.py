@@ -515,26 +515,14 @@ print('\nLasso test win ratios\n','team 1 : team 2\n',
 ################
 
 attributes = ['Pearson Five', 'Pearson Ten', 'OLS', 'RFE', 'Lasso']
-classifiers = ['Decision Tree', 'Random Forest', 'SVM', 'Naive Bayes', 'KNN',
+classifiers = ['Decision Tree', 'Naive Bayes', 'KNN', 'SVM', 'SVM', 'SVM',  
+               'Random Forest', 'Logistic Regression', 'Logistic Regression',
                'Logistic Regression', 'Linear Regression']
+
+accuracy = []
 
 prediction_df = pd.DataFrame(columns =['classifier', 'details', 'attributes', 
                                        'accuracy'])
-
-prediction_df = prediction_df.append({'classifier' : 'Decision Tree',
-                                      'details' : 'None',
-                                      'attributes' : 'Pearson Five',
-                                      'accuracy' : 0}, 
-                                      ignore_index=True)
-
-# Build out a dataframe to store
-for i in range(1, len(classifiers)):
-    for k in range(1, len(attributes)):
-        prediction_df = prediction_df.append({'classifier' : classifiers[i],
-                                      'details' : 'None',
-                                      'attributes' : attributes[k],
-                                      'accuracy' : 0}, 
-                                      ignore_index=True)
 
 #######
 # Start decision tree
@@ -551,8 +539,9 @@ pear_five_tree_clf = pear_five_tree_clf.fit(pear_five_df_train_x,
 pear_five_prediction = pear_five_tree_clf.predict(pear_five_df_test_x)
 
 # calculate error rate
-pear_five_tree_acc = 100-(round(np.mean(pear_five_prediction 
-                                             != pear_five_df_test_y) * 100, 2))
+#pear_five_tree_acc = 100-(round(np.mean(pear_five_prediction 
+#                                             != pear_five_df_test_y) * 100, 2))
+#accuracy.append(pear_five_tree_acc)
 
 ####
 # End five
@@ -573,8 +562,8 @@ pear_ten_tree_clf = pear_ten_tree_clf.fit(pear_ten_df_train_x,
 pear_ten_prediction = pear_ten_tree_clf.predict(pear_ten_df_test_x)
 
 # calculate error rate
-pear_ten_tree_acc = 100-(round(np.mean(pear_ten_prediction 
-                                             != pear_ten_df_test_y) * 100, 2))
+#pear_ten_tree_acc = 100-(round(np.mean(pear_ten_prediction 
+#                                             != pear_ten_df_test_y) * 100, 2))
 
 ####
 # End ten
@@ -595,8 +584,8 @@ ols_df_tree_clf = ols_df_tree_clf.fit(ols_df_train_x,
 ols_df_prediction = ols_df_tree_clf.predict(ols_df_test_x)
 
 # calculate error rate
-ols_df_tree_acc= 100-(round(np.mean(ols_df_prediction 
-                                             != ols_df_test_y) * 100, 2))
+#ols_df_tree_acc= 100-(round(np.mean(ols_df_prediction 
+#                                             != ols_df_test_y) * 100, 2))
 
 ####
 # End ols_df
@@ -617,8 +606,9 @@ rfe_df_tree_clf = rfe_df_tree_clf.fit(rfe_df_train_x,
 rfe_df_prediction = rfe_df_tree_clf.predict(rfe_df_test_x)
 
 # calculate error rate
-rfe_df_tree_acc = 100-(round(np.mean(rfe_df_prediction 
-                                             != rfe_df_test_y) * 100, 2))
+#rfe_df_tree_acc = 100-(round(np.mean(rfe_df_prediction 
+#                                             != rfe_df_test_y) * 100, 2))
+
 
 ####
 # End rfe_df
@@ -639,13 +629,25 @@ lasso_df_tree_clf = lasso_df_tree_clf.fit(lasso_df_train_x,
 lasso_df_prediction = lasso_df_tree_clf.predict(lasso_df_test_x)
 
 # calculate error rate
-lasso_df_tree_acc = 100-(round(np.mean(lasso_df_prediction 
-                                             != lasso_df_test_y) * 100, 2))
+#lasso_df_tree_acc = 100-(round(np.mean(lasso_df_prediction 
+#                                             != lasso_df_test_y) * 100, 2))
+
 
 ####
 # End lasso_df
 ####
 
+# Store predictions
+accuracy.append(100-(round(np.mean(pear_five_prediction 
+                                            != pear_five_df_test_y) * 100, 2)))
+accuracy.append(100-(round(np.mean(pear_ten_prediction 
+                                             != pear_ten_df_test_y) * 100, 2)))
+accuracy.append(100-(round(np.mean(ols_df_prediction 
+                                             != lasso_df_test_y) * 100, 2)))
+accuracy.append(100-(round(np.mean(rfe_df_prediction 
+                                             != rfe_df_test_y) * 100, 2)))
+accuracy.append(100-(round(np.mean(lasso_df_prediction 
+                                             != lasso_df_test_y) * 100, 2)))
 #######
 # End decision tree
 #######
@@ -665,8 +667,11 @@ pear_five_gnb_clf = pear_five_gnb_clf.fit(pear_five_df_train_x,
 pear_five_prediction = pear_five_gnb_clf.predict(pear_five_df_test_x)
 
 # calculate error rate
-pear_five_gnb_acc = 100-(round(np.mean(pear_five_prediction 
-                                             != pear_five_df_test_y) * 100, 2))
+#pear_five_gnb_acc = 100-(round(np.mean(pear_five_prediction 
+#                                             != pear_five_df_test_y) * 100, 2))
+
+#accuracy.append(100-(round(np.mean(pear_five_prediction 
+#                                             != lasso_df_test_y) * 100, 2)))
 
 ####
 # End five
@@ -687,9 +692,11 @@ pear_ten_gnb_clf = pear_ten_gnb_clf.fit(pear_ten_df_train_x,
 pear_ten_prediction = pear_ten_gnb_clf.predict(pear_ten_df_test_x)
 
 # calculate error rate
-pear_ten_gnb_acc = 100-(round(np.mean(pear_ten_prediction 
-                                             != pear_ten_df_test_y) * 100, 2))
+#pear_ten_gnb_acc = 100-(round(np.mean(pear_ten_prediction 
+#                                             != pear_ten_df_test_y) * 100, 2))
 
+#accuracy.append(100-(round(np.mean(pear_ten_prediction 
+#                                             != lasso_df_test_y) * 100, 2)))
 ####
 # End ten
 ####
@@ -709,8 +716,8 @@ ols_df_gnb_clf = ols_df_gnb_clf.fit(ols_df_train_x,
 ols_df_prediction = ols_df_gnb_clf.predict(ols_df_test_x)
 
 # calculate error rate
-ols_df_gnb_acc = 100-(round(np.mean(ols_df_prediction 
-                                             != ols_df_test_y) * 100, 2))
+#ols_df_gnb_acc = 100-(round(np.mean(ols_df_prediction 
+#                                             != ols_df_test_y) * 100, 2))
 
 ####
 # End ols_df
@@ -731,8 +738,8 @@ rfe_df_gnb_clf = rfe_df_gnb_clf.fit(rfe_df_train_x,
 rfe_df_prediction = rfe_df_gnb_clf.predict(rfe_df_test_x)
 
 # calculate error rate
-rfe_df_gnb_acc = 100-(round(np.mean(rfe_df_prediction 
-                                             != rfe_df_test_y) * 100, 2))
+#rfe_df_gnb_acc = 100-(round(np.mean(rfe_df_prediction 
+#                                             != rfe_df_test_y) * 100, 2))
 
 ####
 # End rfe_df
@@ -753,17 +760,39 @@ lasso_df_gnb_clf = lasso_df_gnb_clf.fit(lasso_df_train_x,
 lasso_df_prediction = lasso_df_gnb_clf.predict(lasso_df_test_x)
 
 # calculate error rate
-lasso_df_gnb_acc = 100-(round(np.mean(lasso_df_prediction 
-                                             != lasso_df_test_y) * 100, 2))
+#lasso_df_gnb_acc = 100-(round(np.mean(lasso_df_prediction 
+#                                             != lasso_df_test_y) * 100, 2))
 
+#accuracy.append(100-(round(np.mean(lasso_df_prediction 
+#                                             != lasso_df_test_y) * 100, 2)))
 ####
 # End lasso_df
 ####
 
+# Store predictions
+accuracy.append(100-(round(np.mean(pear_five_prediction 
+                                            != pear_five_df_test_y) * 100, 2)))
+accuracy.append(100-(round(np.mean(pear_ten_prediction 
+                                             != pear_ten_df_test_y) * 100, 2)))
+accuracy.append(100-(round(np.mean(ols_df_prediction 
+                                             != lasso_df_test_y) * 100, 2)))
+accuracy.append(100-(round(np.mean(rfe_df_prediction 
+                                             != rfe_df_test_y) * 100, 2)))
+accuracy.append(100-(round(np.mean(lasso_df_prediction 
+                                             != lasso_df_test_y) * 100, 2)))
 
 #######
 # End naive bayes
 #######
+
+# Build out a dataframe to store the classifiers and their accuracy
+for i in range(0, len(classifiers)):
+    for k in range(0, len(attributes)):
+        prediction_df = prediction_df.append({'classifier' : classifiers[i],
+                                      'details' : 'None',
+                                      'attributes' : attributes[k],
+                                      'accuracy' : 0}, 
+                                      ignore_index=True)
 
 ################
 # End building non-scaled algorithms
@@ -781,7 +810,7 @@ lasso_df_gnb_acc = 100-(round(np.mean(lasso_df_prediction
 # Start pear-five dataset
 ####
 
-current_set = 'pear-five'
+#current_set = 'pear-five'
 
 # Create empty lists to store the models error rate and 
 # accuracy across various K's
@@ -828,13 +857,24 @@ plt.title('Accuracy vs. k for the pearson five dataset')
 plt.xlabel('Number of neighbors: k')
 plt.ylabel('Accuracy')
 
+# find the index of the highest accuracy
 max_index = accuracy.index(max(accuracy))
 
+# store the accuracy value
 highest_accuracy = accuracy[max_index]
-best_set = 'pearson five'
 
-print('The most accurate k for the pearson five attribute selection is', 
-      k_value[max_index], 'at', accuracy[max_index],'%')
+# append to accuracy list
+accuracy.append(accuracy[max_index])
+
+# store the best k value
+best_k = [k_value[max_index]]
+
+#best_set = 'pearson five'
+
+#print('The most accurate k for the pearson five attribute selection is', 
+#      k_value[max_index], 'at', accuracy[max_index],'%')
+
+
 
 ####
 # end pear-five dataset
@@ -844,7 +884,7 @@ print('The most accurate k for the pearson five attribute selection is',
 # Start pear-ten dataset
 ####
 
-current_set = 'pear-ten'
+#current_set = 'pear-ten'
 
 # Create empty lists to store the models error rate and 
 # accuracy across various K's
@@ -891,14 +931,27 @@ plt.title('Accuracy vs. k for the pearson ten dataset')
 plt.xlabel('Number of neighbors: k')
 plt.ylabel('Accuracy')
 
+# find the index of the highest accuracy
 max_index = accuracy.index(max(accuracy))
 
-print('The most accurate k for the pearson ten attribute selection is', 
+# store the accuracy value
+highest_accuracy = accuracy[max_index]
+
+# append to accuracy list
+accuracy.append(accuracy[max_index])
+
+# store the best k value
+best_k = [k_value[max_index]]
+
+#best_set = 'pearson five'
+
+print('The most accurate k for the pearson five attribute selection is', 
       k_value[max_index], 'at', accuracy[max_index],'%')
 
-if accuracy[max_index] > highest_accuracy:
-    highest_accuracy = accuracy[max_index]
-    best_set = current_set
+
+#if accuracy[max_index] > highest_accuracy:
+#    highest_accuracy = accuracy[max_index]
+#    best_set = current_set
 
 ####
 # end pear-ten dataset
@@ -908,7 +961,7 @@ if accuracy[max_index] > highest_accuracy:
 # Start ols dataset
 ####
 
-current_set = 'ols'
+#current_set = 'ols'
 
 # Create empty lists to store the models error rate and 
 # accuracy across various K's
@@ -955,14 +1008,26 @@ plt.title('Accuracy vs. k for the ols dataset')
 plt.xlabel('Number of neighbors: k')
 plt.ylabel('Accuracy')
 
+# find the index of the highest accuracy
 max_index = accuracy.index(max(accuracy))
 
-print('The most accurate k for the ols attribute selection is', 
+# store the accuracy value
+highest_accuracy = accuracy[max_index]
+
+# append to accuracy list
+accuracy.append(accuracy[max_index])
+
+# store the best k value
+best_k = [k_value[max_index]]
+
+#best_set = 'pearson five'
+
+print('The most accurate k for the pearson five attribute selection is', 
       k_value[max_index], 'at', accuracy[max_index],'%')
 
-if accuracy[max_index] > highest_accuracy:
-    highest_accuracy = accuracy[max_index]
-    best_set = current_set
+#if accuracy[max_index] > highest_accuracy:
+#    highest_accuracy = accuracy[max_index]
+#    best_set = current_set
 
 ####
 # end ols dataset
@@ -972,7 +1037,7 @@ if accuracy[max_index] > highest_accuracy:
 # Start rfe dataset
 ####
 
-current_set = 'rfe'
+#current_set = 'rfe'
 
 # Create empty lists to store the models error rate and 
 # accuracy across various K's
@@ -1019,14 +1084,26 @@ plt.title('Accuracy vs. k for the rfe dataset')
 plt.xlabel('Number of neighbors: k')
 plt.ylabel('Accuracy')
 
+# find the index of the highest accuracy
 max_index = accuracy.index(max(accuracy))
 
-print('The most accurate k for the rfe attribute selection is', 
+# store the accuracy value
+highest_accuracy = accuracy[max_index]
+
+# append to accuracy list
+accuracy.append(accuracy[max_index])
+
+# store the best k value
+best_k = [k_value[max_index]]
+
+#best_set = 'pearson five'
+
+print('The most accurate k for the pearson five attribute selection is', 
       k_value[max_index], 'at', accuracy[max_index],'%')
 
-if accuracy[max_index] > highest_accuracy:
-    highest_accuracy = accuracy[max_index]
-    best_set = current_set
+#if accuracy[max_index] > highest_accuracy:
+#    highest_accuracy = accuracy[max_index]
+#    best_set = current_set
 
 ####
 # end rfe dataset
@@ -1036,7 +1113,7 @@ if accuracy[max_index] > highest_accuracy:
 # Start lasso dataset
 ####
 
-current_set = 'lasso'
+#current_set = 'lasso'
 
 # Create empty lists to store the models error rate and 
 # accuracy across various K's
@@ -1083,20 +1160,32 @@ plt.title('Accuracy vs. k for the lasso dataset')
 plt.xlabel('Number of neighbors: k')
 plt.ylabel('Accuracy')
 
+# find the index of the highest accuracy
 max_index = accuracy.index(max(accuracy))
 
-print('The most accurate k for the lasso attribute selection is', 
+# store the accuracy value
+highest_accuracy = accuracy[max_index]
+
+# append to accuracy list
+accuracy.append(accuracy[max_index])
+
+# store the best k value
+best_k = [k_value[max_index]]
+
+#best_set = 'pearson five'
+
+print('The most accurate k for the pearson five attribute selection is', 
       k_value[max_index], 'at', accuracy[max_index],'%')
 
-if accuracy[max_index] > highest_accuracy:
-    highest_accuracy = accuracy[max_index]
-    best_set = current_set
+#if accuracy[max_index] > highest_accuracy:
+#    highest_accuracy = accuracy[max_index]
+#    best_set = current_set
 
 ####
 # end lasso dataset
 ####
 
-print(highest_accuracy, best_set)
+#print(highest_accuracy, best_set)
 
 #######
 # End KNN
@@ -1121,11 +1210,11 @@ svm_classifier_linear.fit(pear_five_scaled_df_train_x,
 prediction_linear = svm_classifier_linear.predict(pear_five_scaled_df_test_x)
 
 # calculate error rate
-accuracy_rate_linear = 100-(round(np.mean(prediction_linear != 
-                                         pear_five_scaled_df_test_y) * 100, 2))
+accuracy.append(100-(round(np.mean(prediction_linear != 
+                                   pear_five_scaled_df_test_y) * 100, 2)))
 
-print('The linear SVM classifier has an accuracy of', accuracy_rate_linear,'%',
-      'on the pearson five attribute set')
+#print('The linear SVM classifier has an accuracy of', accuracy_rate_linear,'%',
+#      'on the pearson five attribute set')
 
 ####
 # End pear five dataset
@@ -1146,11 +1235,11 @@ svm_classifier_linear.fit(pear_ten_scaled_df_train_x,
 prediction_linear = svm_classifier_linear.predict(pear_ten_scaled_df_test_x)
 
 # calculate error rate
-accuracy_rate_linear = 100-(round(np.mean(prediction_linear != 
-                                         pear_ten_scaled_df_test_y) * 100, 2))
+accuracy.append(100-(round(np.mean(prediction_linear != 
+                                   pear_ten_scaled_df_test_y) * 100, 2)))
 
-print('The linear SVM classifier has an accuracy of', accuracy_rate_linear,'%',
-      'on the pearson ten attribute set')
+#print('The linear SVM classifier has an accuracy of', accuracy_rate_linear,'%',
+#      'on the pearson ten attribute set')
 ####
 # End pear ten dataset
 ####
@@ -1170,11 +1259,11 @@ svm_classifier_linear.fit(ols_scaled_df_train_x,
 prediction_linear = svm_classifier_linear.predict(ols_scaled_df_test_x)
 
 # calculate error rate
-accuracy_rate_linear = 100-(round(np.mean(prediction_linear != 
-                                         ols_scaled_df_test_y) * 100, 2))
+accuracy.append(100-(round(np.mean(prediction_linear != 
+                                         ols_scaled_df_test_y) * 100, 2)))
 
-print('The linear SVM classifier has an accuracy of', accuracy_rate_linear,'%',
-      'on the ols attribute set')
+#print('The linear SVM classifier has an accuracy of', accuracy_rate_linear,'%',
+#      'on the ols attribute set')
 ####
 # End ols ten dataset
 ####
@@ -1194,11 +1283,11 @@ svm_classifier_linear.fit(rfe_scaled_df_train_x,
 prediction_linear = svm_classifier_linear.predict(rfe_scaled_df_test_x)
 
 # calculate error rate
-accuracy_rate_linear = 100-(round(np.mean(prediction_linear != 
-                                         rfe_scaled_df_test_y) * 100, 2))
+accuracy.append(100-(round(np.mean(prediction_linear != 
+                                         rfe_scaled_df_test_y) * 100, 2)))
 
-print('The linear SVM classifier has an accuracy of', accuracy_rate_linear,'%',
-      'on the rfe attribute set')
+#print('The linear SVM classifier has an accuracy of', accuracy_rate_linear,'%',
+#      'on the rfe attribute set')
 ####
 # End rfe ten dataset
 ####
@@ -1218,11 +1307,11 @@ svm_classifier_linear.fit(lasso_scaled_df_train_x,
 prediction_linear = svm_classifier_linear.predict(lasso_scaled_df_test_x)
 
 # calculate error rate
-accuracy_rate_linear = 100-(round(np.mean(prediction_linear != 
-                                         lasso_scaled_df_test_y) * 100, 2))
+accuracy.append(100-(round(np.mean(prediction_linear != 
+                                         lasso_scaled_df_test_y) * 100, 2)))
 
-print('The linear SVM classifier has an accuracy of', accuracy_rate_linear,'%',
-      'on the lasso attribute set')
+#print('The linear SVM classifier has an accuracy of', accuracy_rate_linear,'%',
+#      'on the lasso attribute set')
 ####
 # End lasso ten dataset
 ####
@@ -1250,11 +1339,11 @@ svm_classifier_rbf.fit(pear_five_scaled_df_train_x,
 prediction_rbf = svm_classifier_rbf.predict(pear_five_scaled_df_test_x)
 
 # calculate error rate
-accuracy_rate_rbf = 100-(round(np.mean(prediction_rbf != 
-                                         pear_five_scaled_df_test_y) * 100, 2))
+accuracy.append(100-(round(np.mean(prediction_rbf != 
+                                   pear_five_scaled_df_test_y) * 100, 2)))
 
-print('The rbf SVM classifier has an accuracy of', accuracy_rate_rbf,'%',
-      'on the pearson five attribute set')
+#print('The rbf SVM classifier has an accuracy of', accuracy_rate_rbf,'%',
+#      'on the pearson five attribute set')
 
 ####
 # End pear five dataset
@@ -1275,11 +1364,11 @@ svm_classifier_rbf.fit(pear_ten_scaled_df_train_x,
 prediction_rbf = svm_classifier_rbf.predict(pear_ten_scaled_df_test_x)
 
 # calculate error rate
-accuracy_rate_rbf = 100-(round(np.mean(prediction_rbf != 
-                                         pear_ten_scaled_df_test_y) * 100, 2))
+accuracy.append(100-(round(np.mean(prediction_rbf != 
+                                   pear_ten_scaled_df_test_y) * 100, 2)))
 
-print('The rbf SVM classifier has an accuracy of', accuracy_rate_rbf,'%',
-      'on the pearson ten attribute set')
+#print('The rbf SVM classifier has an accuracy of', accuracy_rate_rbf,'%',
+#      'on the pearson ten attribute set')
 ####
 # End pear ten dataset
 ####
@@ -1299,11 +1388,11 @@ svm_classifier_rbf.fit(ols_scaled_df_train_x,
 prediction_rbf = svm_classifier_rbf.predict(ols_scaled_df_test_x)
 
 # calculate error rate
-accuracy_rate_rbf = 100-(round(np.mean(prediction_rbf != 
-                                         ols_scaled_df_test_y) * 100, 2))
+accuracy.append(100-(round(np.mean(prediction_rbf != 
+                                         ols_scaled_df_test_y) * 100, 2)))
 
-print('The rbf SVM classifier has an accuracy of', accuracy_rate_rbf,'%',
-      'on the ols attribute set')
+#print('The rbf SVM classifier has an accuracy of', accuracy_rate_rbf,'%',
+#      'on the ols attribute set')
 ####
 # End ols ten dataset
 ####
@@ -1323,11 +1412,11 @@ svm_classifier_rbf.fit(rfe_scaled_df_train_x,
 prediction_rbf = svm_classifier_rbf.predict(rfe_scaled_df_test_x)
 
 # calculate error rate
-accuracy_rate_rbf = 100-(round(np.mean(prediction_rbf != 
-                                         rfe_scaled_df_test_y) * 100, 2))
+accuracy.append(100-(round(np.mean(prediction_rbf != 
+                                         rfe_scaled_df_test_y) * 100, 2)))
 
-print('The rbf SVM classifier has an accuracy of', accuracy_rate_rbf,'%',
-      'on the rfe attribute set')
+#print('The rbf SVM classifier has an accuracy of', accuracy_rate_rbf,'%',
+#      'on the rfe attribute set')
 ####
 # End rfe ten dataset
 ####
@@ -1347,11 +1436,11 @@ svm_classifier_rbf.fit(lasso_scaled_df_train_x,
 prediction_rbf = svm_classifier_rbf.predict(lasso_scaled_df_test_x)
 
 # calculate error rate
-accuracy_rate_rbf = 100-(round(np.mean(prediction_rbf != 
-                                         lasso_scaled_df_test_y) * 100, 2))
+accuracy.append(100-(round(np.mean(prediction_rbf != 
+                                         lasso_scaled_df_test_y) * 100, 2)))
 
-print('The rbf SVM classifier has an accuracy of', accuracy_rate_rbf,'%',
-      'on the lasso attribute set')
+#print('The rbf SVM classifier has an accuracy of', accuracy_rate_rbf,'%',
+#      'on the lasso attribute set')
 ####
 # End lasso ten dataset
 ####
@@ -1379,11 +1468,11 @@ svm_classifier_poly.fit(pear_five_scaled_df_train_x,
 prediction_poly = svm_classifier_poly.predict(pear_five_scaled_df_test_x)
 
 # calculate error rate
-accuracy_rate_poly = 100-(round(np.mean(prediction_poly != 
-                                         pear_five_scaled_df_test_y) * 100, 2))
+accuracy.append(100-(round(np.mean(prediction_poly != 
+                                   pear_five_scaled_df_test_y) * 100, 2)))
 
-print('The poly SVM classifier has an accuracy of', accuracy_rate_poly,'%',
-      'on the pearson five attribute set')
+#print('The poly SVM classifier has an accuracy of', accuracy_rate_poly,'%',
+#      'on the pearson five attribute set')
 
 ####
 # End pear five dataset
@@ -1404,11 +1493,11 @@ svm_classifier_poly.fit(pear_ten_scaled_df_train_x,
 prediction_poly = svm_classifier_poly.predict(pear_ten_scaled_df_test_x)
 
 # calculate error rate
-accuracy_rate_poly = 100-(round(np.mean(prediction_poly != 
-                                         pear_ten_scaled_df_test_y) * 100, 2))
+accuracy.append(100-(round(np.mean(prediction_poly != 
+                                   pear_ten_scaled_df_test_y) * 100, 2)))
 
-print('The poly SVM classifier has an accuracy of', accuracy_rate_poly,'%',
-      'on the pearson ten attribute set')
+#print('The poly SVM classifier has an accuracy of', accuracy_rate_poly,'%',
+#      'on the pearson ten attribute set')
 ####
 # End pear ten dataset
 ####
@@ -1428,11 +1517,11 @@ svm_classifier_poly.fit(ols_scaled_df_train_x,
 prediction_poly = svm_classifier_poly.predict(ols_scaled_df_test_x)
 
 # calculate error rate
-accuracy_rate_poly = 100-(round(np.mean(prediction_poly != 
-                                         ols_scaled_df_test_y) * 100, 2))
+accuracy.append(100-(round(np.mean(prediction_poly != 
+                                         ols_scaled_df_test_y) * 100, 2)))
 
-print('The poly SVM classifier has an accuracy of', accuracy_rate_poly,'%',
-      'on the ols attribute set')
+#print('The poly SVM classifier has an accuracy of', accuracy_rate_poly,'%',
+#      'on the ols attribute set')
 ####
 # End ols dataset
 ####
@@ -1452,11 +1541,11 @@ svm_classifier_poly.fit(rfe_scaled_df_train_x,
 prediction_poly = svm_classifier_poly.predict(rfe_scaled_df_test_x)
 
 # calculate error rate
-accuracy_rate_poly = 100-(round(np.mean(prediction_poly != 
-                                         rfe_scaled_df_test_y) * 100, 2))
+accuracy.append(100-(round(np.mean(prediction_poly != 
+                                         rfe_scaled_df_test_y) * 100, 2)))
 
-print('The poly SVM classifier has an accuracy of', accuracy_rate_poly,'%',
-      'on the rfe attribute set')
+#print('The poly SVM classifier has an accuracy of', accuracy_rate_poly,'%',
+#      'on the rfe attribute set')
 ####
 # End rfe dataset
 ####
@@ -1476,11 +1565,11 @@ svm_classifier_poly.fit(lasso_scaled_df_train_x,
 prediction_poly = svm_classifier_poly.predict(lasso_scaled_df_test_x)
 
 # calculate error rate
-accuracy_rate_poly = 100-(round(np.mean(prediction_poly != 
-                                         lasso_scaled_df_test_y) * 100, 2))
+accuracy.append(100-(round(np.mean(prediction_poly != 
+                                         lasso_scaled_df_test_y) * 100, 2)))
 
-print('The poly SVM classifier has an accuracy of', accuracy_rate_poly,'%',
-      'on the lasso attribute set')
+#print('The poly SVM classifier has an accuracy of', accuracy_rate_poly,'%',
+#      'on the lasso attribute set')
 ####
 # End lasso dataset
 ####
@@ -1496,6 +1585,10 @@ print('The poly SVM classifier has an accuracy of', accuracy_rate_poly,'%',
 #############
 # Start Random Forest
 #############
+
+# Create a list to store the optimal tree and depth values 
+# for each random forest classifier
+trees = []
 
 ####
 # Start pear five dataset
@@ -1528,7 +1621,17 @@ plt.ylabel('Error Rate')
 plt.xlabel('Estimators')
 plt.show()
 
-print(forest_df.loc[forest_df['error_rate'] == min(forest_df.error_rate)])
+#print(forest_df.loc[forest_df['error_rate'] == min(forest_df.error_rate)])
+
+# store the lowest error rate value from the classifier
+ind = forest_df.loc[forest_df['error_rate'] == min(forest_df.error_rate)].values
+
+# pull out the number of trees and depth
+trees.append(int(ind.item(0)))
+trees.append(int(ind.item(1)))
+
+# append the models accruacy to the accuracy list
+accuracy.append(100-(round(ind.item(2), 2)))
 
 ####
 # End pear five dataset
@@ -1565,7 +1668,17 @@ plt.ylabel('Error Rate')
 plt.xlabel('Estimators')
 plt.show()
 
-print(forest_df.loc[forest_df['error_rate'] == min(forest_df.error_rate)])
+#print(forest_df.loc[forest_df['error_rate'] == min(forest_df.error_rate)])
+
+# store the lowest error rate value from the classifier
+ind = forest_df.loc[forest_df['error_rate'] == min(forest_df.error_rate)].values
+
+# pull out the number of trees and depth
+trees.append(int(ind.item(0)))
+trees.append(int(ind.item(1)))
+
+# append the models accruacy to the accuracy list
+accuracy.append(100-(round(ind.item(2), 2)))
 
 ####
 # End pear ten dataset
@@ -1602,7 +1715,17 @@ plt.ylabel('Error Rate')
 plt.xlabel('Estimators')
 plt.show()
 
-print(forest_df.loc[forest_df['error_rate'] == min(forest_df.error_rate)])
+#print(forest_df.loc[forest_df['error_rate'] == min(forest_df.error_rate)])
+
+# store the lowest error rate value from the classifier
+ind = forest_df.loc[forest_df['error_rate'] == min(forest_df.error_rate)].values
+
+# pull out the number of trees and depth
+trees.append(int(ind.item(0)))
+trees.append(int(ind.item(1)))
+
+# append the models accruacy to the accuracy list
+accuracy.append(100-(round(ind.item(2), 2)))
 
 ####
 # End ols dataset
@@ -1639,7 +1762,17 @@ plt.ylabel('Error Rate')
 plt.xlabel('Estimators')
 plt.show()
 
-print(forest_df.loc[forest_df['error_rate'] == min(forest_df.error_rate)])
+#print(forest_df.loc[forest_df['error_rate'] == min(forest_df.error_rate)])
+
+# store the lowest error rate value from the classifier
+ind = forest_df.loc[forest_df['error_rate'] == min(forest_df.error_rate)].values
+
+# pull out the number of trees and depth
+trees.append(int(ind.item(0)))
+trees.append(int(ind.item(1)))
+
+# append the models accruacy to the accuracy list
+accuracy.append(100-(round(ind.item(2), 2)))
 
 ####
 # End rfe dataset
@@ -1676,7 +1809,17 @@ plt.ylabel('Error Rate')
 plt.xlabel('Estimators')
 plt.show()
 
-print(forest_df.loc[forest_df['error_rate'] == min(forest_df.error_rate)])
+#print(forest_df.loc[forest_df['error_rate'] == min(forest_df.error_rate)])
+
+# store the lowest error rate value from the classifier
+ind = forest_df.loc[forest_df['error_rate'] == min(forest_df.error_rate)].values
+
+# pull out the number of trees and depth
+trees.append(int(ind.item(0)))
+trees.append(int(ind.item(1)))
+
+# append the models accruacy to the accuracy list
+accuracy.append(100-(round(ind.item(2), 2)))
 
 ####
 # End lasso dataset
@@ -1705,9 +1848,12 @@ log_reg_classifier.fit(pear_five_scaled_df_train_x,
 # Predict using 2018 feature data
 prediction = log_reg_classifier.predict(pear_five_scaled_df_test_x)
 
-accuracy = np.mean(prediction == pear_five_scaled_df_test_y)
-print('\nThe accuracy for log regression liblinear on pearson five attributes is:')
-print(round(accuracy * 100, 2), '%')
+# append the models accruacy to the accuracy list
+accuracy.append(round(np.mean(prediction == 
+                              pear_five_scaled_df_test_y) * 100, 2))
+
+#print('\nThe accuracy for log regression liblinear on pearson five attributes is:')
+#print(round(accuracy * 100, 2), '%')
 
 ####
 # End pear five dataset
@@ -1728,9 +1874,13 @@ log_reg_classifier.fit(pear_ten_scaled_df_train_x,
 # Predict using 2018 feature data
 prediction = log_reg_classifier.predict(pear_ten_scaled_df_test_x)
 
-accuracy = np.mean(prediction == pear_ten_scaled_df_test_y)
-print('\nThe accuracy for log regression liblinear on pearson ten attributes is:')
-print(round(accuracy * 100, 2), '%')
+# append the models accruacy to the accuracy list
+accuracy.append(round(np.mean(prediction == 
+                              pear_ten_scaled_df_test_y) * 100, 2))
+
+#accuracy = np.mean(prediction == pear_ten_scaled_df_test_y)
+#print('\nThe accuracy for log regression liblinear on pearson ten attributes is:')
+#print(round(accuracy * 100, 2), '%')
 
 ####
 # End pear ten dataset
@@ -1751,9 +1901,15 @@ log_reg_classifier.fit(ols_scaled_df_train_x,
 # Predict using 2018 feature data
 prediction = log_reg_classifier.predict(ols_scaled_df_test_x)
 
-accuracy = np.mean(prediction == ols_scaled_df_test_y)
-print('\nThe accuracy for log regression liblinear on ols attributes is:')
-print(round(accuracy * 100, 2), '%')
+
+# append the models accruacy to the accuracy list
+accuracy.append(round(np.mean(prediction == 
+                              ols_scaled_df_test_y) * 100, 2))
+
+
+#accuracy = np.mean(prediction == ols_scaled_df_test_y)
+#print('\nThe accuracy for log regression liblinear on ols attributes is:')
+#print(round(accuracy * 100, 2), '%')
 
 ####
 # End ols dataset
@@ -1774,9 +1930,13 @@ log_reg_classifier.fit(rfe_scaled_df_train_x,
 # Predict using 2018 feature data
 prediction = log_reg_classifier.predict(rfe_scaled_df_test_x)
 
-accuracy = np.mean(prediction == rfe_scaled_df_test_y)
-print('\nThe accuracy for log regression liblinear on rfe attributes is:')
-print(round(accuracy * 100, 2), '%')
+# append the models accruacy to the accuracy list
+accuracy.append(round(np.mean(prediction == 
+                              rfe_scaled_df_test_y) * 100, 2))
+
+#accuracy = np.mean(prediction == rfe_scaled_df_test_y)
+#print('\nThe accuracy for log regression liblinear on rfe attributes is:')
+#print(round(accuracy * 100, 2), '%')
 
 ####
 # End rfe dataset
@@ -1797,9 +1957,13 @@ log_reg_classifier.fit(lasso_scaled_df_train_x,
 # Predict using 2018 feature data
 prediction = log_reg_classifier.predict(lasso_scaled_df_test_x)
 
-accuracy = np.mean(prediction == lasso_scaled_df_test_y)
-print('\nThe accuracy for log regression liblinear on lasso attributes is:')
-print(round(accuracy * 100, 2), '%')
+# append the models accruacy to the accuracy list
+accuracy.append(round(np.mean(prediction == 
+                              lasso_scaled_df_test_y) * 100, 2))
+
+#accuracy = np.mean(prediction == lasso_scaled_df_test_y)
+#print('\nThe accuracy for log regression liblinear on lasso attributes is:')
+#print(round(accuracy * 100, 2), '%')
 
 ####
 # End lasso dataset
@@ -1828,9 +1992,13 @@ log_reg_classifier.fit(pear_five_scaled_df_train_x,
 # Predict using 2018 feature data
 prediction = log_reg_classifier.predict(pear_five_scaled_df_test_x)
 
-accuracy = np.mean(prediction == pear_five_scaled_df_test_y)
-print('\nThe accuracy for log regression sag on pearson five attributes is:')
-print(round(accuracy * 100, 2), '%')
+# append the models accruacy to the accuracy list
+accuracy.append(round(np.mean(prediction == 
+                              pear_five_scaled_df_test_y) * 100, 2))
+
+#accuracy = np.mean(prediction == pear_five_scaled_df_test_y)
+#print('\nThe accuracy for log regression sag on pearson five attributes is:')
+#print(round(accuracy * 100, 2), '%')
 
 ####
 # End pear five dataset
@@ -1851,9 +2019,13 @@ log_reg_classifier.fit(pear_ten_scaled_df_train_x,
 # Predict using 2018 feature data
 prediction = log_reg_classifier.predict(pear_ten_scaled_df_test_x)
 
-accuracy = np.mean(prediction == pear_ten_scaled_df_test_y)
-print('\nThe accuracy for log regression sag on pearson ten attributes is:')
-print(round(accuracy * 100, 2), '%')
+# append the models accruacy to the accuracy list
+accuracy.append(round(np.mean(prediction == 
+                              pear_ten_scaled_df_test_y) * 100, 2))
+
+#accuracy = np.mean(prediction == pear_ten_scaled_df_test_y)
+#print('\nThe accuracy for log regression sag on pearson ten attributes is:')
+#print(round(accuracy * 100, 2), '%')
 
 ####
 # End pear ten dataset
@@ -1874,9 +2046,13 @@ log_reg_classifier.fit(ols_scaled_df_train_x,
 # Predict using 2018 feature data
 prediction = log_reg_classifier.predict(ols_scaled_df_test_x)
 
-accuracy = np.mean(prediction == ols_scaled_df_test_y)
-print('\nThe accuracy for log regression sag on ols attributes is:')
-print(round(accuracy * 100, 2), '%')
+# append the models accruacy to the accuracy list
+accuracy.append(round(np.mean(prediction == 
+                              ols_scaled_df_test_y) * 100, 2))
+
+#accuracy = np.mean(prediction == ols_scaled_df_test_y)
+#print('\nThe accuracy for log regression sag on ols attributes is:')
+#print(round(accuracy * 100, 2), '%')
 
 ####
 # End ols dataset
@@ -1897,9 +2073,13 @@ log_reg_classifier.fit(rfe_scaled_df_train_x,
 # Predict using 2018 feature data
 prediction = log_reg_classifier.predict(rfe_scaled_df_test_x)
 
-accuracy = np.mean(prediction == rfe_scaled_df_test_y)
-print('\nThe accuracy for log regression sag on rfe attributes is:')
-print(round(accuracy * 100, 2), '%')
+# append the models accruacy to the accuracy list
+accuracy.append(round(np.mean(prediction == 
+                              rfe_scaled_df_test_y) * 100, 2))
+
+#accuracy = np.mean(prediction == rfe_scaled_df_test_y)
+#print('\nThe accuracy for log regression sag on rfe attributes is:')
+#print(round(accuracy * 100, 2), '%')
 
 ####
 # End rfe dataset
@@ -1920,9 +2100,13 @@ log_reg_classifier.fit(lasso_scaled_df_train_x,
 # Predict using 2018 feature data
 prediction = log_reg_classifier.predict(lasso_scaled_df_test_x)
 
-accuracy = np.mean(prediction == lasso_scaled_df_test_y)
-print('\nThe accuracy for log regression sag on lasso attributes is:')
-print(round(accuracy * 100, 2), '%')
+# append the models accruacy to the accuracy list
+accuracy.append(round(np.mean(prediction == 
+                              lasso_scaled_df_test_y) * 100, 2))
+
+#accuracy = np.mean(prediction == lasso_scaled_df_test_y)
+#print('\nThe accuracy for log regression sag on lasso attributes is:')
+#print(round(accuracy * 100, 2), '%')
 
 ####
 # End lasso dataset
@@ -1951,9 +2135,13 @@ log_reg_classifier.fit(pear_five_scaled_df_train_x,
 # Predict using 2018 feature data
 prediction = log_reg_classifier.predict(pear_five_scaled_df_test_x)
 
-accuracy = np.mean(prediction == pear_five_scaled_df_test_y)
-print('\nThe accuracy for log regression newton-cg on pearson five attributes is:')
-print(round(accuracy * 100, 2), '%')
+# append the models accruacy to the accuracy list
+accuracy.append(round(np.mean(prediction == 
+                              pear_five_scaled_df_test_y) * 100, 2))
+
+#accuracy = np.mean(prediction == pear_five_scaled_df_test_y)
+#print('\nThe accuracy for log regression newton-cg on pearson five attributes is:')
+#print(round(accuracy * 100, 2), '%')
 
 ####
 # End pear five dataset
@@ -1974,9 +2162,13 @@ log_reg_classifier.fit(pear_ten_scaled_df_train_x,
 # Predict using 2018 feature data
 prediction = log_reg_classifier.predict(pear_ten_scaled_df_test_x)
 
-accuracy = np.mean(prediction == pear_ten_scaled_df_test_y)
-print('\nThe accuracy for log regression newton-cg on pearson ten attributes is:')
-print(round(accuracy * 100, 2), '%')
+# append the models accruacy to the accuracy list
+accuracy.append(round(np.mean(prediction == 
+                              pear_ten_scaled_df_test_y) * 100, 2))
+
+#accuracy = np.mean(prediction == pear_ten_scaled_df_test_y)
+#print('\nThe accuracy for log regression newton-cg on pearson ten attributes is:')
+#print(round(accuracy * 100, 2), '%')
 
 ####
 # End pear ten dataset
@@ -1997,9 +2189,13 @@ log_reg_classifier.fit(ols_scaled_df_train_x,
 # Predict using 2018 feature data
 prediction = log_reg_classifier.predict(ols_scaled_df_test_x)
 
-accuracy = np.mean(prediction == ols_scaled_df_test_y)
-print('\nThe accuracy for log regression newton-cg on ols attributes is:')
-print(round(accuracy * 100, 2), '%')
+# append the models accruacy to the accuracy list
+accuracy.append(round(np.mean(prediction == 
+                              ols_scaled_df_test_y) * 100, 2))
+
+#accuracy = np.mean(prediction == ols_scaled_df_test_y)
+#print('\nThe accuracy for log regression newton-cg on ols attributes is:')
+#print(round(accuracy * 100, 2), '%')
 
 ####
 # End ols dataset
@@ -2020,9 +2216,13 @@ log_reg_classifier.fit(rfe_scaled_df_train_x,
 # Predict using 2018 feature data
 prediction = log_reg_classifier.predict(rfe_scaled_df_test_x)
 
-accuracy = np.mean(prediction == rfe_scaled_df_test_y)
-print('\nThe accuracy for log regression newton-cg on rfe attributes is:')
-print(round(accuracy * 100, 2), '%')
+# append the models accruacy to the accuracy list
+accuracy.append(round(np.mean(prediction == 
+                              rfe_scaled_df_test_y) * 100, 2))
+
+#accuracy = np.mean(prediction == rfe_scaled_df_test_y)
+#print('\nThe accuracy for log regression newton-cg on rfe attributes is:')
+#print(round(accuracy * 100, 2), '%')
 
 ####
 # End rfe dataset
@@ -2043,9 +2243,13 @@ log_reg_classifier.fit(lasso_scaled_df_train_x,
 # Predict using 2018 feature data
 prediction = log_reg_classifier.predict(lasso_scaled_df_test_x)
 
-accuracy = np.mean(prediction == lasso_scaled_df_test_y)
-print('\nThe accuracy for log regression newton-cg on lasso attributes is:')
-print(round(accuracy * 100, 2), '%')
+# append the models accruacy to the accuracy list
+accuracy.append(round(np.mean(prediction == 
+                              lasso_scaled_df_test_y) * 100, 2))
+
+#accuracy = np.mean(prediction == lasso_scaled_df_test_y)
+#print('\nThe accuracy for log regression newton-cg on lasso attributes is:')
+#print(round(accuracy * 100, 2), '%')
 
 ####
 # End lasso dataset
@@ -2066,30 +2270,30 @@ print(round(accuracy * 100, 2), '%')
 ###
 # Decision Tree
 ###
-print('Accuracy using Decision tree on the pearson five attributes:', 
-      pear_five_tree_acc)
-print('Accuracy using Decision tree on the pearson ten attributes:',  
-      pear_ten_tree_acc)
-print('Accuracy using Decision tree on the ols attributes:', 
-      ols_df_tree_acc)
-print('Accuracy using Decision tree on the rfe attributes:', 
-      rfe_df_tree_acc)
-print('Accuracy using Decision tree on the lasso attributes:', 
-      lasso_df_tree_acc)
+#print('Accuracy using Decision tree on the pearson five attributes:', 
+#      pear_five_tree_acc)
+#print('Accuracy using Decision tree on the pearson ten attributes:',  
+#      pear_ten_tree_acc)
+#print('Accuracy using Decision tree on the ols attributes:', 
+#      ols_df_tree_acc)
+#print('Accuracy using Decision tree on the rfe attributes:', 
+#      rfe_df_tree_acc)
+#print('Accuracy using Decision tree on the lasso attributes:', 
+#      lasso_df_tree_acc)
 
 ###
 # Naive Bayes
 ###
-print('Accuracy using Naive Bayes on the pearson five attributes:', 
-      pear_five_gnb_acc)
-print('Accuracy using Naive Bayes on the pearson ten attributes:', 
-      pear_ten_gnb_acc)
-print('Accuracy using Naive Bayes on the ols attributes:', 
-      ols_df_gnb_acc)
-print('Accuracy using Naive Bayes on the rfe attributes:', 
-      rfe_df_gnb_acc)
-print('Accuracy using Naive Bayes on the lasso attributes:', 
-      lasso_df_gnb_acc)
+#print('Accuracy using Naive Bayes on the pearson five attributes:', 
+#      pear_five_gnb_acc)
+#print('Accuracy using Naive Bayes on the pearson ten attributes:', 
+#      pear_ten_gnb_acc)
+#print('Accuracy using Naive Bayes on the ols attributes:', 
+#      ols_df_gnb_acc)
+#print('Accuracy using Naive Bayes on the rfe attributes:', 
+#      rfe_df_gnb_acc)
+#print('Accuracy using Naive Bayes on the lasso attributes:', 
+#      lasso_df_gnb_acc)
 
 
 ####
