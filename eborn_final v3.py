@@ -2051,25 +2051,52 @@ global_accuracy.append(round(np.mean(prediction ==
 # Start prediction prints
 ####
 
-#len(accuracy)
-#
-#attributes = ['Pearson Five', 'Pearson Ten', 'OLS', 'RFE', 'Lasso']
-#
-#classifiers = ['Decision Tree', 'Naive Bayes', 'KNN', 'SVM', 'SVM', 'SVM',  
-#               'Random Forest', 'Logistic Regression', 'Logistic Regression',
-#               'Logistic Regression'] #, 'Linear Regression']
-#
-#prediction_df = pd.DataFrame(columns =['classifier', 'details', 'attributes']) 
-#                                       #'accuracy'
-#
-## Build out a dataframe to store the classifiers and their accuracy
-#for i in range(0, len(classifiers)):
-#    for k in range(0, len(attributes)):
-#        prediction_df = prediction_df.append({'classifier' : classifiers[i],
-#                                      'details' : 'None',
-#                                      'attributes' : attributes[k],
-#                                      'accuracy' : 0}, 
-#                                      ignore_index=True)
+# create a list containing the attribute reduction methods
+attributes = ['Pearson Five', 'Pearson Ten', 'OLS', 'RFE', 'Lasso']
+
+# create a list containing the classifier names
+classifiers = ['Decision Tree', 'Naive Bayes', 'KNN', 'SVM', 'SVM', 'SVM',  
+               'Random Forest', 'Logistic Regression', 'Logistic Regression',
+               'Logistic Regression'] #, 'Linear Regression']
+
+# Creates a dataframe containing information about the classifiers and accuracy
+prediction_df = pd.DataFrame(columns =['classifier', 'details', 'attributes',
+                                       'accuracy'])
+
+# Build out a dataframe to store the classifiers and their accuracy
+for i in range(0, len(classifiers)):
+    for k in range(0, len(attributes)):
+        prediction_df = prediction_df.append({'classifier' : classifiers[i],
+                                      'details' : 'None',
+                                      'attributes' : attributes[k],
+                                      'accuracy' : 0}, 
+                                      ignore_index=True)
+
+# Updates the accuracy        
+prediction_df['accuracy'] = global_accuracy
+
+final_classifier = prediction_df['classifier'][prediction_df['accuracy'] == 
+              max(prediction_df.accuracy)].values[0]
+
+final_details = prediction_df['details'][prediction_df['accuracy'] == 
+              max(prediction_df.accuracy)].values[0]
+
+final_attributes = prediction_df['attributes'][prediction_df['accuracy'] == 
+              max(prediction_df.accuracy)].values[0]
+
+final_accuracy = prediction_df['accuracy'][prediction_df['accuracy'] == 
+              max(prediction_df.accuracy)].values[0]
+
+# print max accuracy
+if final_details == 'None':
+    print('The best classifier was the', final_classifier, 'using the',
+          final_attributes, 'attribute set and an accuracy of', final_accuracy,
+          '%')
+else:
+    print('The best classifier was the', final_classifier, 'with', 
+          final_details, 'using the', final_attributes,
+           'attribute set and an accuracy of', final_accuracy,
+          '%')
 ####
 # End prediction prints
 ####
