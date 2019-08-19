@@ -92,6 +92,9 @@ lol_x = lol_df.drop('win', 1)
 # y stores only the win column since its used as a predictor
 lol_y = lol_df['win']
 
+# setup empty list to store all of the models accuracy
+accuracy = []
+
 ################
 # Start attribute selection with various methods
 ################
@@ -115,7 +118,6 @@ relevant_features_ten = cor_target[cor_target > 0.35]
 # results for the top 5 and top 10 attributes
 print(relevant_features_five)
 print(relevant_features_ten)
-
 
 #!!!! Choosing not to eliminate these attributes since we would only
 # be left with 2 attributes for the pearson 5!!!!!
@@ -442,9 +444,9 @@ lasso_df_train_x, lasso_df_test_x, lasso_df_train_y, lasso_df_test_y = (
 ####
 # Create counts of the win totals for team 1 and team 2
 ####
-# store wins in variable for each time
+
+# store wins in variable for team 1
 team1 = sum(lol_df.win == 0)
-team2 = sum(lol_df.win == 1)
 pear_five_train_team1 = sum(pear_five_df_train_y == 0)
 pear_five_test_team1  = sum(pear_five_df_test_y == 0)
 pear_ten_train_team1  = sum(pear_ten_df_train_y == 0)
@@ -456,7 +458,8 @@ rfe_test_team1        = sum(rfe_df_test_y == 0)
 lasso_train_team1     = sum(lasso_df_train_y == 0)
 lasso_test_team1      = sum(lasso_df_test_y == 0)
 
-
+# store wins in variable for team 2
+team2 = sum(lol_df.win == 1)
 pear_five_train_team2 = sum(pear_five_df_train_y == 1)
 pear_five_test_team2  = sum(pear_five_df_test_y == 1)
 pear_ten_train_team2  = sum(pear_ten_df_train_y == 1)
@@ -513,16 +516,6 @@ print('\nLasso test win ratios\n','team 1 : team 2\n',
 ################
 # Start building non-scaled algorithms
 ################
-
-attributes = ['Pearson Five', 'Pearson Ten', 'OLS', 'RFE', 'Lasso']
-classifiers = ['Decision Tree', 'Naive Bayes', 'KNN', 'SVM', 'SVM', 'SVM',  
-               'Random Forest', 'Logistic Regression', 'Logistic Regression',
-               'Logistic Regression', 'Linear Regression']
-
-accuracy = []
-
-prediction_df = pd.DataFrame(columns =['classifier', 'details', 'attributes', 
-                                       'accuracy'])
 
 #######
 # Start decision tree
@@ -734,15 +727,6 @@ accuracy.append(100-(round(np.mean(lasso_df_prediction
 #######
 # End naive bayes
 #######
-
-# Build out a dataframe to store the classifiers and their accuracy
-for i in range(0, len(classifiers)):
-    for k in range(0, len(attributes)):
-        prediction_df = prediction_df.append({'classifier' : classifiers[i],
-                                      'details' : 'None',
-                                      'attributes' : attributes[k],
-                                      'accuracy' : 0}, 
-                                      ignore_index=True)
 
 ################
 # End building non-scaled algorithms
@@ -1473,7 +1457,7 @@ accuracy.append(100-(round(np.mean(prediction_poly !=
 
 # Create a list to store the optimal tree and depth values 
 # for each random forest classifier
-trees = []
+trees_depth = []
 
 ####
 # Start pear five dataset
@@ -1507,8 +1491,8 @@ plt.show()
 ind = forest_df.loc[forest_df['error_rate'] == min(forest_df.error_rate)].values
 
 # pull out the number of trees and depth
-trees.append(int(ind.item(0)))
-trees.append(int(ind.item(1)))
+trees_depth.append(int(ind.item(0)))
+trees_depth.append(int(ind.item(1)))
 
 # append the models accruacy to the accuracy list
 accuracy.append(100-(round(ind.item(2), 2)))
@@ -1549,8 +1533,8 @@ plt.show()
 ind = forest_df.loc[forest_df['error_rate'] == min(forest_df.error_rate)].values
 
 # pull out the number of trees and depth
-trees.append(int(ind.item(0)))
-trees.append(int(ind.item(1)))
+trees_depth.append(int(ind.item(0)))
+trees_depth.append(int(ind.item(1)))
 
 # append the models accruacy to the accuracy list
 accuracy.append(100-(round(ind.item(2), 2)))
@@ -1591,8 +1575,8 @@ plt.show()
 ind = forest_df.loc[forest_df['error_rate'] == min(forest_df.error_rate)].values
 
 # pull out the number of trees and depth
-trees.append(int(ind.item(0)))
-trees.append(int(ind.item(1)))
+trees_depth.append(int(ind.item(0)))
+trees_depth.append(int(ind.item(1)))
 
 # append the models accruacy to the accuracy list
 accuracy.append(100-(round(ind.item(2), 2)))
@@ -1633,8 +1617,8 @@ plt.show()
 ind = forest_df.loc[forest_df['error_rate'] == min(forest_df.error_rate)].values
 
 # pull out the number of trees and depth
-trees.append(int(ind.item(0)))
-trees.append(int(ind.item(1)))
+trees_depth.append(int(ind.item(0)))
+trees_depth.append(int(ind.item(1)))
 
 # append the models accruacy to the accuracy list
 accuracy.append(100-(round(ind.item(2), 2)))
@@ -1656,7 +1640,7 @@ for trees in range(1, 26):
                                     random_state = 1337)
         rf_clf.fit(lasso_scaled_df_train_x, lasso_scaled_df_train_y)
         pred_list.append([trees, depth, 
-                    round(np.mean(rf_clf.predict(lasso_scaled_df_train_y) 
+                    round(np.mean(rf_clf.predict(lasso_scaled_df_test_x) 
                     != rfe_scaled_df_test_y) 
                     * 100, 2)])
 
@@ -1675,8 +1659,8 @@ plt.show()
 ind = forest_df.loc[forest_df['error_rate'] == min(forest_df.error_rate)].values
 
 # pull out the number of trees and depth
-trees.append(int(ind.item(0)))
-trees.append(int(ind.item(1)))
+trees_depth.append(int(ind.item(0)))
+trees_depth.append(int(ind.item(1)))
 
 # append the models accruacy to the accuracy list
 accuracy.append(100-(round(ind.item(2), 2)))
@@ -2066,6 +2050,24 @@ accuracy.append(round(np.mean(prediction ==
 ####
 # Start prediction prints
 ####
+
+#attributes = ['Pearson Five', 'Pearson Ten', 'OLS', 'RFE', 'Lasso']
+#
+#classifiers = ['Decision Tree', 'Naive Bayes', 'KNN', 'SVM', 'SVM', 'SVM',  
+#               'Random Forest', 'Logistic Regression', 'Logistic Regression',
+#               'Logistic Regression'] #, 'Linear Regression']
+#
+#prediction_df = pd.DataFrame(columns =['classifier', 'details', 'attributes', 
+#                                       'accuracy'])
+#
+## Build out a dataframe to store the classifiers and their accuracy
+#for i in range(0, len(classifiers)):
+#    for k in range(0, len(attributes)):
+#        prediction_df = prediction_df.append({'classifier' : classifiers[i],
+#                                      'details' : 'None',
+#                                      'attributes' : attributes[k],
+#                                      'accuracy' : accuracy[i]}, 
+#                                      ignore_index=True)
 
 
 ####
