@@ -93,7 +93,7 @@ lol_x = lol_df.drop('win', 1)
 lol_y = lol_df['win']
 
 # setup empty list to store all of the models accuracy
-accuracy = []
+global_accuracy = []
 
 ################
 # Start attribute selection with various methods
@@ -608,15 +608,15 @@ lasso_df_prediction = lasso_df_tree_clf.predict(lasso_df_test_x)
 ####
 
 # Store predictions
-accuracy.append(100-(round(np.mean(pear_five_prediction 
+global_accuracy.append(100-(round(np.mean(pear_five_prediction 
                                             != pear_five_df_test_y) * 100, 2)))
-accuracy.append(100-(round(np.mean(pear_ten_prediction 
+global_accuracy.append(100-(round(np.mean(pear_ten_prediction 
                                              != pear_ten_df_test_y) * 100, 2)))
-accuracy.append(100-(round(np.mean(ols_df_prediction 
+global_accuracy.append(100-(round(np.mean(ols_df_prediction 
                                              != lasso_df_test_y) * 100, 2)))
-accuracy.append(100-(round(np.mean(rfe_df_prediction 
+global_accuracy.append(100-(round(np.mean(rfe_df_prediction 
                                              != rfe_df_test_y) * 100, 2)))
-accuracy.append(100-(round(np.mean(lasso_df_prediction 
+global_accuracy.append(100-(round(np.mean(lasso_df_prediction 
                                              != lasso_df_test_y) * 100, 2)))
 #######
 # End decision tree
@@ -713,15 +713,15 @@ lasso_df_prediction = lasso_df_gnb_clf.predict(lasso_df_test_x)
 ####
 
 # Store predictions
-accuracy.append(100-(round(np.mean(pear_five_prediction 
+global_accuracy.append(100-(round(np.mean(pear_five_prediction 
                                             != pear_five_df_test_y) * 100, 2)))
-accuracy.append(100-(round(np.mean(pear_ten_prediction 
+global_accuracy.append(100-(round(np.mean(pear_ten_prediction 
                                              != pear_ten_df_test_y) * 100, 2)))
-accuracy.append(100-(round(np.mean(ols_df_prediction 
+global_accuracy.append(100-(round(np.mean(ols_df_prediction 
                                              != lasso_df_test_y) * 100, 2)))
-accuracy.append(100-(round(np.mean(rfe_df_prediction 
+global_accuracy.append(100-(round(np.mean(rfe_df_prediction 
                                              != rfe_df_test_y) * 100, 2)))
-accuracy.append(100-(round(np.mean(lasso_df_prediction 
+global_accuracy.append(100-(round(np.mean(lasso_df_prediction 
                                              != lasso_df_test_y) * 100, 2)))
 
 #######
@@ -796,7 +796,7 @@ max_index = accuracy.index(max(accuracy))
 highest_accuracy = accuracy[max_index]
 
 # append to accuracy list
-accuracy.append(accuracy[max_index])
+global_accuracy.append(accuracy[max_index])
 
 # store the best k value
 best_k = [k_value[max_index]]
@@ -861,7 +861,7 @@ max_index = accuracy.index(max(accuracy))
 highest_accuracy = accuracy[max_index]
 
 # append to accuracy list
-accuracy.append(accuracy[max_index])
+global_accuracy.append(accuracy[max_index])
 
 # store the best k value
 best_k = [k_value[max_index]]
@@ -931,7 +931,7 @@ max_index = accuracy.index(max(accuracy))
 highest_accuracy = accuracy[max_index]
 
 # append to accuracy list
-accuracy.append(accuracy[max_index])
+global_accuracy.append(accuracy[max_index])
 
 # store the best k value
 best_k = [k_value[max_index]]
@@ -1001,7 +1001,7 @@ max_index = accuracy.index(max(accuracy))
 highest_accuracy = accuracy[max_index]
 
 # append to accuracy list
-accuracy.append(accuracy[max_index])
+global_accuracy.append(accuracy[max_index])
 
 # store the best k value
 best_k = [k_value[max_index]]
@@ -1071,7 +1071,7 @@ max_index = accuracy.index(max(accuracy))
 highest_accuracy = accuracy[max_index]
 
 # append to accuracy list
-accuracy.append(accuracy[max_index])
+global_accuracy.append(accuracy[max_index])
 
 # store the best k value
 best_k = [k_value[max_index]]
@@ -1108,7 +1108,7 @@ svm_classifier_linear.fit(pear_five_scaled_df_train_x,
 prediction_linear = svm_classifier_linear.predict(pear_five_scaled_df_test_x)
 
 # calculate error rate
-accuracy.append(100-(round(np.mean(prediction_linear != 
+global_accuracy.append(100-(round(np.mean(prediction_linear != 
                                    pear_five_scaled_df_test_y) * 100, 2)))
 
 ####
@@ -1130,7 +1130,7 @@ svm_classifier_linear.fit(pear_ten_scaled_df_train_x,
 prediction_linear = svm_classifier_linear.predict(pear_ten_scaled_df_test_x)
 
 # calculate error rate
-accuracy.append(100-(round(np.mean(prediction_linear != 
+global_accuracy.append(100-(round(np.mean(prediction_linear != 
                                    pear_ten_scaled_df_test_y) * 100, 2)))
 
 ####
@@ -1152,7 +1152,7 @@ svm_classifier_linear.fit(ols_scaled_df_train_x,
 prediction_linear = svm_classifier_linear.predict(ols_scaled_df_test_x)
 
 # calculate error rate
-accuracy.append(100-(round(np.mean(prediction_linear != 
+global_accuracy.append(100-(round(np.mean(prediction_linear != 
                                          ols_scaled_df_test_y) * 100, 2)))
 
 ####
@@ -1174,7 +1174,7 @@ svm_classifier_linear.fit(rfe_scaled_df_train_x,
 prediction_linear = svm_classifier_linear.predict(rfe_scaled_df_test_x)
 
 # calculate error rate
-accuracy.append(100-(round(np.mean(prediction_linear != 
+global_accuracy.append(100-(round(np.mean(prediction_linear != 
                                          rfe_scaled_df_test_y) * 100, 2)))
 
 ####
@@ -1196,7 +1196,7 @@ svm_classifier_linear.fit(lasso_scaled_df_train_x,
 prediction_linear = svm_classifier_linear.predict(lasso_scaled_df_test_x)
 
 # calculate error rate
-accuracy.append(100-(round(np.mean(prediction_linear != 
+global_accuracy.append(100-(round(np.mean(prediction_linear != 
                                          lasso_scaled_df_test_y) * 100, 2)))
 
 ####
@@ -1226,7 +1226,7 @@ svm_classifier_rbf.fit(pear_five_scaled_df_train_x,
 prediction_rbf = svm_classifier_rbf.predict(pear_five_scaled_df_test_x)
 
 # calculate error rate
-accuracy.append(100-(round(np.mean(prediction_rbf != 
+global_accuracy.append(100-(round(np.mean(prediction_rbf != 
                                    pear_five_scaled_df_test_y) * 100, 2)))
 
 ####
@@ -1248,7 +1248,7 @@ svm_classifier_rbf.fit(pear_ten_scaled_df_train_x,
 prediction_rbf = svm_classifier_rbf.predict(pear_ten_scaled_df_test_x)
 
 # calculate error rate
-accuracy.append(100-(round(np.mean(prediction_rbf != 
+global_accuracy.append(100-(round(np.mean(prediction_rbf != 
                                    pear_ten_scaled_df_test_y) * 100, 2)))
 
 ####
@@ -1270,7 +1270,7 @@ svm_classifier_rbf.fit(ols_scaled_df_train_x,
 prediction_rbf = svm_classifier_rbf.predict(ols_scaled_df_test_x)
 
 # calculate error rate
-accuracy.append(100-(round(np.mean(prediction_rbf != 
+global_accuracy.append(100-(round(np.mean(prediction_rbf != 
                                          ols_scaled_df_test_y) * 100, 2)))
 
 ####
@@ -1292,7 +1292,7 @@ svm_classifier_rbf.fit(rfe_scaled_df_train_x,
 prediction_rbf = svm_classifier_rbf.predict(rfe_scaled_df_test_x)
 
 # calculate error rate
-accuracy.append(100-(round(np.mean(prediction_rbf != 
+global_accuracy.append(100-(round(np.mean(prediction_rbf != 
                                          rfe_scaled_df_test_y) * 100, 2)))
 
 ####
@@ -1314,7 +1314,7 @@ svm_classifier_rbf.fit(lasso_scaled_df_train_x,
 prediction_rbf = svm_classifier_rbf.predict(lasso_scaled_df_test_x)
 
 # calculate error rate
-accuracy.append(100-(round(np.mean(prediction_rbf != 
+global_accuracy.append(100-(round(np.mean(prediction_rbf != 
                                          lasso_scaled_df_test_y) * 100, 2)))
 
 ####
@@ -1344,7 +1344,7 @@ svm_classifier_poly.fit(pear_five_scaled_df_train_x,
 prediction_poly = svm_classifier_poly.predict(pear_five_scaled_df_test_x)
 
 # calculate error rate
-accuracy.append(100-(round(np.mean(prediction_poly != 
+global_accuracy.append(100-(round(np.mean(prediction_poly != 
                                    pear_five_scaled_df_test_y) * 100, 2)))
 
 ####
@@ -1366,7 +1366,7 @@ svm_classifier_poly.fit(pear_ten_scaled_df_train_x,
 prediction_poly = svm_classifier_poly.predict(pear_ten_scaled_df_test_x)
 
 # calculate error rate
-accuracy.append(100-(round(np.mean(prediction_poly != 
+global_accuracy.append(100-(round(np.mean(prediction_poly != 
                                    pear_ten_scaled_df_test_y) * 100, 2)))
 
 ####
@@ -1388,7 +1388,7 @@ svm_classifier_poly.fit(ols_scaled_df_train_x,
 prediction_poly = svm_classifier_poly.predict(ols_scaled_df_test_x)
 
 # calculate error rate
-accuracy.append(100-(round(np.mean(prediction_poly != 
+global_accuracy.append(100-(round(np.mean(prediction_poly != 
                                          ols_scaled_df_test_y) * 100, 2)))
 
 ####
@@ -1410,7 +1410,7 @@ svm_classifier_poly.fit(rfe_scaled_df_train_x,
 prediction_poly = svm_classifier_poly.predict(rfe_scaled_df_test_x)
 
 # calculate error rate
-accuracy.append(100-(round(np.mean(prediction_poly != 
+global_accuracy.append(100-(round(np.mean(prediction_poly != 
                                          rfe_scaled_df_test_y) * 100, 2)))
 
 ####
@@ -1432,7 +1432,7 @@ svm_classifier_poly.fit(lasso_scaled_df_train_x,
 prediction_poly = svm_classifier_poly.predict(lasso_scaled_df_test_x)
 
 # calculate error rate
-accuracy.append(100-(round(np.mean(prediction_poly != 
+global_accuracy.append(100-(round(np.mean(prediction_poly != 
                                          lasso_scaled_df_test_y) * 100, 2)))
 
 ####
@@ -1495,7 +1495,7 @@ trees_depth.append(int(ind.item(0)))
 trees_depth.append(int(ind.item(1)))
 
 # append the models accruacy to the accuracy list
-accuracy.append(100-(round(ind.item(2), 2)))
+global_accuracy.append(100-(round(ind.item(2), 2)))
 
 ####
 # End pear five dataset
@@ -1537,7 +1537,7 @@ trees_depth.append(int(ind.item(0)))
 trees_depth.append(int(ind.item(1)))
 
 # append the models accruacy to the accuracy list
-accuracy.append(100-(round(ind.item(2), 2)))
+global_accuracy.append(100-(round(ind.item(2), 2)))
 
 ####
 # End pear ten dataset
@@ -1579,7 +1579,7 @@ trees_depth.append(int(ind.item(0)))
 trees_depth.append(int(ind.item(1)))
 
 # append the models accruacy to the accuracy list
-accuracy.append(100-(round(ind.item(2), 2)))
+global_accuracy.append(100-(round(ind.item(2), 2)))
 
 ####
 # End ols dataset
@@ -1621,7 +1621,7 @@ trees_depth.append(int(ind.item(0)))
 trees_depth.append(int(ind.item(1)))
 
 # append the models accruacy to the accuracy list
-accuracy.append(100-(round(ind.item(2), 2)))
+global_accuracy.append(100-(round(ind.item(2), 2)))
 
 ####
 # End rfe dataset
@@ -1663,7 +1663,7 @@ trees_depth.append(int(ind.item(0)))
 trees_depth.append(int(ind.item(1)))
 
 # append the models accruacy to the accuracy list
-accuracy.append(100-(round(ind.item(2), 2)))
+global_accuracy.append(100-(round(ind.item(2), 2)))
 
 ####
 # End lasso dataset
@@ -1693,7 +1693,7 @@ log_reg_classifier.fit(pear_five_scaled_df_train_x,
 prediction = log_reg_classifier.predict(pear_five_scaled_df_test_x)
 
 # append the models accruacy to the accuracy list
-accuracy.append(round(np.mean(prediction == 
+global_accuracy.append(round(np.mean(prediction == 
                               pear_five_scaled_df_test_y) * 100, 2))
 
 ####
@@ -1716,7 +1716,7 @@ log_reg_classifier.fit(pear_ten_scaled_df_train_x,
 prediction = log_reg_classifier.predict(pear_ten_scaled_df_test_x)
 
 # append the models accruacy to the accuracy list
-accuracy.append(round(np.mean(prediction == 
+global_accuracy.append(round(np.mean(prediction == 
                               pear_ten_scaled_df_test_y) * 100, 2))
 
 ####
@@ -1740,7 +1740,7 @@ prediction = log_reg_classifier.predict(ols_scaled_df_test_x)
 
 
 # append the models accruacy to the accuracy list
-accuracy.append(round(np.mean(prediction == 
+global_accuracy.append(round(np.mean(prediction == 
                               ols_scaled_df_test_y) * 100, 2))
 
 ####
@@ -1763,7 +1763,7 @@ log_reg_classifier.fit(rfe_scaled_df_train_x,
 prediction = log_reg_classifier.predict(rfe_scaled_df_test_x)
 
 # append the models accruacy to the accuracy list
-accuracy.append(round(np.mean(prediction == 
+global_accuracy.append(round(np.mean(prediction == 
                               rfe_scaled_df_test_y) * 100, 2))
 
 ####
@@ -1786,7 +1786,7 @@ log_reg_classifier.fit(lasso_scaled_df_train_x,
 prediction = log_reg_classifier.predict(lasso_scaled_df_test_x)
 
 # append the models accruacy to the accuracy list
-accuracy.append(round(np.mean(prediction == 
+global_accuracy.append(round(np.mean(prediction == 
                               lasso_scaled_df_test_y) * 100, 2))
 
 ####
@@ -1817,7 +1817,7 @@ log_reg_classifier.fit(pear_five_scaled_df_train_x,
 prediction = log_reg_classifier.predict(pear_five_scaled_df_test_x)
 
 # append the models accruacy to the accuracy list
-accuracy.append(round(np.mean(prediction == 
+global_accuracy.append(round(np.mean(prediction == 
                               pear_five_scaled_df_test_y) * 100, 2))
 
 ####
@@ -1840,7 +1840,7 @@ log_reg_classifier.fit(pear_ten_scaled_df_train_x,
 prediction = log_reg_classifier.predict(pear_ten_scaled_df_test_x)
 
 # append the models accruacy to the accuracy list
-accuracy.append(round(np.mean(prediction == 
+global_accuracy.append(round(np.mean(prediction == 
                               pear_ten_scaled_df_test_y) * 100, 2))
 
 ####
@@ -1863,7 +1863,7 @@ log_reg_classifier.fit(ols_scaled_df_train_x,
 prediction = log_reg_classifier.predict(ols_scaled_df_test_x)
 
 # append the models accruacy to the accuracy list
-accuracy.append(round(np.mean(prediction == 
+global_accuracy.append(round(np.mean(prediction == 
                               ols_scaled_df_test_y) * 100, 2))
 
 ####
@@ -1886,7 +1886,7 @@ log_reg_classifier.fit(rfe_scaled_df_train_x,
 prediction = log_reg_classifier.predict(rfe_scaled_df_test_x)
 
 # append the models accruacy to the accuracy list
-accuracy.append(round(np.mean(prediction == 
+global_accuracy.append(round(np.mean(prediction == 
                               rfe_scaled_df_test_y) * 100, 2))
 
 ####
@@ -1909,7 +1909,7 @@ log_reg_classifier.fit(lasso_scaled_df_train_x,
 prediction = log_reg_classifier.predict(lasso_scaled_df_test_x)
 
 # append the models accruacy to the accuracy list
-accuracy.append(round(np.mean(prediction == 
+global_accuracy.append(round(np.mean(prediction == 
                               lasso_scaled_df_test_y) * 100, 2))
 
 ####
@@ -1940,7 +1940,7 @@ log_reg_classifier.fit(pear_five_scaled_df_train_x,
 prediction = log_reg_classifier.predict(pear_five_scaled_df_test_x)
 
 # append the models accruacy to the accuracy list
-accuracy.append(round(np.mean(prediction == 
+global_accuracy.append(round(np.mean(prediction == 
                               pear_five_scaled_df_test_y) * 100, 2))
 
 ####
@@ -1963,7 +1963,7 @@ log_reg_classifier.fit(pear_ten_scaled_df_train_x,
 prediction = log_reg_classifier.predict(pear_ten_scaled_df_test_x)
 
 # append the models accruacy to the accuracy list
-accuracy.append(round(np.mean(prediction == 
+global_accuracy.append(round(np.mean(prediction == 
                               pear_ten_scaled_df_test_y) * 100, 2))
 
 ####
@@ -1986,7 +1986,7 @@ log_reg_classifier.fit(ols_scaled_df_train_x,
 prediction = log_reg_classifier.predict(ols_scaled_df_test_x)
 
 # append the models accruacy to the accuracy list
-accuracy.append(round(np.mean(prediction == 
+global_accuracy.append(round(np.mean(prediction == 
                               ols_scaled_df_test_y) * 100, 2))
 
 ####
@@ -2009,7 +2009,7 @@ log_reg_classifier.fit(rfe_scaled_df_train_x,
 prediction = log_reg_classifier.predict(rfe_scaled_df_test_x)
 
 # append the models accruacy to the accuracy list
-accuracy.append(round(np.mean(prediction == 
+global_accuracy.append(round(np.mean(prediction == 
                               rfe_scaled_df_test_y) * 100, 2))
 
 ####
@@ -2032,7 +2032,7 @@ log_reg_classifier.fit(lasso_scaled_df_train_x,
 prediction = log_reg_classifier.predict(lasso_scaled_df_test_x)
 
 # append the models accruacy to the accuracy list
-accuracy.append(round(np.mean(prediction == 
+global_accuracy.append(round(np.mean(prediction == 
                               lasso_scaled_df_test_y) * 100, 2))
 
 ####
@@ -2051,14 +2051,16 @@ accuracy.append(round(np.mean(prediction ==
 # Start prediction prints
 ####
 
+#len(accuracy)
+#
 #attributes = ['Pearson Five', 'Pearson Ten', 'OLS', 'RFE', 'Lasso']
 #
 #classifiers = ['Decision Tree', 'Naive Bayes', 'KNN', 'SVM', 'SVM', 'SVM',  
 #               'Random Forest', 'Logistic Regression', 'Logistic Regression',
 #               'Logistic Regression'] #, 'Linear Regression']
 #
-#prediction_df = pd.DataFrame(columns =['classifier', 'details', 'attributes', 
-#                                       'accuracy'])
+#prediction_df = pd.DataFrame(columns =['classifier', 'details', 'attributes']) 
+#                                       #'accuracy'
 #
 ## Build out a dataframe to store the classifiers and their accuracy
 #for i in range(0, len(classifiers)):
@@ -2066,10 +2068,8 @@ accuracy.append(round(np.mean(prediction ==
 #        prediction_df = prediction_df.append({'classifier' : classifiers[i],
 #                                      'details' : 'None',
 #                                      'attributes' : attributes[k],
-#                                      'accuracy' : accuracy[i]}, 
+#                                      'accuracy' : 0}, 
 #                                      ignore_index=True)
-
-
 ####
 # End prediction prints
 ####
