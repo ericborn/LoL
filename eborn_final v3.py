@@ -8,22 +8,29 @@ Predicting the winning team in the video game League of Legends
 """
 
 import os
-from sys import exit
+#import time
 import numpy as np
 import pandas as pd
 import seaborn as sns
 import statsmodels.api as sm
 import matplotlib.pyplot as plt
-from sklearn import tree
+from sys import exit
 from sklearn import svm
-from sklearn.model_selection import train_test_split, RandomizedSearchCV
+from sklearn import tree
+#from joblib import Parallel, delayed
 from sklearn.feature_selection import RFE
-from sklearn.linear_model import LassoCV, LogisticRegression, LinearRegression
 from sklearn.naive_bayes import GaussianNB
 from sklearn.preprocessing import StandardScaler
 from sklearn.neighbors import KNeighborsClassifier
-from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LassoCV, LogisticRegression, LinearRegression
 #from sklearn.metrics import confusion_matrix, recall_score
+
+# Set display options for dataframes
+pd.set_option('display.max_rows', 100)
+pd.set_option('display.width', 500)
+pd.set_option('display.max_columns', 50)
 
 # set seaborn to dark backgrounds
 sns.set_style("darkgrid")
@@ -59,12 +66,16 @@ lol_df.drop(lol_df.columns[[0,1,3,4]], axis = 1, inplace = True)
 # for loop cycles through t1_ban1, t1_ban2, etc. for both teams
 # and sets the row to a 0 instead of a -1. goes through team1 and 2
 # and all the way up to champ5
-for team in range(1, 3):
-    for char in range(1, 6):
-        t = 't'+str(team)+'_ban'+str(char)
-        print(t, 'had', len(lol_df.loc[lol_df[t] == -1, t]),
-              '-1s replaced with a 0')
-        lol_df.loc[lol_df[t] == -1, t] = 0
+try:
+    for team in range(1, 3):
+        for char in range(1, 6):
+            t = 't'+str(team)+'_ban'+str(char)
+            print(t, 'had', len(lol_df.loc[lol_df[t] == -1, t]),
+                  '-1s replaced with a 0')
+            lol_df.loc[lol_df[t] == -1, t] = 0
+except Exception as e:
+    print(e)
+    exit('Failed to replace -1 with 0 in the lol_df')
 
 ## write modified data to csv
 ## desired csv filename
@@ -83,7 +94,7 @@ for team in range(1, 3):
 #lol_df.iloc[89,:]
 
 # 58 columns remaining
-lol_df.head()
+print(lol_df.head())
 
 # x stores all columns except for the win column
 lol_x = lol_df.drop('win', 1)
@@ -200,30 +211,30 @@ ols_df = lol_df[selected_features_BE]
 # only used to determine optimum number of attributes
 ######
 
-## Total number of features
-#nof_list = np.arange(1,58)            
-#high_score = 0
-#
-## Variable to store the optimum features
-#nof = 0           
-#score_list = []
-#for n in range(len(nof_list)):
-#    X_train, X_test, y_train, y_test = train_test_split(lol_x, lol_y, 
-#                                            test_size = 0.3, random_state = 0)
-#    model = LinearRegression()
-#    rfe = RFE(model,nof_list[n])
-#    X_train_rfe = rfe.fit_transform(X_train,y_train)
-#    X_test_rfe = rfe.transform(X_test)
-#    model.fit(X_train_rfe,y_train)
-#    score = model.score(X_test_rfe,y_test)
-#    score_list.append(score)
-#    if(score > high_score):
-#        high_score = score
-#        nof = nof_list[n]
-#
-## 39 features score of 0.793475
-#print("Optimum number of features: %d" %nof)
-#print("Score with %d features: %f" % (nof, high_score))
+# Total number of features
+nof_list = np.arange(1,58)            
+high_score = 0
+
+# Variable to store the optimum features
+nof = 0           
+score_list = []
+for n in range(len(nof_list)):
+    X_train, X_test, y_train, y_test = train_test_split(lol_x, lol_y, 
+                                            test_size = 0.3, random_state = 0)
+    model = LinearRegression()
+    rfe = RFE(model,nof_list[n])
+    X_train_rfe = rfe.fit_transform(X_train,y_train)
+    X_test_rfe = rfe.transform(X_test)
+    model.fit(X_train_rfe,y_train)
+    score = model.score(X_test_rfe,y_test)
+    score_list.append(score)
+    if(score > high_score):
+        high_score = score
+        nof = nof_list[n]
+
+# 39 features score of 0.793475
+print("Optimum number of features: %d" %nof)
+print("Score with %d features: %f" % (nof, high_score))
 
 ######!!!!!!!!!
 # only used to determine optimum number of attributes
@@ -277,7 +288,7 @@ print("Lasso picked " + str(sum(coef != 0)) +
 
 
 # creates a dataframe based on the 32 columns selected from lasso
-lasso_df = lol_df[coef[coef.values != 0].index]
+lasso_df = lol_df[coef[coef.values != 0].index].head()
 
 ########
 # End lasso method
@@ -447,28 +458,28 @@ lasso_df_train_x, lasso_df_test_x, lasso_df_train_y, lasso_df_test_y = (
 # store wins in variable for team 1
 team1 = sum(lol_df.win == 0)
 pear_five_train_team1 = sum(pear_five_df_train_y == 0)
-pear_five_test_team1  = sum(pear_five_df_test_y == 0)
-pear_ten_train_team1  = sum(pear_ten_df_train_y == 0)
-pear_ten_test_team1   = sum(pear_ten_df_test_y == 0)
-ols_train_team1       = sum(ols_df_train_y == 0)
-ols_test_team1        = sum(ols_df_test_y == 0)
-rfe_train_team1       = sum(rfe_df_train_y == 0)
-rfe_test_team1        = sum(rfe_df_test_y == 0)
-lasso_train_team1     = sum(lasso_df_train_y == 0)
-lasso_test_team1      = sum(lasso_df_test_y == 0)
+pear_five_test_team1  = sum(pear_five_df_test_y  == 0)
+pear_ten_train_team1  = sum(pear_ten_df_train_y  == 0)
+pear_ten_test_team1   = sum(pear_ten_df_test_y   == 0)
+ols_train_team1       = sum(ols_df_train_y       == 0)
+ols_test_team1        = sum(ols_df_test_y        == 0)
+rfe_train_team1       = sum(rfe_df_train_y       == 0)
+rfe_test_team1        = sum(rfe_df_test_y        == 0)
+lasso_train_team1     = sum(lasso_df_train_y     == 0)
+lasso_test_team1      = sum(lasso_df_test_y      == 0)
 
 # store wins in variable for team 2
 team2 = sum(lol_df.win == 1)
 pear_five_train_team2 = sum(pear_five_df_train_y == 1)
-pear_five_test_team2  = sum(pear_five_df_test_y == 1)
-pear_ten_train_team2  = sum(pear_ten_df_train_y == 1)
-pear_ten_test_team2   = sum(pear_ten_df_test_y == 1)
-ols_train_team2       = sum(ols_df_train_y == 1)
-ols_test_team2        = sum(ols_df_test_y == 1)
-rfe_train_team2       = sum(rfe_df_train_y == 1)
-rfe_test_team2        = sum(rfe_df_test_y == 1)
-lasso_train_team2     = sum(lasso_df_train_y == 1)
-lasso_test_team2      = sum(lasso_df_test_y == 1)
+pear_five_test_team2  = sum(pear_five_df_test_y  == 1)
+pear_ten_train_team2  = sum(pear_ten_df_train_y  == 1)
+pear_ten_test_team2   = sum(pear_ten_df_test_y   == 1)
+ols_train_team2       = sum(ols_df_train_y       == 1)
+ols_test_team2        = sum(ols_df_test_y        == 1)
+rfe_train_team2       = sum(rfe_df_train_y       == 1)
+rfe_test_team2        = sum(rfe_df_test_y        == 1)
+lasso_train_team2     = sum(lasso_df_train_y     == 1)
+lasso_test_team2      = sum(lasso_df_test_y      == 1)
 
 # create a ratio of the wins
 ratio = round(team1 / team2, 4)
@@ -608,15 +619,15 @@ lasso_df_prediction = lasso_df_tree_clf.predict(lasso_df_test_x)
 
 # Store predictions
 global_accuracy.append(100-(round(np.mean(pear_five_prediction 
-                                            != pear_five_df_test_y) * 100, 2)))
+                                          != pear_five_df_test_y) * 100, 2)))
 global_accuracy.append(100-(round(np.mean(pear_ten_prediction 
-                                             != pear_ten_df_test_y) * 100, 2)))
+                                          != pear_ten_df_test_y) * 100, 2)))
 global_accuracy.append(100-(round(np.mean(ols_df_prediction 
-                                             != lasso_df_test_y) * 100, 2)))
+                                          != lasso_df_test_y) * 100, 2)))
 global_accuracy.append(100-(round(np.mean(rfe_df_prediction 
-                                             != rfe_df_test_y) * 100, 2)))
+                                          != rfe_df_test_y) * 100, 2)))
 global_accuracy.append(100-(round(np.mean(lasso_df_prediction 
-                                             != lasso_df_test_y) * 100, 2)))
+                                          != lasso_df_test_y) * 100, 2)))
 #######
 # End decision tree
 #######
@@ -630,7 +641,7 @@ pear_five_gnb_clf = GaussianNB()
 
 # Train the classifier on pearsons top 5 attributes
 pear_five_gnb_clf = pear_five_gnb_clf.fit(pear_five_df_train_x, 
-                                            pear_five_df_train_y)
+                                          pear_five_df_train_y)
 
 # Predict on pearsons top 5 attributes
 pear_five_prediction = pear_five_gnb_clf.predict(pear_five_df_test_x)
@@ -648,7 +659,7 @@ pear_ten_gnb_clf = GaussianNB()
 
 # Train the classifier on pearsons top 10 attributes
 pear_ten_gnb_clf = pear_ten_gnb_clf.fit(pear_ten_df_train_x, 
-                                            pear_ten_df_train_y)
+                                        pear_ten_df_train_y)
 
 # Predict on pearsons top 10 attributes
 pear_ten_prediction = pear_ten_gnb_clf.predict(pear_ten_df_test_x)
@@ -666,7 +677,7 @@ ols_df_gnb_clf = GaussianNB()
 
 # Train the classifier on ols attributes
 ols_df_gnb_clf = ols_df_gnb_clf.fit(ols_df_train_x, 
-                                            ols_df_train_y)
+                                    ols_df_train_y)
 
 # Predict on ols attributes
 ols_df_prediction = ols_df_gnb_clf.predict(ols_df_test_x)
@@ -684,7 +695,7 @@ rfe_df_gnb_clf = GaussianNB()
 
 # Train the classifier on rfe attributes
 rfe_df_gnb_clf = rfe_df_gnb_clf.fit(rfe_df_train_x, 
-                                            rfe_df_train_y)
+                                    rfe_df_train_y)
 
 # Predict on rfe attributes
 rfe_df_prediction = rfe_df_gnb_clf.predict(rfe_df_test_x)
@@ -702,7 +713,7 @@ lasso_df_gnb_clf = GaussianNB()
 
 # Train the classifier on lasso attributes
 lasso_df_gnb_clf = lasso_df_gnb_clf.fit(lasso_df_train_x, 
-                                            lasso_df_train_y)
+                                        lasso_df_train_y)
 
 # Predict on lasso attributes
 lasso_df_prediction = lasso_df_gnb_clf.predict(lasso_df_test_x)
@@ -713,15 +724,15 @@ lasso_df_prediction = lasso_df_gnb_clf.predict(lasso_df_test_x)
 
 # Store predictions
 global_accuracy.append(100-(round(np.mean(pear_five_prediction 
-                                            != pear_five_df_test_y) * 100, 2)))
+                                          != pear_five_df_test_y) * 100, 2)))
 global_accuracy.append(100-(round(np.mean(pear_ten_prediction 
-                                             != pear_ten_df_test_y) * 100, 2)))
+                                          != pear_ten_df_test_y) * 100, 2)))
 global_accuracy.append(100-(round(np.mean(ols_df_prediction 
-                                             != lasso_df_test_y) * 100, 2)))
+                                          != lasso_df_test_y) * 100, 2)))
 global_accuracy.append(100-(round(np.mean(rfe_df_prediction 
-                                             != rfe_df_test_y) * 100, 2)))
+                                          != rfe_df_test_y) * 100, 2)))
 global_accuracy.append(100-(round(np.mean(lasso_df_prediction 
-                                             != lasso_df_test_y) * 100, 2)))
+                                          != lasso_df_test_y) * 100, 2)))
 
 #######
 # End naive bayes
@@ -773,7 +784,7 @@ try:
         
 except Exception as e:
     print(e)
-    print('failed to build the KNN classifier.')
+    print('Failed to build the KNN classifier.')
 
 for i in range (0,12):
     print('The accuracy on the pearson five data when K =', k_value[i], 
@@ -1219,7 +1230,7 @@ svm_classifier_rbf = svm.SVC(kernel = 'rbf')
 
 # fit the classifier on training data
 svm_classifier_rbf.fit(pear_five_scaled_df_train_x, 
-                          pear_five_scaled_df_train_y)
+                       pear_five_scaled_df_train_y)
 
 # Predict using 2018 feature data
 prediction_rbf = svm_classifier_rbf.predict(pear_five_scaled_df_test_x)
@@ -1241,7 +1252,7 @@ svm_classifier_rbf = svm.SVC(kernel = 'rbf')
 
 # fit the classifier on training data
 svm_classifier_rbf.fit(pear_ten_scaled_df_train_x, 
-                          pear_ten_scaled_df_train_y)
+                       pear_ten_scaled_df_train_y)
 
 # Predict using 2018 feature data
 prediction_rbf = svm_classifier_rbf.predict(pear_ten_scaled_df_test_x)
@@ -1263,7 +1274,7 @@ svm_classifier_rbf = svm.SVC(kernel = 'rbf')
 
 # fit the classifier on training data
 svm_classifier_rbf.fit(ols_scaled_df_train_x, 
-                          ols_scaled_df_train_y)
+                       ols_scaled_df_train_y)
 
 # Predict using 2018 feature data
 prediction_rbf = svm_classifier_rbf.predict(ols_scaled_df_test_x)
@@ -1285,7 +1296,7 @@ svm_classifier_rbf = svm.SVC(kernel = 'rbf')
 
 # fit the classifier on training data
 svm_classifier_rbf.fit(rfe_scaled_df_train_x, 
-                          rfe_scaled_df_train_y)
+                       rfe_scaled_df_train_y)
 
 # Predict using 2018 feature data
 prediction_rbf = svm_classifier_rbf.predict(rfe_scaled_df_test_x)
@@ -1307,7 +1318,7 @@ svm_classifier_rbf = svm.SVC(kernel = 'rbf')
 
 # fit the classifier on training data
 svm_classifier_rbf.fit(lasso_scaled_df_train_x, 
-                          lasso_scaled_df_train_y)
+                       lasso_scaled_df_train_y)
 
 # Predict using 2018 feature data
 prediction_rbf = svm_classifier_rbf.predict(lasso_scaled_df_test_x)
@@ -1337,7 +1348,7 @@ svm_classifier_poly = svm.SVC(kernel = 'poly')
 
 # fit the classifier on training data
 svm_classifier_poly.fit(pear_five_scaled_df_train_x, 
-                          pear_five_scaled_df_train_y)
+                        pear_five_scaled_df_train_y)
 
 # Predict using 2018 feature data
 prediction_poly = svm_classifier_poly.predict(pear_five_scaled_df_test_x)
@@ -1359,7 +1370,7 @@ svm_classifier_poly = svm.SVC(kernel = 'poly')
 
 # fit the classifier on training data
 svm_classifier_poly.fit(pear_ten_scaled_df_train_x, 
-                          pear_ten_scaled_df_train_y)
+                        pear_ten_scaled_df_train_y)
 
 # Predict using 2018 feature data
 prediction_poly = svm_classifier_poly.predict(pear_ten_scaled_df_test_x)
@@ -1381,7 +1392,7 @@ svm_classifier_poly = svm.SVC(kernel = 'poly')
 
 # fit the classifier on training data
 svm_classifier_poly.fit(ols_scaled_df_train_x, 
-                          ols_scaled_df_train_y)
+                        ols_scaled_df_train_y)
 
 # Predict using 2018 feature data
 prediction_poly = svm_classifier_poly.predict(ols_scaled_df_test_x)
@@ -1403,7 +1414,7 @@ svm_classifier_poly = svm.SVC(kernel = 'poly')
 
 # fit the classifier on training data
 svm_classifier_poly.fit(rfe_scaled_df_train_x, 
-                          rfe_scaled_df_train_y)
+                        rfe_scaled_df_train_y)
 
 # Predict using 2018 feature data
 prediction_poly = svm_classifier_poly.predict(rfe_scaled_df_test_x)
@@ -1425,7 +1436,7 @@ svm_classifier_poly = svm.SVC(kernel = 'poly')
 
 # fit the classifier on training data
 svm_classifier_poly.fit(lasso_scaled_df_train_x, 
-                          lasso_scaled_df_train_y)
+                        lasso_scaled_df_train_y)
 
 # Predict using 2018 feature data
 prediction_poly = svm_classifier_poly.predict(lasso_scaled_df_test_x)
@@ -1464,7 +1475,7 @@ trees_depth = []
 
 pred_list = []
 
-# RF with iterator, VERY SLOW!!!
+# RF with iterator
 for trees in range(1, 25):
     for depth in range(1, 11):
         rf_clf = RandomForestClassifier(n_estimators = trees, 
@@ -1475,16 +1486,17 @@ for trees in range(1, 25):
                     round(np.mean(rf_clf.predict(pear_five_df_test_x) 
                     != pear_five_df_test_y) 
                     * 100, 2)])
-   
-#singular RF 
-rf_clf = RandomForestClassifier(n_estimators = 100, 
-                                    max_depth = 10, criterion ='entropy',
-                                    min_samples_leaf=5,
-                                    random_state = 1337)
-rf_clf.fit(pear_five_df_train_x, pear_five_df_train_y)
 
-pred = np.mean(rf_clf.predict(pear_five_df_test_x) 
-                != pear_five_df_test_y)  
+ 
+#singular RF 
+#rf_clf = RandomForestClassifier(n_estimators = 100, 
+#                                    max_depth = 10, criterion ='entropy',
+#                                    min_samples_leaf=5,
+#                                    random_state = 1337)
+#rf_clf.fit(pear_five_df_train_x, pear_five_df_train_y)
+#
+#pred = np.mean(rf_clf.predict(pear_five_df_test_x) 
+#                != pear_five_df_test_y)  
 
 
 
@@ -1511,7 +1523,7 @@ pred = np.mean(rf_clf.predict(pear_five_df_test_x)
 #               'min_samples_leaf': min_samples_leaf,
 #               'bootstrap': bootstrap}
 #
-## Create a RF regressor
+# Create a RF regressor
 #rf = RandomForestRegressor(random_state = 1337)
 #
 ## Random search of parameters, using 3 fold cross validation, 
