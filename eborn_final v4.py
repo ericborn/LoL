@@ -469,6 +469,9 @@ timings_list.append(['frame build time end', time.time()])
 # End building test/train datasets with various attribute selections
 ################
 
+# Create list just for the algorithm durations
+algorithm_timings_list = []
+
 ################
 # Start building non-scaled algorithms
 ################
@@ -479,7 +482,7 @@ timings_list.append(['tree time start', time.time()])
 #######
 # Start decision tree
 #######
-
+algorithm_timings_list.append(['global time end', time.time()]) 
 # Create a decisions tree classifier
 pear_five_tree_clf = tree.DecisionTreeClassifier(criterion = 'entropy')
 
@@ -2184,10 +2187,6 @@ timings_list.append(['scaled time end', time.time()])
 # Start counts of the win totals for team 1 and team 2
 ########
 
-########
-# Start counts of the win totals for team 1 and team 2
-########
-
 # store wins in variable for team 1
 team1 = sum(lol_df.win == 0)
 pear_five_train_team1 = sum(pear_five_df_train_y == 0)
@@ -2299,6 +2298,9 @@ prediction_df = prediction_df.sort_index()
 prediction_df['accuracy'] = global_accuracy
 
 #!!!! ADD DETAIL OF SOLVER AND KERNEL TO prediction_df !!!!
+
+
+
 
 # Finds the most accuracy algorithm
 final_classifier = prediction_df['classifier'][prediction_df['accuracy'] == 
