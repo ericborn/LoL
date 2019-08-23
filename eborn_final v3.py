@@ -740,6 +740,305 @@ global_accuracy.append(100-(round(np.mean(lasso_df_prediction
 # End naive bayes
 #######
 
+# -*- coding: utf-8 -*-
+"""
+Created on Thu Aug 22 20:15:26 2019
+
+@author: Eric Born
+"""
+
+#############
+# Start Random Forest
+#############
+
+# Random forest classifiers using a range from
+# 1 to 25 trees and from 1 to 10 depth of each tree
+# set random state to 1337 for repeatability
+
+# Create a list to store the optimal tree and depth values 
+# for each random forest classifier
+trees_depth = []
+
+####
+# Start pear five dataset
+####
+
+pred_list = []
+
+# RF with iterator
+for trees in range(1, 26):
+    for depth in range(1, 11):
+        rf_clf = RandomForestClassifier(n_estimators = trees, 
+                                    max_depth = depth, criterion ='entropy',
+                                    random_state = 1337)
+        rf_clf.fit(pear_five_df_train_x, pear_five_df_train_y)
+        pred_list.append([trees, depth, 
+                    round(np.mean(rf_clf.predict(pear_five_df_test_x) 
+                    != pear_five_df_test_y) 
+                    * 100, 2)])
+
+  
+#singular RF 
+#rf_clf = RandomForestClassifier(n_estimators = 100, 
+#                                    max_depth = 10, criterion ='entropy',
+#                                    min_samples_leaf=5,
+#                                    random_state = 1337)
+#rf_clf.fit(pear_five_df_train_x, pear_five_df_train_y)
+#
+#pred = np.mean(rf_clf.predict(pear_five_df_test_x) 
+#                != pear_five_df_test_y)  
+
+
+
+## Number of trees in random forest
+#n_estimators = [int(x) for x in np.linspace(start = 5, stop = 250, num = 10)]
+#
+## Maximum number of levels in tree
+#max_depth = [int(x) for x in np.linspace(5, 50, num = 6)]
+#max_depth.append(None)
+#
+## Minimum number of samples required to split a node
+#min_samples_split = [2, 5, 10]
+#
+## Minimum number of samples required at each leaf node
+#min_samples_leaf = [1, 2, 4]
+#
+## Method of selecting samples for training each tree
+#bootstrap = [True, False]
+#
+## Create the random grid
+#random_grid = {'n_estimators': n_estimators,
+#               'max_depth': max_depth,
+#               'min_samples_split': min_samples_split,
+#               'min_samples_leaf': min_samples_leaf,
+#               'bootstrap': bootstrap}
+#
+# Create a RF regressor
+#rf = RandomForestRegressor(random_state = 1337)
+#
+## Random search of parameters, using 3 fold cross validation, 
+## search across 100 different combinations, and use all available cores
+#rf_random = RandomizedSearchCV(estimator = rf, 
+#                               param_distributions = random_grid, 
+#                               n_iter = 50, cv = 3, verbose=2, 
+#                               random_state=1337, n_jobs = -1)
+#
+##pear_five_df_train_x
+##pear_five_df_test_x
+##pear_five_df_train_y
+##pear_five_df_test_y
+#
+#
+## Fit the random search model
+#rf_random.fit(pear_five_df_train_x, pear_five_df_train_y)
+#
+#print(rf_random.best_params_)
+#
+## store the best estimator
+#best_random = rf_random.best_estimator_
+#
+## calculate prediction percent
+#pred = 100-(round(np.mean(rf_random.predict(pear_five_df_test_x) 
+#                                      != pear_five_df_test_y) 
+#                                      * 100, 2))
+      
+# create a dataframe from the classifer data
+forest_df = pd.DataFrame(pred_list, columns = ['estimators', 'depth', 'error_rate'])
+
+# Plot the classifier data
+sns.lineplot(x='estimators', y='error_rate', hue='depth', data=forest_df, palette="tab10",
+             legend='full', ci = None)
+plt.title('Random Forest error rates using pearson five attributes')
+plt.ylabel('Error Rate')
+plt.xlabel('Estimators')
+plt.show()
+
+# store the lowest error rate value from the classifier
+ind = forest_df.loc[forest_df['error_rate'] == min(forest_df.error_rate)].values
+
+# pull out the number of trees and depth
+trees_depth.append(int(ind.item(0)))
+trees_depth.append(int(ind.item(1)))
+
+# append the models accruacy to the accuracy list
+global_accuracy.append(100-(round(ind.item(2), 2)))
+
+####
+# End pear five dataset
+####
+
+####
+# Start pear ten dataset
+####
+
+pred_list = []
+
+for trees in range(1, 26):
+    for depth in range(1, 11):
+        rf_clf = RandomForestClassifier(n_estimators = trees, 
+                                    max_depth = depth, criterion ='entropy',
+                                    random_state = 1337)
+        rf_clf.fit(pear_ten_df_train_x, pear_ten_df_train_y)
+        pred_list.append([trees, depth, 
+                    round(np.mean(rf_clf.predict(pear_ten_df_test_x) 
+                    != pear_ten_df_test_y) 
+                    * 100, 2)])
+
+# create a dataframe from the classifer data
+forest_df = pd.DataFrame(pred_list, columns = ['estimators', 'depth', 'error_rate'])
+
+# Plot the classifier data
+sns.lineplot(x='estimators', y='error_rate', hue='depth', data=forest_df, palette="tab10",
+             legend='full', ci = None)
+plt.title('Random Forest error rates using pearson ten attributes')
+plt.ylabel('Error Rate')
+plt.xlabel('Estimators')
+plt.show()
+
+# store the lowest error rate value from the classifier
+ind = forest_df.loc[forest_df['error_rate'] == min(forest_df.error_rate)].values
+
+# pull out the number of trees and depth
+trees_depth.append(int(ind.item(0)))
+trees_depth.append(int(ind.item(1)))
+
+# append the models accruacy to the accuracy list
+global_accuracy.append(100-(round(ind.item(2), 2)))
+
+####
+# End pear ten dataset
+####
+
+####
+# Start ols dataset
+####
+
+pred_list = []
+
+for trees in range(1, 26):
+    for depth in range(1, 11):
+        rf_clf = RandomForestClassifier(n_estimators = trees, 
+                                    max_depth = depth, criterion ='entropy',
+                                    random_state = 1337)
+        rf_clf.fit(ols_df_train_x, ols_df_train_y)
+        pred_list.append([trees, depth, 
+                    round(np.mean(rf_clf.predict(ols_df_test_x) 
+                    != ols_df_test_y) 
+                    * 100, 2)])
+
+# create a dataframe from the classifer data
+forest_df = pd.DataFrame(pred_list, columns = ['estimators', 'depth', 'error_rate'])
+
+# Plot the classifier data
+sns.lineplot(x='estimators', y='error_rate', hue='depth', data=forest_df, palette="tab10",
+             legend='full', ci = None)
+plt.title('Random Forest error rates using ols attributes')
+plt.ylabel('Error Rate')
+plt.xlabel('Estimators')
+plt.show()
+
+# store the lowest error rate value from the classifier
+ind = forest_df.loc[forest_df['error_rate'] == min(forest_df.error_rate)].values
+
+# pull out the number of trees and depth
+trees_depth.append(int(ind.item(0)))
+trees_depth.append(int(ind.item(1)))
+
+# append the models accruacy to the accuracy list
+global_accuracy.append(100-(round(ind.item(2), 2)))
+
+####
+# End ols dataset
+####
+
+####
+# Start rfe dataset
+####
+
+pred_list = []
+
+for trees in range(1, 26):
+    for depth in range(1, 11):
+        rf_clf = RandomForestClassifier(n_estimators = trees, 
+                                    max_depth = depth, criterion ='entropy',
+                                    random_state = 1337)
+        rf_clf.fit(rfe_df_train_x, rfe_df_train_y)
+        pred_list.append([trees, depth, 
+                    round(np.mean(rf_clf.predict(rfe_df_test_x) 
+                    != rfe_df_test_y) 
+                    * 100, 2)])
+
+# create a dataframe from the classifer data
+forest_df = pd.DataFrame(pred_list, columns = ['estimators', 'depth', 'error_rate'])
+
+# Plot the classifier data
+sns.lineplot(x='estimators', y='error_rate', hue='depth', data=forest_df, palette="tab10",
+             legend='full', ci = None)
+plt.title('Random Forest error rates using rfe attributes')
+plt.ylabel('Error Rate')
+plt.xlabel('Estimators')
+plt.show()
+
+# store the lowest error rate value from the classifier
+ind = forest_df.loc[forest_df['error_rate'] == min(forest_df.error_rate)].values
+
+# pull out the number of trees and depth
+trees_depth.append(int(ind.item(0)))
+trees_depth.append(int(ind.item(1)))
+
+# append the models accruacy to the accuracy list
+global_accuracy.append(100-(round(ind.item(2), 2)))
+
+####
+# End rfe dataset
+####
+
+####
+# Start lasso dataset
+####
+
+pred_list = []
+
+for trees in range(1, 26):
+    for depth in range(1, 11):
+        rf_clf = RandomForestClassifier(n_estimators = trees, 
+                                    max_depth = depth, criterion ='entropy',
+                                    random_state = 1337)
+        rf_clf.fit(lasso_df_train_x, lasso_df_train_y)
+        pred_list.append([trees, depth, 
+                    round(np.mean(rf_clf.predict(lasso_df_test_x) 
+                    != lasso_df_test_y) 
+                    * 100, 2)])
+
+# create a dataframe from the classifer data
+forest_df = pd.DataFrame(pred_list, columns = ['estimators', 'depth', 'error_rate'])
+
+# Plot the classifier data
+sns.lineplot(x='estimators', y='error_rate', hue='depth', data=forest_df, palette="tab10",
+             legend='full', ci = None)
+plt.title('Random Forest error rates using rfe attributes')
+plt.ylabel('Error Rate')
+plt.xlabel('Estimators')
+plt.show()
+
+# store the lowest error rate value from the classifier
+ind = forest_df.loc[forest_df['error_rate'] == min(forest_df.error_rate)].values
+
+# pull out the number of trees and depth
+trees_depth.append(int(ind.item(0)))
+trees_depth.append(int(ind.item(1)))
+
+# append the models accruacy to the accuracy list
+global_accuracy.append(100-(round(ind.item(2), 2)))
+
+####
+# End lasso dataset
+####
+
+#############
+# End Random Forest
+#############
+
 ################
 # End building non-scaled algorithms
 ################
@@ -1457,298 +1756,6 @@ global_accuracy.append(100-(round(np.mean(prediction_poly !=
 
 #############
 # End SVM
-#############
-
-#############
-# Start Random Forest
-#############
-
-# Random forest classifiers using a range from
-# 1 to 25 trees and from 1 to 10 depth of each tree
-# set random state to 1337 for repeatability
-
-# Create a list to store the optimal tree and depth values 
-# for each random forest classifier
-trees_depth = []
-
-####
-# Start pear five dataset
-####
-
-pred_list = []
-
-# RF with iterator
-for trees in range(1, 25):
-    for depth in range(1, 11):
-        rf_clf = RandomForestClassifier(n_estimators = trees, 
-                                    max_depth = depth, criterion ='entropy',
-                                    random_state = 1337)
-        rf_clf.fit(pear_five_df_train_x, pear_five_df_train_y)
-        pred_list.append([trees, depth, 
-                    round(np.mean(rf_clf.predict(pear_five_df_test_x) 
-                    != pear_five_df_test_y) 
-                    * 100, 2)])
-
- 
-#singular RF 
-#rf_clf = RandomForestClassifier(n_estimators = 100, 
-#                                    max_depth = 10, criterion ='entropy',
-#                                    min_samples_leaf=5,
-#                                    random_state = 1337)
-#rf_clf.fit(pear_five_df_train_x, pear_five_df_train_y)
-#
-#pred = np.mean(rf_clf.predict(pear_five_df_test_x) 
-#                != pear_five_df_test_y)  
-
-
-
-## Number of trees in random forest
-#n_estimators = [int(x) for x in np.linspace(start = 5, stop = 250, num = 10)]
-#
-## Maximum number of levels in tree
-#max_depth = [int(x) for x in np.linspace(5, 50, num = 6)]
-#max_depth.append(None)
-#
-## Minimum number of samples required to split a node
-#min_samples_split = [2, 5, 10]
-#
-## Minimum number of samples required at each leaf node
-#min_samples_leaf = [1, 2, 4]
-#
-## Method of selecting samples for training each tree
-#bootstrap = [True, False]
-#
-## Create the random grid
-#random_grid = {'n_estimators': n_estimators,
-#               'max_depth': max_depth,
-#               'min_samples_split': min_samples_split,
-#               'min_samples_leaf': min_samples_leaf,
-#               'bootstrap': bootstrap}
-#
-# Create a RF regressor
-#rf = RandomForestRegressor(random_state = 1337)
-#
-## Random search of parameters, using 3 fold cross validation, 
-## search across 100 different combinations, and use all available cores
-#rf_random = RandomizedSearchCV(estimator = rf, 
-#                               param_distributions = random_grid, 
-#                               n_iter = 50, cv = 3, verbose=2, 
-#                               random_state=1337, n_jobs = -1)
-#
-##pear_five_df_train_x
-##pear_five_df_test_x
-##pear_five_df_train_y
-##pear_five_df_test_y
-#
-#
-## Fit the random search model
-#rf_random.fit(pear_five_df_train_x, pear_five_df_train_y)
-#
-#print(rf_random.best_params_)
-#
-## store the best estimator
-#best_random = rf_random.best_estimator_
-#
-## calculate prediction percent
-#pred = 100-(round(np.mean(rf_random.predict(pear_five_df_test_x) 
-#                                      != pear_five_df_test_y) 
-#                                      * 100, 2))
-      
-# create a dataframe from the classifer data
-forest_df = pd.DataFrame(pred_list, columns = ['estimators', 'depth', 'error_rate'])
-
-# Plot the classifier data
-sns.lineplot(x='estimators', y='error_rate', hue='depth', data=forest_df, palette="tab10",
-             legend='full', ci = None)
-plt.title('Random Forest error rates using pearson five attributes')
-plt.ylabel('Error Rate')
-plt.xlabel('Estimators')
-plt.show()
-
-# store the lowest error rate value from the classifier
-ind = forest_df.loc[forest_df['error_rate'] == min(forest_df.error_rate)].values
-
-# pull out the number of trees and depth
-trees_depth.append(int(ind.item(0)))
-trees_depth.append(int(ind.item(1)))
-
-# append the models accruacy to the accuracy list
-global_accuracy.append(100-(round(ind.item(2), 2)))
-
-####
-# End pear five dataset
-####
-
-####
-# Start pear ten dataset
-####
-
-pred_list = []
-
-for trees in range(1, 26):
-    for depth in range(1, 11):
-        rf_clf = RandomForestClassifier(n_estimators = trees, 
-                                    max_depth = depth, criterion ='entropy',
-                                    random_state = 1337)
-        rf_clf.fit(pear_ten_df_train_x, pear_ten_df_train_y)
-        pred_list.append([trees, depth, 
-                    round(np.mean(rf_clf.predict(pear_ten_df_test_x) 
-                    != pear_ten_df_test_y) 
-                    * 100, 2)])
-
-# create a dataframe from the classifer data
-forest_df = pd.DataFrame(pred_list, columns = ['estimators', 'depth', 'error_rate'])
-
-# Plot the classifier data
-sns.lineplot(x='estimators', y='error_rate', hue='depth', data=forest_df, palette="tab10",
-             legend='full', ci = None)
-plt.title('Random Forest error rates using pearson ten attributes')
-plt.ylabel('Error Rate')
-plt.xlabel('Estimators')
-plt.show()
-
-# store the lowest error rate value from the classifier
-ind = forest_df.loc[forest_df['error_rate'] == min(forest_df.error_rate)].values
-
-# pull out the number of trees and depth
-trees_depth.append(int(ind.item(0)))
-trees_depth.append(int(ind.item(1)))
-
-# append the models accruacy to the accuracy list
-global_accuracy.append(100-(round(ind.item(2), 2)))
-
-####
-# End pear ten dataset
-####
-
-####
-# Start ols dataset
-####
-
-pred_list = []
-
-for trees in range(1, 26):
-    for depth in range(1, 11):
-        rf_clf = RandomForestClassifier(n_estimators = trees, 
-                                    max_depth = depth, criterion ='entropy',
-                                    random_state = 1337)
-        rf_clf.fit(ols_df_train_x, ols_df_train_y)
-        pred_list.append([trees, depth, 
-                    round(np.mean(rf_clf.predict(ols_df_test_x) 
-                    != ols_scaled_df_test_y) 
-                    * 100, 2)])
-
-# create a dataframe from the classifer data
-forest_df = pd.DataFrame(pred_list, columns = ['estimators', 'depth', 'error_rate'])
-
-# Plot the classifier data
-sns.lineplot(x='estimators', y='error_rate', hue='depth', data=forest_df, palette="tab10",
-             legend='full', ci = None)
-plt.title('Random Forest error rates using ols attributes')
-plt.ylabel('Error Rate')
-plt.xlabel('Estimators')
-plt.show()
-
-# store the lowest error rate value from the classifier
-ind = forest_df.loc[forest_df['error_rate'] == min(forest_df.error_rate)].values
-
-# pull out the number of trees and depth
-trees_depth.append(int(ind.item(0)))
-trees_depth.append(int(ind.item(1)))
-
-# append the models accruacy to the accuracy list
-global_accuracy.append(100-(round(ind.item(2), 2)))
-
-####
-# End ols dataset
-####
-
-####
-# Start rfe dataset
-####
-
-pred_list = []
-
-for trees in range(1, 26):
-    for depth in range(1, 11):
-        rf_clf = RandomForestClassifier(n_estimators = trees, 
-                                    max_depth = depth, criterion ='entropy',
-                                    random_state = 1337)
-        rf_clf.fit(rfe_df_train_x, rfe_df_train_y)
-        pred_list.append([trees, depth, 
-                    round(np.mean(rf_clf.predict(rfe_df_test_x) 
-                    != rfe_scaled_df_test_y) 
-                    * 100, 2)])
-
-# create a dataframe from the classifer data
-forest_df = pd.DataFrame(pred_list, columns = ['estimators', 'depth', 'error_rate'])
-
-# Plot the classifier data
-sns.lineplot(x='estimators', y='error_rate', hue='depth', data=forest_df, palette="tab10",
-             legend='full', ci = None)
-plt.title('Random Forest error rates using rfe attributes')
-plt.ylabel('Error Rate')
-plt.xlabel('Estimators')
-plt.show()
-
-# store the lowest error rate value from the classifier
-ind = forest_df.loc[forest_df['error_rate'] == min(forest_df.error_rate)].values
-
-# pull out the number of trees and depth
-trees_depth.append(int(ind.item(0)))
-trees_depth.append(int(ind.item(1)))
-
-# append the models accruacy to the accuracy list
-global_accuracy.append(100-(round(ind.item(2), 2)))
-
-####
-# End rfe dataset
-####
-
-####
-# Start lasso dataset
-####
-
-pred_list = []
-
-for trees in range(1, 26):
-    for depth in range(1, 11):
-        rf_clf = RandomForestClassifier(n_estimators = trees, 
-                                    max_depth = depth, criterion ='entropy',
-                                    random_state = 1337)
-        rf_clf.fit(lasso_df_train_x, lasso_df_train_y)
-        pred_list.append([trees, depth, 
-                    round(np.mean(rf_clf.predict(lasso_df_test_x) 
-                    != rfe_scaled_df_test_y) 
-                    * 100, 2)])
-
-# create a dataframe from the classifer data
-forest_df = pd.DataFrame(pred_list, columns = ['estimators', 'depth', 'error_rate'])
-
-# Plot the classifier data
-sns.lineplot(x='estimators', y='error_rate', hue='depth', data=forest_df, palette="tab10",
-             legend='full', ci = None)
-plt.title('Random Forest error rates using rfe attributes')
-plt.ylabel('Error Rate')
-plt.xlabel('Estimators')
-plt.show()
-
-# store the lowest error rate value from the classifier
-ind = forest_df.loc[forest_df['error_rate'] == min(forest_df.error_rate)].values
-
-# pull out the number of trees and depth
-trees_depth.append(int(ind.item(0)))
-trees_depth.append(int(ind.item(1)))
-
-# append the models accruacy to the accuracy list
-global_accuracy.append(100-(round(ind.item(2), 2)))
-
-####
-# End lasso dataset
-####
-
-#############
-# End Random Forest
 #############
 
 #############
