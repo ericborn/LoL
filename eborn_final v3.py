@@ -28,9 +28,9 @@ from sklearn.linear_model import LassoCV, LogisticRegression, LinearRegression
 #from sklearn.metrics import confusion_matrix, recall_score
 
 # Set display options for dataframes
-pd.set_option('display.max_rows', 100)
-pd.set_option('display.width', 500)
-pd.set_option('display.max_columns', 50)
+#pd.set_option('display.max_rows', 100)
+#pd.set_option('display.width', 500)
+#pd.set_option('display.max_columns', 50)
 
 # set seaborn to dark backgrounds
 sns.set_style("darkgrid")
@@ -60,6 +60,8 @@ lol_df['win'] = lol_df['winner'].apply(lambda x: 0 if x == 1 else 1)
 
 # remove columns gameId, creationTime, seasonId and winner
 lol_df.drop(lol_df.columns[[0,1,3,4]], axis = 1, inplace = True)
+
+
 
 # There are -1's stored in the t1 and t2 ban columns that need to
 # be replaced before the chi-squared can be run
@@ -211,30 +213,30 @@ ols_df = lol_df[selected_features_BE]
 # only used to determine optimum number of attributes
 ######
 
-# Total number of features
-nof_list = np.arange(1,58)            
-high_score = 0
-
-# Variable to store the optimum features
-nof = 0           
-score_list = []
-for n in range(len(nof_list)):
-    X_train, X_test, y_train, y_test = train_test_split(lol_x, lol_y, 
-                                            test_size = 0.3, random_state = 0)
-    model = LinearRegression()
-    rfe = RFE(model,nof_list[n])
-    X_train_rfe = rfe.fit_transform(X_train,y_train)
-    X_test_rfe = rfe.transform(X_test)
-    model.fit(X_train_rfe,y_train)
-    score = model.score(X_test_rfe,y_test)
-    score_list.append(score)
-    if(score > high_score):
-        high_score = score
-        nof = nof_list[n]
-
-# 39 features score of 0.793475
-print("Optimum number of features: %d" %nof)
-print("Score with %d features: %f" % (nof, high_score))
+## Total number of features
+#nof_list = np.arange(1,58)            
+#high_score = 0
+#
+## Variable to store the optimum features
+#nof = 0           
+#score_list = []
+#for n in range(len(nof_list)):
+#    X_train, X_test, y_train, y_test = train_test_split(lol_x, lol_y, 
+#                                            test_size = 0.3, random_state = 0)
+#    model = LinearRegression()
+#    rfe = RFE(model,nof_list[n])
+#    X_train_rfe = rfe.fit_transform(X_train,y_train)
+#    X_test_rfe = rfe.transform(X_test)
+#    model.fit(X_train_rfe,y_train)
+#    score = model.score(X_test_rfe,y_test)
+#    score_list.append(score)
+#    if(score > high_score):
+#        high_score = score
+#        nof = nof_list[n]
+#
+## 39 features score of 0.793475
+#print("Optimum number of features: %d" %nof)
+#print("Score with %d features: %f" % (nof, high_score))
 
 ######!!!!!!!!!
 # only used to determine optimum number of attributes
@@ -288,7 +290,7 @@ print("Lasso picked " + str(sum(coef != 0)) +
 
 
 # creates a dataframe based on the 32 columns selected from lasso
-lasso_df = lol_df[coef[coef.values != 0].index].head()
+lasso_df = lol_df[coef[coef.values != 0].index]
 
 ########
 # End lasso method
