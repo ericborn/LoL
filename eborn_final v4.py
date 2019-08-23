@@ -8,7 +8,7 @@ Predicting the winning team in the video game League of Legends
 """
 
 import os
-#import time
+import time
 import numpy as np
 import pandas as pd
 import seaborn as sns
@@ -38,6 +38,9 @@ sns.set_style("darkgrid")
 ################
 # Start data import and cleanup
 ################
+# start timing
+global_time_start = time.time()
+clean_time_start = time.time()
 
 # setup input directory and filename
 data = 'games'
@@ -109,6 +112,9 @@ lol_y = lol_df['win']
 # setup empty list to store all of the models accuracy
 global_accuracy = []
 
+# end timing
+clean_time_end = time.time()
+
 ################
 # End data import and cleanup
 ################
@@ -116,6 +122,8 @@ global_accuracy = []
 ################
 # Start attribute selection with various methods
 ################
+# start timing
+features_time_start = time.time()
 
 #######
 # Start Pearsons corerelation
@@ -284,6 +292,9 @@ lasso_df = lol_df[coef[coef.values != 0].index]
 # End lasso method
 #######
 
+# end timing
+features_time_end = time.time()
+
 ################
 # End attribute selection with various methods
 ################
@@ -291,6 +302,8 @@ lasso_df = lol_df[coef[coef.values != 0].index]
 ################
 # Start building scaled dataframes
 ################
+# start timing
+dataframes_time_start = time.time()
 
 # Setup scalers X datasets
 scaler = StandardScaler()
@@ -447,85 +460,20 @@ full_df_train_x, full_df_test_x, full_df_train_y, full_df_test_y = (
 #full_df_train_y
 #full_df_test_y
 
+# end timing
+dataframes_time_end = time.time()
+
 ################
 # End building test/train datasets with various attribute selections
 ################
 
-####
-# Create counts of the win totals for team 1 and team 2
-####
-
-# store wins in variable for team 1
-team1 = sum(lol_df.win == 0)
-pear_five_train_team1 = sum(pear_five_df_train_y == 0)
-pear_five_test_team1  = sum(pear_five_df_test_y  == 0)
-pear_ten_train_team1  = sum(pear_ten_df_train_y  == 0)
-pear_ten_test_team1   = sum(pear_ten_df_test_y   == 0)
-ols_train_team1       = sum(ols_df_train_y       == 0)
-ols_test_team1        = sum(ols_df_test_y        == 0)
-rfe_train_team1       = sum(rfe_df_train_y       == 0)
-rfe_test_team1        = sum(rfe_df_test_y        == 0)
-lasso_train_team1     = sum(lasso_df_train_y     == 0)
-lasso_test_team1      = sum(lasso_df_test_y      == 0)
-
-# store wins in variable for team 2
-team2 = sum(lol_df.win == 1)
-pear_five_train_team2 = sum(pear_five_df_train_y == 1)
-pear_five_test_team2  = sum(pear_five_df_test_y  == 1)
-pear_ten_train_team2  = sum(pear_ten_df_train_y  == 1)
-pear_ten_test_team2   = sum(pear_ten_df_test_y   == 1)
-ols_train_team2       = sum(ols_df_train_y       == 1)
-ols_test_team2        = sum(ols_df_test_y        == 1)
-rfe_train_team2       = sum(rfe_df_train_y       == 1)
-rfe_test_team2        = sum(rfe_df_test_y        == 1)
-lasso_train_team2     = sum(lasso_df_train_y     == 1)
-lasso_test_team2      = sum(lasso_df_test_y      == 1)
-
-# create a ratio of the wins
-ratio = round(team1 / team2, 4)
-
-pear_five_train_ratio = round(pear_five_train_team1 / pear_five_train_team2, 4)
-pear_five_test_ratio  = round(pear_five_test_team1 / pear_five_test_team2, 4)
-
-pear_ten_train_ratio = round(pear_five_train_team1 / pear_five_train_team2, 4)
-pear_ten_test_ratio  = round(pear_five_test_team1 / pear_five_test_team2, 4)
-
-ols_train_ratio = round(ols_train_team1 / ols_train_team2, 4)
-ols_test_ratio  = round(ols_test_team1 / ols_test_team2, 4)
-
-rfe_train_ratio = round(rfe_train_team1 / rfe_train_team2, 4)
-rfe_test_ratio  = round(rfe_test_team1 / rfe_test_team2, 4)
-
-lasso_train_ratio = round(lasso_train_team1 / lasso_train_team2, 4)
-lasso_test_ratio  = round(lasso_test_team1 / lasso_test_team2, 4)
-
-# Print win ratios
-print('\nOriginal dataset win ratios\n','team 1 : team 2\n', str(ratio)+
-      ' :   1')
-print('\nPearson five training win ratios\n','team 1 : team 2\n', 
-      str(pear_five_train_ratio)+' :   1')
-print('\nPearson five test win ratios\n','team 1 : team 2\n', 
-      str(pear_five_test_ratio)+' :   1')
-print('\nPearson ten training win ratios\n','team 1 : team 2\n', 
-      str(pear_ten_train_ratio)+' :   1')
-print('\nPearson ten test win ratios\n','team 1 : team 2\n', 
-      str(pear_ten_test_ratio)+' :   1')
-print('\nOls training win ratios\n','team 1 : team 2\n', 
-      str(ols_train_ratio)+' :   1')
-print('\nOls test win ratios\n','team 1 : team 2\n', 
-      str(ols_test_ratio)+' :   1')
-print('\nRfe training win ratios\n','team 1 : team 2\n', 
-      str(rfe_train_ratio)+' :   1')
-print('\nRfe test win ratios\n','team 1 : team 2\n', 
-      str(rfe_test_ratio)+' :   1')
-print('\nLasso training win ratios\n','team 1 : team 2\n', 
-      str(lasso_train_ratio)+' :   1')
-print('\nLasso test win ratios\n','team 1 : team 2\n', 
-      str(lasso_test_ratio)+' :   1')
-
 ################
 # Start building non-scaled algorithms
 ################
+
+# start timing
+tree_time_start = time.time()
+non_scaled_time_start = time.time()
 
 #######
 # Start decision tree
@@ -632,9 +580,15 @@ global_accuracy.append(100-(round(np.mean(lasso_df_prediction
 # End decision tree
 #######
 
+# end timing
+tree_time_end = time.time()
+
 #######
 # Start naive bayes
 #######
+
+# start timing
+naive_time_start = time.time()
 
 # Create a naive bayes classifier
 pear_five_gnb_clf = GaussianNB()
@@ -738,9 +692,15 @@ global_accuracy.append(100-(round(np.mean(lasso_df_prediction
 # End naive bayes
 #######
 
+# end timing
+naive_time_end = time.time()
+
 #######
 # Start Random Forest
 #######
+
+# start timing
+forest_time_start = time.time()
 
 # Random forest classifiers using a range from
 # 1 to 25 trees and from 1 to 10 depth of each tree
@@ -1077,6 +1037,10 @@ global_accuracy.append(100-(round(ind.item(2), 2)))
 #############
 # End Random Forest
 #############
+
+# end timing
+forest_time_end = time.time()
+non_scaled_time_end = time.time()
 
 ################
 # End building non-scaled algorithms
@@ -2234,6 +2198,7 @@ else:
           final_details, 'using the', final_attributes,
            'attribute set and an accuracy of', final_accuracy,
           '%')
+global_time_end = time.time()
 ####
 # End prediction prints
 ####
