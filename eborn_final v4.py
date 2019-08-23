@@ -946,6 +946,9 @@ timings_list.append(['knn time start', time.time()])
 # Start pear-five dataset
 ####
 
+# start time
+algorithm_duration_list.append(time.time())
+
 # initalize knn
 knn_classifier = KNeighborsClassifier(n_neighbors = 15)
 
@@ -969,6 +972,9 @@ algorithm_duration_list.append(time.time())
 # Start pear-ten dataset
 ####
 
+# start time
+algorithm_duration_list.append(time.time())
+
 # initalize knn
 knn_classifier = KNeighborsClassifier(n_neighbors = 9)
 
@@ -984,6 +990,9 @@ global_accuracy.append(100-(round(np.mean(knn_classifier.predict(
                                           pear_ten_scaled_df_test_x) 
                                           != pear_ten_scaled_df_test_y),2)))
 
+# end time
+algorithm_duration_list.append(time.time())
+
 ####
 # end pear-ten dataset
 ####
@@ -991,6 +1000,9 @@ global_accuracy.append(100-(round(np.mean(knn_classifier.predict(
 ####
 # Start ols dataset
 ####
+
+# start time
+algorithm_duration_list.append(time.time())
 
 # initalize knn
 knn_classifier = KNeighborsClassifier(n_neighbors = 11)
@@ -1004,6 +1016,9 @@ global_accuracy.append(100-(round(np.mean(knn_classifier.predict(
                                           ols_scaled_df_test_x) 
                                           != ols_scaled_df_test_y),2)))
 
+# end time
+algorithm_duration_list.append(time.time()) 
+
 ####
 # end ols dataset
 ####
@@ -1011,6 +1026,9 @@ global_accuracy.append(100-(round(np.mean(knn_classifier.predict(
 ####
 # Start rfe dataset
 ####
+
+# start time
+algorithm_duration_list.append(time.time())
 
 # initalize knn
 knn_classifier = KNeighborsClassifier(n_neighbors = 15)
@@ -1024,6 +1042,9 @@ global_accuracy.append(100-(round(np.mean(knn_classifier.predict(
                                           rfe_scaled_df_test_x) 
                                           != rfe_scaled_df_test_y),2)))
 
+# end time
+algorithm_duration_list.append(time.time()) 
+
 ####
 # end rfe dataset
 ####
@@ -1031,6 +1052,9 @@ global_accuracy.append(100-(round(np.mean(knn_classifier.predict(
 ####
 # Start lasso dataset
 ####
+
+# start time
+algorithm_duration_list.append(time.time())
 
 # initalize knn
 knn_classifier = KNeighborsClassifier(n_neighbors = 25)
@@ -1045,6 +1069,9 @@ pred_k = knn_classifier.predict(lasso_scaled_df_test_x)
 # Store accuracy
 global_accuracy.append(round(sum(pred_k == lasso_scaled_df_test_y) 
                               / len(pred_k) * 100, 2))
+
+# end time
+algorithm_duration_list.append(time.time()) 
 
 ####
 # end lasso dataset
@@ -1068,6 +1095,9 @@ timings_list.append(['svm linear time start', time.time()])
 # Start pear five dataset
 ####
 
+# start time
+algorithm_duration_list.append(time.time())
+
 # create a linear SVM classifier
 svm_classifier_linear = svm.SVC(kernel = 'linear')
 
@@ -1082,6 +1112,9 @@ prediction_linear = svm_classifier_linear.predict(pear_five_scaled_df_test_x)
 global_accuracy.append(100-(round(np.mean(prediction_linear != 
                                    pear_five_scaled_df_test_y) * 100, 2)))
 
+# end time
+algorithm_duration_list.append(time.time()) 
+
 ####
 # End pear five dataset
 ####
@@ -1089,6 +1122,9 @@ global_accuracy.append(100-(round(np.mean(prediction_linear !=
 ####
 # Start pear ten dataset
 ####
+
+# start time
+algorithm_duration_list.append(time.time())
 
 # create a linear SVM classifier
 svm_classifier_linear = svm.SVC(kernel = 'linear')
@@ -1104,6 +1140,9 @@ prediction_linear = svm_classifier_linear.predict(pear_ten_scaled_df_test_x)
 global_accuracy.append(100-(round(np.mean(prediction_linear != 
                                    pear_ten_scaled_df_test_y) * 100, 2)))
 
+# end time
+algorithm_duration_list.append(time.time())
+
 ####
 # End pear ten dataset
 ####
@@ -1111,6 +1150,9 @@ global_accuracy.append(100-(round(np.mean(prediction_linear !=
 ####
 # Start ols ten dataset
 ####
+
+# start time
+algorithm_duration_list.append(time.time())
 
 # create a linear SVM classifier
 svm_classifier_linear = svm.SVC(kernel = 'linear')
@@ -1126,6 +1168,9 @@ prediction_linear = svm_classifier_linear.predict(ols_scaled_df_test_x)
 global_accuracy.append(100-(round(np.mean(prediction_linear != 
                                          ols_scaled_df_test_y) * 100, 2)))
 
+# end time
+algorithm_duration_list.append(time.time())
+
 ####
 # End ols ten dataset
 ####
@@ -1133,6 +1178,9 @@ global_accuracy.append(100-(round(np.mean(prediction_linear !=
 ####
 # Start rfe ten dataset
 ####
+
+# start time
+algorithm_duration_list.append(time.time())
 
 # create a linear SVM classifier
 svm_classifier_linear = svm.SVC(kernel = 'linear')
@@ -1148,6 +1196,9 @@ prediction_linear = svm_classifier_linear.predict(rfe_scaled_df_test_x)
 global_accuracy.append(100-(round(np.mean(prediction_linear != 
                                          rfe_scaled_df_test_y) * 100, 2)))
 
+# end time
+algorithm_duration_list.append(time.time())
+
 ####
 # End rfe ten dataset
 ####
@@ -1155,6 +1206,9 @@ global_accuracy.append(100-(round(np.mean(prediction_linear !=
 ####
 # Start lasso ten dataset
 ####
+
+# start time
+algorithm_duration_list.append(time.time())
 
 # create a linear SVM classifier
 svm_classifier_linear = svm.SVC(kernel = 'linear')
@@ -1169,6 +1223,9 @@ prediction_linear = svm_classifier_linear.predict(lasso_scaled_df_test_x)
 # calculate error rate
 global_accuracy.append(100-(round(np.mean(prediction_linear != 
                                          lasso_scaled_df_test_y) * 100, 2)))
+
+# end time
+algorithm_duration_list.append(time.time())
 
 ####
 # End lasso ten dataset
@@ -1192,6 +1249,9 @@ timings_list.append(['svm rbf svm time start', time.time()])
 # Start pear five dataset
 ####
 
+# start time
+algorithm_duration_list.append(time.time())
+
 # create a rbf SVM classifier
 svm_classifier_rbf = svm.SVC(kernel = 'rbf')
 
@@ -1206,6 +1266,9 @@ prediction_rbf = svm_classifier_rbf.predict(pear_five_scaled_df_test_x)
 global_accuracy.append(100-(round(np.mean(prediction_rbf != 
                                    pear_five_scaled_df_test_y) * 100, 2)))
 
+# end time
+algorithm_duration_list.append(time.time())
+
 ####
 # End pear five dataset
 ####
@@ -1213,6 +1276,9 @@ global_accuracy.append(100-(round(np.mean(prediction_rbf !=
 ####
 # Start pear ten dataset
 ####
+
+# start time
+algorithm_duration_list.append(time.time())
 
 # create a rbf SVM classifier
 svm_classifier_rbf = svm.SVC(kernel = 'rbf')
@@ -1228,6 +1294,9 @@ prediction_rbf = svm_classifier_rbf.predict(pear_ten_scaled_df_test_x)
 global_accuracy.append(100-(round(np.mean(prediction_rbf != 
                                    pear_ten_scaled_df_test_y) * 100, 2)))
 
+# end time
+algorithm_duration_list.append(time.time())
+
 ####
 # End pear ten dataset
 ####
@@ -1235,6 +1304,9 @@ global_accuracy.append(100-(round(np.mean(prediction_rbf !=
 ####
 # Start ols ten dataset
 ####
+
+# start time
+algorithm_duration_list.append(time.time())
 
 # create a rbf SVM classifier
 svm_classifier_rbf = svm.SVC(kernel = 'rbf')
@@ -1250,6 +1322,9 @@ prediction_rbf = svm_classifier_rbf.predict(ols_scaled_df_test_x)
 global_accuracy.append(100-(round(np.mean(prediction_rbf != 
                                          ols_scaled_df_test_y) * 100, 2)))
 
+# end time
+algorithm_duration_list.append(time.time())
+
 ####
 # End ols ten dataset
 ####
@@ -1257,6 +1332,9 @@ global_accuracy.append(100-(round(np.mean(prediction_rbf !=
 ####
 # Start rfe ten dataset
 ####
+
+# start time
+algorithm_duration_list.append(time.time())
 
 # create a rbf SVM classifier
 svm_classifier_rbf = svm.SVC(kernel = 'rbf')
@@ -1272,6 +1350,9 @@ prediction_rbf = svm_classifier_rbf.predict(rfe_scaled_df_test_x)
 global_accuracy.append(100-(round(np.mean(prediction_rbf != 
                                          rfe_scaled_df_test_y) * 100, 2)))
 
+# end time
+algorithm_duration_list.append(time.time())
+
 ####
 # End rfe ten dataset
 ####
@@ -1279,6 +1360,9 @@ global_accuracy.append(100-(round(np.mean(prediction_rbf !=
 ####
 # Start lasso ten dataset
 ####
+
+# start time
+algorithm_duration_list.append(time.time())
 
 # create a rbf SVM classifier
 svm_classifier_rbf = svm.SVC(kernel = 'rbf')
@@ -1293,6 +1377,9 @@ prediction_rbf = svm_classifier_rbf.predict(lasso_scaled_df_test_x)
 # calculate error rate
 global_accuracy.append(100-(round(np.mean(prediction_rbf != 
                                          lasso_scaled_df_test_y) * 100, 2)))
+
+# end time
+algorithm_duration_list.append(time.time())
 
 ####
 # End lasso ten dataset
@@ -1316,6 +1403,9 @@ timings_list.append(['svm poly time start', time.time()])
 # Start pear five dataset
 ####
 
+# start time
+algorithm_duration_list.append(time.time())
+
 # create a poly SVM classifier
 svm_classifier_poly = svm.SVC(kernel = 'poly')
 
@@ -1330,6 +1420,9 @@ prediction_poly = svm_classifier_poly.predict(pear_five_scaled_df_test_x)
 global_accuracy.append(100-(round(np.mean(prediction_poly != 
                                    pear_five_scaled_df_test_y) * 100, 2)))
 
+# end time
+algorithm_duration_list.append(time.time())
+
 ####
 # End pear five dataset
 ####
@@ -1337,6 +1430,9 @@ global_accuracy.append(100-(round(np.mean(prediction_poly !=
 ####
 # Start pear ten dataset
 ####
+
+# start time
+algorithm_duration_list.append(time.time())
 
 # create a poly SVM classifier
 svm_classifier_poly = svm.SVC(kernel = 'poly')
@@ -1352,6 +1448,9 @@ prediction_poly = svm_classifier_poly.predict(pear_ten_scaled_df_test_x)
 global_accuracy.append(100-(round(np.mean(prediction_poly != 
                                    pear_ten_scaled_df_test_y) * 100, 2)))
 
+# end time
+algorithm_duration_list.append(time.time())
+
 ####
 # End pear ten dataset
 ####
@@ -1359,6 +1458,9 @@ global_accuracy.append(100-(round(np.mean(prediction_poly !=
 ####
 # Start ols dataset
 ####
+
+# start time
+algorithm_duration_list.append(time.time())
 
 # create a poly SVM classifier
 svm_classifier_poly = svm.SVC(kernel = 'poly')
@@ -1374,6 +1476,9 @@ prediction_poly = svm_classifier_poly.predict(ols_scaled_df_test_x)
 global_accuracy.append(100-(round(np.mean(prediction_poly != 
                                          ols_scaled_df_test_y) * 100, 2)))
 
+# end time
+algorithm_duration_list.append(time.time())
+
 ####
 # End ols dataset
 ####
@@ -1381,6 +1486,9 @@ global_accuracy.append(100-(round(np.mean(prediction_poly !=
 ####
 # Start rfe dataset
 ####
+
+# start time
+algorithm_duration_list.append(time.time())
 
 # create a poly SVM classifier
 svm_classifier_poly = svm.SVC(kernel = 'poly')
@@ -1396,6 +1504,9 @@ prediction_poly = svm_classifier_poly.predict(rfe_scaled_df_test_x)
 global_accuracy.append(100-(round(np.mean(prediction_poly != 
                                          rfe_scaled_df_test_y) * 100, 2)))
 
+# end time
+algorithm_duration_list.append(time.time())
+
 ####
 # End rfe dataset
 ####
@@ -1403,6 +1514,9 @@ global_accuracy.append(100-(round(np.mean(prediction_poly !=
 ####
 # Start lasso dataset
 ####
+
+# start time
+algorithm_duration_list.append(time.time())
 
 # create a poly SVM classifier
 svm_classifier_poly = svm.SVC(kernel = 'poly')
@@ -1417,6 +1531,9 @@ prediction_poly = svm_classifier_poly.predict(lasso_scaled_df_test_x)
 # calculate error rate
 global_accuracy.append(100-(round(np.mean(prediction_poly != 
                                          lasso_scaled_df_test_y) * 100, 2)))
+
+# end time
+algorithm_duration_list.append(time.time())
 
 ####
 # End lasso dataset
@@ -1444,6 +1561,9 @@ timings_list.append(['log lib time start', time.time()])
 # Start pear five dataset
 ####
 
+# start time
+algorithm_duration_list.append(time.time())
+
 # Create a logistic classifier
 # set solver to avoid the warning
 log_reg_classifier = LogisticRegression(solver = 'liblinear')
@@ -1459,6 +1579,9 @@ prediction = log_reg_classifier.predict(pear_five_scaled_df_test_x)
 global_accuracy.append(round(np.mean(prediction == 
                               pear_five_scaled_df_test_y) * 100, 2))
 
+# end time
+algorithm_duration_list.append(time.time())
+
 ####
 # End pear five dataset
 ####
@@ -1466,6 +1589,9 @@ global_accuracy.append(round(np.mean(prediction ==
 ####
 # Start pear ten dataset
 ####
+
+# start time
+algorithm_duration_list.append(time.time())
 
 # Create a logistic classifier
 # set solver to avoid the warning
@@ -1482,6 +1608,9 @@ prediction = log_reg_classifier.predict(pear_ten_scaled_df_test_x)
 global_accuracy.append(round(np.mean(prediction == 
                               pear_ten_scaled_df_test_y) * 100, 2))
 
+# end time
+algorithm_duration_list.append(time.time())
+
 ####
 # End pear ten dataset
 ####
@@ -1489,6 +1618,9 @@ global_accuracy.append(round(np.mean(prediction ==
 ####
 # Start ols dataset
 ####
+
+# start time
+algorithm_duration_list.append(time.time())
 
 # Create a logistic classifier
 # set solver to avoid the warning
@@ -1506,6 +1638,9 @@ prediction = log_reg_classifier.predict(ols_scaled_df_test_x)
 global_accuracy.append(round(np.mean(prediction == 
                               ols_scaled_df_test_y) * 100, 2))
 
+# end time
+algorithm_duration_list.append(time.time())
+
 ####
 # End ols dataset
 ####
@@ -1513,6 +1648,9 @@ global_accuracy.append(round(np.mean(prediction ==
 ####
 # Start rfe dataset
 ####
+
+# start time
+algorithm_duration_list.append(time.time())
 
 # Create a logistic classifier
 # set solver to avoid the warning
@@ -1529,6 +1667,9 @@ prediction = log_reg_classifier.predict(rfe_scaled_df_test_x)
 global_accuracy.append(round(np.mean(prediction == 
                               rfe_scaled_df_test_y) * 100, 2))
 
+# end time
+algorithm_duration_list.append(time.time())
+
 ####
 # End rfe dataset
 ####
@@ -1536,6 +1677,9 @@ global_accuracy.append(round(np.mean(prediction ==
 ####
 # Start lasso dataset
 ####
+
+# start time
+algorithm_duration_list.append(time.time())
 
 # Create a logistic classifier
 # set solver to avoid the warning
@@ -1551,6 +1695,9 @@ prediction = log_reg_classifier.predict(lasso_scaled_df_test_x)
 # append the models accruacy to the accuracy list
 global_accuracy.append(round(np.mean(prediction == 
                               lasso_scaled_df_test_y) * 100, 2))
+
+# end time
+algorithm_duration_list.append(time.time())
 
 ####
 # End lasso dataset
@@ -1574,6 +1721,9 @@ timings_list.append(['log sag time start', time.time()])
 # Start pear five dataset
 ####
 
+# start time
+algorithm_duration_list.append(time.time())
+
 # Create a logistic classifier
 # set solver to avoid the warning
 log_reg_classifier = LogisticRegression(solver = 'sag')
@@ -1589,6 +1739,9 @@ prediction = log_reg_classifier.predict(pear_five_scaled_df_test_x)
 global_accuracy.append(round(np.mean(prediction == 
                               pear_five_scaled_df_test_y) * 100, 2))
 
+# end time
+algorithm_duration_list.append(time.time())
+
 ####
 # End pear five dataset
 ####
@@ -1596,6 +1749,9 @@ global_accuracy.append(round(np.mean(prediction ==
 ####
 # Start pear ten dataset
 ####
+
+# start time
+algorithm_duration_list.append(time.time())
 
 # Create a logistic classifier
 # set solver to avoid the warning
@@ -1612,6 +1768,9 @@ prediction = log_reg_classifier.predict(pear_ten_scaled_df_test_x)
 global_accuracy.append(round(np.mean(prediction == 
                               pear_ten_scaled_df_test_y) * 100, 2))
 
+# end time
+algorithm_duration_list.append(time.time())
+
 ####
 # End pear ten dataset
 ####
@@ -1619,6 +1778,9 @@ global_accuracy.append(round(np.mean(prediction ==
 ####
 # Start ols dataset
 ####
+
+# start time
+algorithm_duration_list.append(time.time())
 
 # Create a logistic classifier
 # set solver to avoid the warning
@@ -1635,6 +1797,9 @@ prediction = log_reg_classifier.predict(ols_scaled_df_test_x)
 global_accuracy.append(round(np.mean(prediction == 
                               ols_scaled_df_test_y) * 100, 2))
 
+# end time
+algorithm_duration_list.append(time.time())
+
 ####
 # End ols dataset
 ####
@@ -1642,6 +1807,9 @@ global_accuracy.append(round(np.mean(prediction ==
 ####
 # Start rfe dataset
 ####
+
+# start time
+algorithm_duration_list.append(time.time())
 
 # Create a logistic classifier
 # set solver to avoid the warning
@@ -1658,6 +1826,9 @@ prediction = log_reg_classifier.predict(rfe_scaled_df_test_x)
 global_accuracy.append(round(np.mean(prediction == 
                               rfe_scaled_df_test_y) * 100, 2))
 
+# end time
+algorithm_duration_list.append(time.time())
+
 ####
 # End rfe dataset
 ####
@@ -1665,6 +1836,9 @@ global_accuracy.append(round(np.mean(prediction ==
 ####
 # Start lasso dataset
 ####
+
+# start time
+algorithm_duration_list.append(time.time())
 
 # Create a logistic classifier
 # set solver to avoid the warning
@@ -1680,6 +1854,9 @@ prediction = log_reg_classifier.predict(lasso_scaled_df_test_x)
 # append the models accruacy to the accuracy list
 global_accuracy.append(round(np.mean(prediction == 
                               lasso_scaled_df_test_y) * 100, 2))
+
+# end time
+algorithm_duration_list.append(time.time())
 
 ####
 # End lasso dataset
@@ -1703,6 +1880,9 @@ timings_list.append(['log newt time start', time.time()])
 # Start pear five dataset
 ####
 
+# start time
+algorithm_duration_list.append(time.time())
+
 # Create a logistic classifier
 # set solver to avoid the warning
 log_reg_classifier = LogisticRegression(solver = 'newton-cg')
@@ -1718,6 +1898,9 @@ prediction = log_reg_classifier.predict(pear_five_scaled_df_test_x)
 global_accuracy.append(round(np.mean(prediction == 
                               pear_five_scaled_df_test_y) * 100, 2))
 
+# end time
+algorithm_duration_list.append(time.time())
+
 ####
 # End pear five dataset
 ####
@@ -1725,6 +1908,9 @@ global_accuracy.append(round(np.mean(prediction ==
 ####
 # Start pear ten dataset
 ####
+
+# start time
+algorithm_duration_list.append(time.time())
 
 # Create a logistic classifier
 # set solver to avoid the warning
@@ -1741,6 +1927,9 @@ prediction = log_reg_classifier.predict(pear_ten_scaled_df_test_x)
 global_accuracy.append(round(np.mean(prediction == 
                               pear_ten_scaled_df_test_y) * 100, 2))
 
+# end time
+algorithm_duration_list.append(time.time())
+
 ####
 # End pear ten dataset
 ####
@@ -1748,6 +1937,9 @@ global_accuracy.append(round(np.mean(prediction ==
 ####
 # Start ols dataset
 ####
+
+# start time
+algorithm_duration_list.append(time.time())
 
 # Create a logistic classifier
 # set solver to avoid the warning
@@ -1764,6 +1956,9 @@ prediction = log_reg_classifier.predict(ols_scaled_df_test_x)
 global_accuracy.append(round(np.mean(prediction == 
                               ols_scaled_df_test_y) * 100, 2))
 
+# end time
+algorithm_duration_list.append(time.time())
+
 ####
 # End ols dataset
 ####
@@ -1771,6 +1966,9 @@ global_accuracy.append(round(np.mean(prediction ==
 ####
 # Start rfe dataset
 ####
+
+# start time
+algorithm_duration_list.append(time.time())
 
 # Create a logistic classifier
 # set solver to avoid the warning
@@ -1787,6 +1985,9 @@ prediction = log_reg_classifier.predict(rfe_scaled_df_test_x)
 global_accuracy.append(round(np.mean(prediction == 
                               rfe_scaled_df_test_y) * 100, 2))
 
+# end time
+algorithm_duration_list.append(time.time())
+
 ####
 # End rfe dataset
 ####
@@ -1794,6 +1995,9 @@ global_accuracy.append(round(np.mean(prediction ==
 ####
 # Start lasso dataset
 ####
+
+# start time
+algorithm_duration_list.append(time.time())
 
 # Create a logistic classifier
 # set solver to avoid the warning
@@ -1809,6 +2013,9 @@ prediction = log_reg_classifier.predict(lasso_scaled_df_test_x)
 # append the models accruacy to the accuracy list
 global_accuracy.append(round(np.mean(prediction == 
                               lasso_scaled_df_test_y) * 100, 2))
+
+# end time
+algorithm_duration_list.append(time.time())
 
 ####
 # End lasso dataset
