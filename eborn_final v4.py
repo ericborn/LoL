@@ -1302,7 +1302,7 @@ algorithm_duration_list.append(time.time())
 ####
 
 ####
-# Start ols ten dataset
+# Start ols dataset
 ####
 
 # start time
@@ -1326,11 +1326,11 @@ global_accuracy.append(100-(round(np.mean(prediction_rbf !=
 algorithm_duration_list.append(time.time())
 
 ####
-# End ols ten dataset
+# End ols dataset
 ####
 
 ####
-# Start rfe ten dataset
+# Start rfe dataset
 ####
 
 # start time
@@ -1354,11 +1354,11 @@ global_accuracy.append(100-(round(np.mean(prediction_rbf !=
 algorithm_duration_list.append(time.time())
 
 ####
-# End rfe ten dataset
+# End rfe dataset
 ####
 
 ####
-# Start lasso ten dataset
+# Start lasso dataset
 ####
 
 # start time
@@ -1382,7 +1382,7 @@ global_accuracy.append(100-(round(np.mean(prediction_rbf !=
 algorithm_duration_list.append(time.time())
 
 ####
-# End lasso ten dataset
+# End lasso dataset
 ####
 
 #######
@@ -2147,10 +2147,76 @@ prediction_df = prediction_df.sort_index()
 # Updates the accuracy
 prediction_df['accuracy'] = global_accuracy
 
-#!!!! ADD DETAIL OF SOLVER AND KERNEL TO prediction_df !!!!
+# decision tree
+prediction_df['details'].iloc[0] = 'entropy'
+prediction_df['details'].iloc[1] = 'entropy'
+prediction_df['details'].iloc[2] = 'entropy'
+prediction_df['details'].iloc[3] = 'entropy'
+prediction_df['details'].iloc[4] = 'entropy'
 
+# Naive Bayes
+prediction_df['details'].iloc[5] = 'Gaussian'
+prediction_df['details'].iloc[6] = 'Gaussian'
+prediction_df['details'].iloc[7] = 'Gaussian'
+prediction_df['details'].iloc[8] = 'Gaussian'
+prediction_df['details'].iloc[9] = 'Gaussian'
 
+# Random Forest tree/depth
+prediction_df['details'].iloc[10] = '8/8'
+prediction_df['details'].iloc[11] = '23/9'
+prediction_df['details'].iloc[12] = '25/10'
+prediction_df['details'].iloc[13] = '20/9'
+prediction_df['details'].iloc[14] = '22/10'
+prediction_df['details'].iloc[15] = '25/10'
+    
+# knn k value
+prediction_df['details'].iloc[16] = '15'
+prediction_df['details'].iloc[17] = '9'
+prediction_df['details'].iloc[18] = '11'
+prediction_df['details'].iloc[19] = '15'
+prediction_df['details'].iloc[20] = '25'
 
+# log liblinear solver
+prediction_df['details'].iloc[21] = 'linear'
+prediction_df['details'].iloc[22] = 'linear'
+prediction_df['details'].iloc[23] = 'linear'
+prediction_df['details'].iloc[24] = 'linear'
+prediction_df['details'].iloc[25] = 'linear'
+
+# log sag solver
+prediction_df['details'].iloc[26] = 'Gaussian'
+prediction_df['details'].iloc[27] = 'Gaussian'
+prediction_df['details'].iloc[28] = 'Gaussian'
+prediction_df['details'].iloc[29] = 'Gaussian'
+prediction_df['details'].iloc[30] = 'Gaussian'
+
+# log newton-cg solver
+prediction_df['details'].iloc[31] = 'poly'
+prediction_df['details'].iloc[32] = 'poly'
+prediction_df['details'].iloc[33] = 'poly'
+prediction_df['details'].iloc[34] = 'poly'
+prediction_df['details'].iloc[35] = 'poly'
+
+# log liblinear solver
+prediction_df['details'].iloc[36] = 'liblinear'
+prediction_df['details'].iloc[37] = 'liblinear'
+prediction_df['details'].iloc[38] = 'liblinear'
+prediction_df['details'].iloc[39] = 'liblinear'
+prediction_df['details'].iloc[40] = 'liblinear'
+
+# log sag solver
+prediction_df['details'].iloc[41] = 'sag'
+prediction_df['details'].iloc[42] = 'sag'
+prediction_df['details'].iloc[43] = 'sag'
+prediction_df['details'].iloc[44] = 'sag'
+prediction_df['details'].iloc[45] = 'sag'
+
+# log newton-cg solver
+prediction_df['details'].iloc[46] = 'newton-cg'
+prediction_df['details'].iloc[47] = 'newton-cg'
+prediction_df['details'].iloc[48] = 'newton-cg'
+prediction_df['details'].iloc[49] = 'newton-cg'
+prediction_df['details'].iloc[50] = 'newton-cg'
 
 # Finds the most accuracy algorithm
 final_classifier = prediction_df['classifier'][prediction_df['accuracy'] == 
@@ -2177,6 +2243,8 @@ else:
           '%')
 
 timings_list.append(['global time end', time.time()]) 
+
+
 ####
 # End prediction prints
 ####
