@@ -41,8 +41,8 @@ sns.set_style("darkgrid")
 timings_list = []
 
 # start timing
-timings_list.append(['global time', time.time()])
-timings_list.append(['clean time', time.time()])
+timings_list.append(['Global duration:', time.time()])
+timings_list.append(['Data clean up duration:', time.time()])
 
 # setup input directory and filename
 data = 'games'
@@ -125,7 +125,7 @@ timings_list.append(['clean time end', time.time()])
 # Start attribute selection with various methods
 ################
 # start timing
-timings_list.append(['features time', time.time()])
+timings_list.append(['Features selection duration:', time.time()])
 
 #######
 # Start Pearsons corerelation
@@ -305,7 +305,7 @@ timings_list.append(['features time end', time.time()])
 # Start building scaled dataframes
 ################
 # start timing
-timings_list.append(['frame build time', time.time()])
+timings_list.append(['Dataframe build duration:', time.time()])
 
 # Setup scalers X datasets
 scaler = StandardScaler()
@@ -476,8 +476,8 @@ algorithm_duration_list = []
 # Start building non-scaled algorithms
 ################
 # start timing
-timings_list.append(['non scaled time', time.time()])
-timings_list.append(['tree time', time.time()])
+timings_list.append(['Non-scaled duration:', time.time()])
+timings_list.append(['Decision tree duration:', time.time()])
 
 #######
 # Start decision tree
@@ -623,7 +623,7 @@ timings_list.append(['tree time end', time.time()])
 #######
 
 # start timing
-timings_list.append(['naive time', time.time()])
+timings_list.append(['Naive Bayes duration:', time.time()])
 algorithm_duration_list.append(time.time()) 
 
 # Create a naive bayes classifier
@@ -763,7 +763,7 @@ timings_list.append(['naive time end', time.time()])
 #######
 
 # start timing
-timings_list.append(['forest time', time.time()])
+timings_list.append(['Random forest duration:', time.time()])
 
 # Random forest classifiers previously configured using a range from
 # 1 to 25 trees and from 1 to 10 depth of each tree. 
@@ -935,8 +935,8 @@ timings_list.append(['non scaled time end', time.time()])
 ################
 
 # start timing
-timings_list.append(['scaled time', time.time()])
-timings_list.append(['knn time', time.time()])
+timings_list.append(['Scaled time', time.time()])
+timings_list.append(['Knn duration:', time.time()])
 
 #######
 # Start KNN
@@ -1089,7 +1089,7 @@ timings_list.append(['knn time end', time.time()])
 #######
 
 # start timing
-timings_list.append(['svm linear time', time.time()])
+timings_list.append(['SVM linear duration:', time.time()])
 
 ####
 # Start pear five dataset
@@ -1243,7 +1243,7 @@ timings_list.append(['svm linear time end', time.time()])
 #######
 
 # start timing
-timings_list.append(['svm rbf time', time.time()])
+timings_list.append(['SVM Gaussian duration:', time.time()])
 
 ####
 # Start pear five dataset
@@ -1397,7 +1397,7 @@ timings_list.append(['svm rbf time end', time.time()])
 #######
 
 # start timing
-timings_list.append(['svm poly time', time.time()])
+timings_list.append(['SVM poly duration:', time.time()])
 
 ####
 # Start pear five dataset
@@ -1555,7 +1555,7 @@ timings_list.append(['svm poly time end', time.time()])
 #############
 
 # start timing
-timings_list.append(['log lib time', time.time()])
+timings_list.append(['Logistic Regression liblinear duration:', time.time()])
 
 ####
 # Start pear five dataset
@@ -1715,7 +1715,7 @@ timings_list.append(['log lib time end', time.time()])
 #############
 
 # start timing
-timings_list.append(['log sag time', time.time()])
+timings_list.append(['Logistic Regression sag duration:', time.time()])
 
 ####
 # Start pear five dataset
@@ -1874,7 +1874,7 @@ timings_list.append(['log sag time end', time.time()])
 #############
 
 # start timing
-timings_list.append(['log newton-cg time', time.time()])
+timings_list.append(['Logistic Regression newton-cg duration:', time.time()])
 
 ####
 # Start pear five dataset
@@ -2150,6 +2150,9 @@ prediction_df['accuracy'] = global_accuracy
 
 # Manually set algorithm details
 # decision tree
+
+#for details in range(1, len(prediction_df)):
+
 prediction_df['details'].iloc[0] = 'entropy'
 prediction_df['details'].iloc[1] = 'entropy'
 prediction_df['details'].iloc[2] = 'entropy'
@@ -2231,39 +2234,55 @@ for dur in range(0, len(algorithm_duration_list), 2):
 # stores the durations into the prediction_df
 prediction_df['time'] = dur_list
 
-#start to finish
-print('Total time',
-round((int(timings_list[-1][1])- int(timings_list[0][1])) / 60, 2))
 
-print('Clean time',
+#print duration
+print(timings_list[1][0],
 round((int(timings_list[2][1]) - int(timings_list[1][1])) / 60, 2))
 
-print('Feature time',
+print(timings_list[3][0],
 round((int(timings_list[4][1]) - int(timings_list[3][1])) / 60, 2))
 
-print('Frame time',
+print(timings_list[5][0],
 round((int(timings_list[6][1]) - int(timings_list[5][1])) / 60, 2))
 
-print('tree time',
+print(timings_list[8][0],
 round((int(timings_list[9][1]) - int(timings_list[8][1])) / 60, 2))
 
-print('naive time',
+print(timings_list[10][0],
 round((int(timings_list[11][1]) - int(timings_list[10][1])) / 60, 2))
 
-print('forest time',
+print(timings_list[12][0],
 round((int(timings_list[13][1]) - int(timings_list[12][1])) / 60, 2))
 
-print('non-scaled time',
+print(timings_list[7][0],
 round((int(timings_list[14][1]) - int(timings_list[7][1])) / 60, 2))
 
-print('knn time',
+print(timings_list[16][0],
 round((int(timings_list[17][1]) - int(timings_list[16][1])) / 60, 2))
 
-print('svm linear time',
+print(timings_list[18][0],
 round((int(timings_list[19][1]) - int(timings_list[18][1])) / 60, 2))
 
-print('scaled time',
+print(timings_list[20][0],
+round((int(timings_list[21][1]) - int(timings_list[20][1])) / 60, 2))
+
+print(timings_list[22][0],
+round((int(timings_list[23][1]) - int(timings_list[22][1])) / 60, 2))
+
+print(timings_list[24][0],
+round((int(timings_list[25][1]) - int(timings_list[24][1])) / 60, 2))
+
+print(timings_list[26][0],
+round((int(timings_list[27][1]) - int(timings_list[26][1])) / 60, 2))
+
+print(timings_list[28][0],
+round((int(timings_list[29][1]) - int(timings_list[28][1])) / 60, 2))
+
+print(timings_list[15][0],
 round((int(timings_list[30][1]) - int(timings_list[15][1])) / 60, 2))
+
+print(timings_list[0][0],
+round((int(timings_list[-1][1])- int(timings_list[0][1])) / 60, 2))
 
 # Finds the most accuracy algorithm
 final_classifier = prediction_df['classifier'][prediction_df['accuracy'] == 
