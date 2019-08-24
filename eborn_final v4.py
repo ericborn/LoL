@@ -2123,7 +2123,7 @@ classifiers = ['Decision Tree', 'Naive Bayes', 'Random Forest', 'KNN', 'SVM',
 
 # Creates a dataframe containing information about the classifiers and accuracy
 prediction_df = pd.DataFrame(columns =['classifier', 'details', 'attributes',
-                                       'accuracy'])
+                                       'accuracy', 'time'])
 
 # Build out a dataframe to store the classifiers and their accuracy
 for i in range(0, len(classifiers)):
@@ -2131,7 +2131,8 @@ for i in range(0, len(classifiers)):
         prediction_df = prediction_df.append({'classifier' : classifiers[i],
                                       'details' : 'None',
                                       'attributes' : attributes[k],
-                                      'accuracy' : 0}, 
+                                      'accuracy' : 0,
+                                      'time' : 0}, 
                                       ignore_index=True)
 
 # Move indexes down 1 starting at 15 to add Random forest with full dataset
@@ -2139,7 +2140,7 @@ prediction_df.index = (prediction_df.index[:15].tolist() +
                       (prediction_df.index[15:] + 1).tolist())
 
 # Adds Random forest with full dataset to the dataframe
-prediction_df.loc[15] = ['Random Forest', 'None', 'Full', 0]
+prediction_df.loc[15] = ['Random Forest', 'None', 'Full', 0, 0]
 
 # reorders the indexes after the insert
 prediction_df = prediction_df.sort_index()
@@ -2219,6 +2220,51 @@ prediction_df['details'].iloc[48] = 'newton-cg'
 prediction_df['details'].iloc[49] = 'newton-cg'
 prediction_df['details'].iloc[50] = 'newton-cg'
 
+# creates a duration list
+dur_list = []
+
+# stores the durations of each algorithm from start to finish
+for dur in range(0, len(algorithm_duration_list), 2):
+    dur_list.append(algorithm_duration_list[dur + 1] - 
+                    algorithm_duration_list[dur])
+
+# stores the durations into the prediction_df
+prediction_df['time'] = dur_list
+
+#start to finish
+print('Total time',
+round((int(timings_list[-1][1])- int(timings_list[0][1])) / 60, 2))
+
+print('Clean time',
+round((int(timings_list[2][1]) - int(timings_list[1][1])) / 60, 2))
+
+print('Feature time',
+round((int(timings_list[4][1]) - int(timings_list[3][1])) / 60, 2))
+
+print('Frame time',
+round((int(timings_list[6][1]) - int(timings_list[5][1])) / 60, 2))
+
+print('tree time',
+round((int(timings_list[9][1]) - int(timings_list[8][1])) / 60, 2))
+
+print('naive time',
+round((int(timings_list[11][1]) - int(timings_list[10][1])) / 60, 2))
+
+print('forest time',
+round((int(timings_list[13][1]) - int(timings_list[12][1])) / 60, 2))
+
+print('non-scaled time',
+round((int(timings_list[14][1]) - int(timings_list[7][1])) / 60, 2))
+
+print('knn time',
+round((int(timings_list[17][1]) - int(timings_list[16][1])) / 60, 2))
+
+print('svm linear time',
+round((int(timings_list[19][1]) - int(timings_list[18][1])) / 60, 2))
+
+print('scaled time',
+round((int(timings_list[30][1]) - int(timings_list[15][1])) / 60, 2))
+
 # Finds the most accuracy algorithm
 final_classifier = prediction_df['classifier'][prediction_df['accuracy'] == 
               max(prediction_df.accuracy)].values[0]
@@ -2243,14 +2289,7 @@ else:
            'attribute set and an accuracy of', final_accuracy,
           '%')
 
-timings_list.append(['global time end', time.time()]) 
-
-#start to finish
-print(timings_list[0][0],
-round((int(timings_list[-1][1])- int(timings_list[0][1])) / 60, 2))
-
-
-round((int(timings_list[2][1]) - int(timings_list[1][1])) / 60, 2)
+timings_list.append(['global time end', time.time()])
 
 ####
 # End prediction prints
