@@ -17,7 +17,6 @@ import matplotlib.pyplot as plt
 from sys import exit
 from sklearn import svm
 from sklearn import tree
-#from joblib import Parallel, delayed
 from sklearn.feature_selection import RFE
 from sklearn.naive_bayes import GaussianNB
 from sklearn.preprocessing import StandardScaler
@@ -25,7 +24,7 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LassoCV, LogisticRegression, LinearRegression
-#from sklearn.metrics import confusion_matrix, recall_score
+from sklearn.metrics import confusion_matrix, recall_score
 
 # Set display options for dataframes
 #pd.set_option('display.max_rows', 100)
@@ -69,22 +68,6 @@ lol_df['win'] = lol_df['winner'].apply(lambda x: 0 if x == 1 else 1)
 
 # remove columns gameId, creationTime, seasonId and winner
 lol_df.drop(lol_df.columns[[0,1,3,4]], axis = 1, inplace = True)
-
-# There are -1's stored in the t1 and t2 ban columns that need to
-# be replaced before the chi-squared can be run
-# for loop cycles through t1_ban1, t1_ban2, etc. for both teams
-# and sets the row to a 0 instead of a -1. goes through team1 and 2
-# and all the way up to champ5
-try:
-    for team in range(1, 3):
-        for char in range(1, 6):
-            t = 't'+str(team)+'_ban'+str(char)
-            print(t, 'had', len(lol_df.loc[lol_df[t] == -1, t]),
-                  '-1s replaced with a 0')
-            lol_df.loc[lol_df[t] == -1, t] = 0
-except Exception as e:
-    print(e)
-    exit('Failed to replace -1 with 0 in the lol_df')
 
 ## write modified data to csv
 ## desired csv filename
@@ -315,7 +298,7 @@ pear_five_df_scaled = scaler.transform(pear_five_df)
 # pear_five split dataset into 33% test 66% training
 (pear_five_scaled_df_train_x, pear_five_scaled_df_test_x, 
  pear_five_scaled_df_train_y, pear_five_scaled_df_test_y) = (
-        train_test_split(pear_five_df_scaled, lol_y, test_size = 0.33, 
+        train_test_split(pear_five_df_scaled, lol_y, test_size = 0.333, 
                          random_state=1337))
 
 #pear_five_scaled_df_train_x
@@ -331,7 +314,7 @@ pear_ten_df_scaled = scaler.transform(pear_ten_df)
 # pear_ten split dataset into 33% test 66% training
 (pear_ten_scaled_df_train_x, pear_ten_scaled_df_test_x,
  pear_ten_scaled_df_train_y, pear_ten_scaled_df_test_y) = (
-        train_test_split(pear_ten_df_scaled, lol_y, test_size = 0.33, 
+        train_test_split(pear_ten_df_scaled, lol_y, test_size = 0.333, 
                          random_state=1337))
 
 #pear_ten_scaled_df_train_x
@@ -347,7 +330,7 @@ ols_df_scaled = scaler.transform(ols_df)
 # ols_df split dataset into 33% test 66% training
 (ols_scaled_df_train_x, ols_scaled_df_test_x, ols_scaled_df_train_y,
  ols_scaled_df_test_y) = (
-        train_test_split(ols_df_scaled, lol_y, test_size = 0.33, 
+        train_test_split(ols_df_scaled, lol_y, test_size = 0.333, 
                          random_state=1337))
 
 #ols_scaled_df_train_x
@@ -363,7 +346,7 @@ rfe_df_scaled = scaler.transform(rfe_df)
 # ols_df split dataset into 33% test 66% training
 (rfe_scaled_df_train_x, rfe_scaled_df_test_x, 
  rfe_scaled_df_train_y, rfe_scaled_df_test_y) = (
-        train_test_split(rfe_df_scaled, lol_y, test_size = 0.33, 
+        train_test_split(rfe_df_scaled, lol_y, test_size = 0.333, 
                          random_state=1337))
 #rfe_scaled_df_train_x
 #rfe_scaled_df_test_x
@@ -378,7 +361,7 @@ lasso_df_scaled = scaler.transform(lasso_df)
 # lasso split dataset into 33% test 66% training
 (lasso_scaled_df_train_x, lasso_scaled_df_test_x, lasso_scaled_df_train_y, 
 lasso_scaled_df_test_y) = (train_test_split(lasso_df_scaled, lol_y, 
-                                             test_size = 0.33, 
+                                             test_size = 0.333, 
                                              random_state=1337))
 #lasso_scaled_df_train_x
 #lasso_scaled_df_test_x
@@ -403,7 +386,7 @@ lasso_scaled_df_test_y) = (train_test_split(lasso_df_scaled, lol_y,
 # pear_five split dataset into 33% test 66% training
 (pear_five_df_train_x, pear_five_df_test_x, 
 pear_five_df_train_y, pear_five_df_test_y) = (
-        train_test_split(pear_five_df, lol_y, test_size = 0.33, 
+        train_test_split(pear_five_df, lol_y, test_size = 0.333, 
                          random_state=1337))
 
 #pear_five_df_train_x
@@ -414,7 +397,7 @@ pear_five_df_train_y, pear_five_df_test_y) = (
 # pear_ten split dataset into 33% test 66% training
 (pear_ten_df_train_x, pear_ten_df_test_x, 
  pear_ten_df_train_y, pear_ten_df_test_y) = (
-        train_test_split(pear_ten_df, lol_y, test_size = 0.33, 
+        train_test_split(pear_ten_df, lol_y, test_size = 0.333, 
                          random_state=1337))
 
 #pear_ten_df_train_x
@@ -424,7 +407,7 @@ pear_five_df_train_y, pear_five_df_test_y) = (
 
 # ols_df split dataset into 33% test 66% training
 ols_df_train_x, ols_df_test_x, ols_df_train_y, ols_df_test_y = (
-        train_test_split(ols_df, lol_y, test_size = 0.33, 
+        train_test_split(ols_df, lol_y, test_size = 0.333, 
                          random_state=1337))
 
 #ols_df_train_x
@@ -434,7 +417,7 @@ ols_df_train_x, ols_df_test_x, ols_df_train_y, ols_df_test_y = (
 
 # ols_df split dataset into 33% test 66% training
 rfe_df_train_x, rfe_df_test_x, rfe_df_train_y, rfe_df_test_y = (
-        train_test_split(rfe_df, lol_y, test_size = 0.33, 
+        train_test_split(rfe_df, lol_y, test_size = 0.333, 
                          random_state=1337))
 
 #rfe_df_train_x
@@ -444,7 +427,7 @@ rfe_df_train_x, rfe_df_test_x, rfe_df_train_y, rfe_df_test_y = (
 
 # ols_df split dataset into 33% test 66% training
 lasso_df_train_x, lasso_df_test_x, lasso_df_train_y, lasso_df_test_y = (
-        train_test_split(lasso_df, lol_y, test_size = 0.33, 
+        train_test_split(lasso_df, lol_y, test_size = 0.333, 
                          random_state=1337))
 
 #lasso_df_train_x
@@ -454,7 +437,7 @@ lasso_df_train_x, lasso_df_test_x, lasso_df_train_y, lasso_df_test_y = (
 
 # ols_df split dataset into 33% test 66% training
 full_df_train_x, full_df_test_x, full_df_train_y, full_df_test_y = (
-        train_test_split(lol_x, lol_y, test_size = 0.33, 
+        train_test_split(lol_x, lol_y, test_size = 0.333, 
                          random_state=1337))
 
 #full_df_train_x
@@ -785,6 +768,8 @@ rf_clf = RandomForestClassifier(n_estimators = 8,
                                     max_depth = 8, criterion ='entropy',
                                     random_state = 1337)
 rf_clf.fit(pear_five_df_train_x, pear_five_df_train_y)
+
+pear_five_pred = rf_clf.predict(pear_five_df_test_x)
 
 # store accuracy
 global_accuracy.append(100-(round(np.mean(rf_clf.predict(pear_five_df_test_x) 
@@ -2108,6 +2093,7 @@ print('\nLasso test win ratios\n','team 1 : team 2\n',
 ########
 # End counts of the win totals for team 1 and team 2
 ########
+timings_list.append(['global time end', time.time()])
 
 ####
 # Start prediction prints
@@ -2150,78 +2136,43 @@ prediction_df['accuracy'] = global_accuracy
 
 # Manually set algorithm details
 # decision tree
-
-#for details in range(1, len(prediction_df)):
-
-prediction_df['details'].iloc[0] = 'entropy'
-prediction_df['details'].iloc[1] = 'entropy'
-prediction_df['details'].iloc[2] = 'entropy'
-prediction_df['details'].iloc[3] = 'entropy'
-prediction_df['details'].iloc[4] = 'entropy'
+prediction_df['details'].iloc[0:5] = 'Entropy'
 
 # Naive Bayes
-prediction_df['details'].iloc[5] = 'Gaussian'
-prediction_df['details'].iloc[6] = 'Gaussian'
-prediction_df['details'].iloc[7] = 'Gaussian'
-prediction_df['details'].iloc[8] = 'Gaussian'
-prediction_df['details'].iloc[9] = 'Gaussian'
+prediction_df['details'].iloc[5:11] = 'Gaussian'
 
 # Random Forest tree/depth
-prediction_df['details'].iloc[10] = '8/8'
-prediction_df['details'].iloc[11] = '23/9'
-prediction_df['details'].iloc[12] = '25/10'
-prediction_df['details'].iloc[13] = '20/9'
-prediction_df['details'].iloc[14] = '22/10'
-prediction_df['details'].iloc[15] = '25/10'
+prediction_df['details'].iloc[10] = '8 trees, 8 depth'
+prediction_df['details'].iloc[11] = '23 trees, 9 depth'
+prediction_df['details'].iloc[12] = '25 trees, 10 depth'
+prediction_df['details'].iloc[13] = '20 trees, 9 depth'
+prediction_df['details'].iloc[14] = '22 trees, 10 depth'
+prediction_df['details'].iloc[15] = '25 trees, 10 depth'
     
 # knn k value
-prediction_df['details'].iloc[16] = '15'
-prediction_df['details'].iloc[17] = '9'
-prediction_df['details'].iloc[18] = '11'
-prediction_df['details'].iloc[19] = '15'
-prediction_df['details'].iloc[20] = '25'
+prediction_df['details'].iloc[16] = 'K - 15'
+prediction_df['details'].iloc[17] = 'K - 9'
+prediction_df['details'].iloc[18] = 'K - 11'
+prediction_df['details'].iloc[19] = 'K - 15'
+prediction_df['details'].iloc[20] = 'K - 25'
 
 # log liblinear solver
-prediction_df['details'].iloc[21] = 'linear'
-prediction_df['details'].iloc[22] = 'linear'
-prediction_df['details'].iloc[23] = 'linear'
-prediction_df['details'].iloc[24] = 'linear'
-prediction_df['details'].iloc[25] = 'linear'
+prediction_df['details'].iloc[21:26] = 'Linear'
 
 # log sag solver
-prediction_df['details'].iloc[26] = 'Gaussian'
-prediction_df['details'].iloc[27] = 'Gaussian'
-prediction_df['details'].iloc[28] = 'Gaussian'
-prediction_df['details'].iloc[29] = 'Gaussian'
-prediction_df['details'].iloc[30] = 'Gaussian'
+prediction_df['details'].iloc[26:31] = 'Gaussian'
 
 # log newton-cg solver
-prediction_df['details'].iloc[31] = 'poly'
-prediction_df['details'].iloc[32] = 'poly'
-prediction_df['details'].iloc[33] = 'poly'
-prediction_df['details'].iloc[34] = 'poly'
-prediction_df['details'].iloc[35] = 'poly'
+prediction_df['details'].iloc[31:36] = 'Poly'
 
 # log liblinear solver
-prediction_df['details'].iloc[36] = 'liblinear'
-prediction_df['details'].iloc[37] = 'liblinear'
-prediction_df['details'].iloc[38] = 'liblinear'
-prediction_df['details'].iloc[39] = 'liblinear'
-prediction_df['details'].iloc[40] = 'liblinear'
+prediction_df['details'].iloc[36:41] = 'Liblinear'
 
 # log sag solver
-prediction_df['details'].iloc[41] = 'sag'
-prediction_df['details'].iloc[42] = 'sag'
-prediction_df['details'].iloc[43] = 'sag'
-prediction_df['details'].iloc[44] = 'sag'
-prediction_df['details'].iloc[45] = 'sag'
+prediction_df['details'].iloc[41:46] = 'Sag'
 
 # log newton-cg solver
-prediction_df['details'].iloc[46] = 'newton-cg'
-prediction_df['details'].iloc[47] = 'newton-cg'
-prediction_df['details'].iloc[48] = 'newton-cg'
-prediction_df['details'].iloc[49] = 'newton-cg'
-prediction_df['details'].iloc[50] = 'newton-cg'
+prediction_df['details'].iloc[46:51] = 'Newton-cg'
 
 # creates a duration list
 dur_list = []
@@ -2234,81 +2185,98 @@ for dur in range(0, len(algorithm_duration_list), 2):
 # stores the durations into the prediction_df
 prediction_df['time'] = dur_list
 
+# Print durations 
+print('Durations for each of the major steps in the process,', 
+      'measured in seconds\n', timings_list[1][0],
+int(timings_list[2][1]) - int(timings_list[1][1]),'\n',
 
-#print duration
-print(timings_list[1][0],
-round((int(timings_list[2][1]) - int(timings_list[1][1])) / 60, 2))
+timings_list[3][0],
+int(timings_list[4][1]) - int(timings_list[3][1]),'\n',
 
-print(timings_list[3][0],
-round((int(timings_list[4][1]) - int(timings_list[3][1])) / 60, 2))
+timings_list[5][0],
+int(timings_list[6][1]) - int(timings_list[5][1]),'\n',
 
-print(timings_list[5][0],
-round((int(timings_list[6][1]) - int(timings_list[5][1])) / 60, 2))
+timings_list[8][0],
+int(timings_list[9][1]) - int(timings_list[8][1]),'\n',
 
-print(timings_list[8][0],
-round((int(timings_list[9][1]) - int(timings_list[8][1])) / 60, 2))
+timings_list[10][0],
+int(timings_list[11][1]) - int(timings_list[10][1]),'\n',
 
-print(timings_list[10][0],
-round((int(timings_list[11][1]) - int(timings_list[10][1])) / 60, 2))
+timings_list[12][0],
+int(timings_list[13][1]) - int(timings_list[12][1]),'\n',
 
-print(timings_list[12][0],
-round((int(timings_list[13][1]) - int(timings_list[12][1])) / 60, 2))
+timings_list[7][0],
+int(timings_list[14][1]) - int(timings_list[7][1]),'\n',
 
-print(timings_list[7][0],
-round((int(timings_list[14][1]) - int(timings_list[7][1])) / 60, 2))
+timings_list[16][0],
+int(timings_list[17][1]) - int(timings_list[16][1]),'\n',
 
-print(timings_list[16][0],
-round((int(timings_list[17][1]) - int(timings_list[16][1])) / 60, 2))
+timings_list[18][0],
+int(timings_list[19][1]) - int(timings_list[18][1]),'\n',
 
-print(timings_list[18][0],
-round((int(timings_list[19][1]) - int(timings_list[18][1])) / 60, 2))
+timings_list[20][0],
+int(timings_list[21][1]) - int(timings_list[20][1]),'\n',
 
-print(timings_list[20][0],
-round((int(timings_list[21][1]) - int(timings_list[20][1])) / 60, 2))
+timings_list[22][0],
+int(timings_list[23][1]) - int(timings_list[22][1]),'\n',
 
-print(timings_list[22][0],
-round((int(timings_list[23][1]) - int(timings_list[22][1])) / 60, 2))
+timings_list[24][0],
+int(timings_list[25][1]) - int(timings_list[24][1]),'\n',
 
-print(timings_list[24][0],
-round((int(timings_list[25][1]) - int(timings_list[24][1])) / 60, 2))
+timings_list[26][0],
+int(timings_list[27][1]) - int(timings_list[26][1]),'\n',
 
-print(timings_list[26][0],
-round((int(timings_list[27][1]) - int(timings_list[26][1])) / 60, 2))
+timings_list[28][0],
+int(timings_list[29][1]) - int(timings_list[28][1]),'\n',
 
-print(timings_list[28][0],
-round((int(timings_list[29][1]) - int(timings_list[28][1])) / 60, 2))
+timings_list[15][0],
+int(timings_list[30][1]) - int(timings_list[15][1]),'\n',
 
-print(timings_list[15][0],
-round((int(timings_list[30][1]) - int(timings_list[15][1])) / 60, 2))
+timings_list[0][0],
+int(timings_list[-1][1])- int(timings_list[0][1]))
 
-print(timings_list[0][0],
-round((int(timings_list[-1][1])- int(timings_list[0][1])) / 60, 2))
 
-# Finds the most accuracy algorithm
-final_classifier = prediction_df['classifier'][prediction_df['accuracy'] == 
-              max(prediction_df.accuracy)].values[0]
+# Finds the most and least accurate algorithms
+accurate = [prediction_df[prediction_df['accuracy'] == 
+              max(prediction_df.accuracy)].values[0]]
 
-final_details = prediction_df['details'][prediction_df['accuracy'] == 
-              max(prediction_df.accuracy)].values[0]
+least_accurate = [prediction_df[prediction_df['accuracy'] == 
+              min(prediction_df.accuracy)].values[0]]
 
-final_attributes = prediction_df['attributes'][prediction_df['accuracy'] == 
-              max(prediction_df.accuracy)].values[0]
 
-final_accuracy = prediction_df['accuracy'][prediction_df['accuracy'] == 
-              max(prediction_df.accuracy)].values[0]
+print('The most accurate classifier was', accurate[0][0], 'using', 
+      accurate[0][1], 'on the', accurate[0][2], 
+      'attribute set with an accuracy of', accurate[0][3],'%')
 
-# print max accuracy
-if final_details == 'None':
-    print('The best classifier was the', final_classifier, 'using the',
-          final_attributes, 'attribute set and an accuracy of', final_accuracy,
-          '%')
-else:
-    print('The best classifier was the', final_classifier, 'with', 
-          final_details, 'using the', final_attributes,
-           'attribute set and an accuracy of', final_accuracy,
-          '%')
+print('The least accurate classifier was', least_accurate[0][0], 'using', 
+      least_accurate[0][1], 'on the', least_accurate[0][2], 
+      'attribute set with an accuracy of', least_accurate[0][3],'%')
 
-timings_list.append(['global time end', time.time()])
+# confusion matrix for random forest 8/8
+cm_one = confusion_matrix(pear_five_df_test_y, pear_five_pred)
+tn, fp, fn, tp  = confusion_matrix(pear_five_df_test_y, pear_five_pred).ravel()
+
+# Create confusion matrix heatmap
+# setup class names and tick marks
+class_names=[0,1]
+fig, ax = plt.subplots()
+tick_marks = np.arange(len(class_names))
+plt.xticks(tick_marks, class_names)
+plt.yticks(tick_marks, class_names)
+
+# Create heatmap and labels
+sns.heatmap(pd.DataFrame(cm_one), annot=True, cmap="summer" ,fmt='g')
+ax.xaxis.set_label_position("top")
+plt.tight_layout()
+plt.title('Confusion matrix for Random Forest', y=1.1)
+plt.ylabel('Actual label')
+plt.xlabel('Predicted label')
+
+# TPR/TNR rates
+print('The TPR is:', str(tp) + '/' + str(tp + fn) + ',',
+      round(recall_score(pear_five_df_test_y, pear_five_pred) * 100, 2),'%')
+print('The TNR is:', str(tn) + '/' + str(tn + fp) + ',',
+    round(tn / (tn + fp) * 100, 2),'%')
 
 ####
 # End prediction prints
