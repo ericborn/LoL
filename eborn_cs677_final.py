@@ -498,7 +498,7 @@ pear_ten_tree_clf = tree.DecisionTreeClassifier(criterion = 'entropy')
 
 # Train the classifier on pearsons top 10 attributes
 pear_ten_tree_clf = pear_ten_tree_clf.fit(pear_ten_df_train_x, 
-                                            pear_ten_df_train_y)
+                                          pear_ten_df_train_y)
 
 # Predict on pearsons top 10 attributes
 pear_ten_prediction = pear_ten_tree_clf.predict(pear_ten_df_test_x)
@@ -522,7 +522,7 @@ ols_df_tree_clf = tree.DecisionTreeClassifier(criterion = 'entropy')
 
 # Train the classifier on ols attributes
 ols_df_tree_clf = ols_df_tree_clf.fit(ols_df_train_x, 
-                                            ols_df_train_y)
+                                      ols_df_train_y)
 
 # Predict on ols attributes
 ols_df_prediction = ols_df_tree_clf.predict(ols_df_test_x)
@@ -547,7 +547,7 @@ rfe_df_tree_clf = tree.DecisionTreeClassifier(criterion = 'entropy')
 
 # Train the classifier on rfe attributes
 rfe_df_tree_clf = rfe_df_tree_clf.fit(rfe_df_train_x, 
-                                            rfe_df_train_y)
+                                      rfe_df_train_y)
 
 # Predict on rfe attributes
 rfe_df_prediction = rfe_df_tree_clf.predict(rfe_df_test_x)
@@ -571,7 +571,7 @@ lasso_df_tree_clf = tree.DecisionTreeClassifier(criterion = 'entropy')
 
 # Train the classifier on lasso attributes
 lasso_df_tree_clf = lasso_df_tree_clf.fit(lasso_df_train_x, 
-                                            lasso_df_train_y)
+                                          lasso_df_train_y)
 
 # Predict on lasso attributes
 lasso_df_prediction = lasso_df_tree_clf.predict(lasso_df_test_x)
@@ -589,7 +589,7 @@ global_accuracy.append(100-(round(np.mean(pear_five_prediction
 global_accuracy.append(100-(round(np.mean(pear_ten_prediction 
                                           != pear_ten_df_test_y) * 100, 2)))
 global_accuracy.append(100-(round(np.mean(ols_df_prediction 
-                                          != lasso_df_test_y) * 100, 2)))
+                                          != ols_df_test_y) * 100, 2)))
 global_accuracy.append(100-(round(np.mean(rfe_df_prediction 
                                           != rfe_df_test_y) * 100, 2)))
 global_accuracy.append(100-(round(np.mean(lasso_df_prediction 
@@ -728,7 +728,7 @@ global_accuracy.append(100-(round(np.mean(pear_five_prediction
 global_accuracy.append(100-(round(np.mean(pear_ten_prediction 
                                           != pear_ten_df_test_y) * 100, 2)))
 global_accuracy.append(100-(round(np.mean(ols_df_prediction 
-                                          != lasso_df_test_y) * 100, 2)))
+                                          != ols_df_test_y) * 100, 2)))
 global_accuracy.append(100-(round(np.mean(rfe_df_prediction 
                                           != rfe_df_test_y) * 100, 2)))
 global_accuracy.append(100-(round(np.mean(lasso_df_prediction 
@@ -793,7 +793,7 @@ trees_depth.append(int(ind.item(0)))
 trees_depth.append(int(ind.item(1)))
 
 # append the models accruacy to the accuracy list
-global_accuracy.append(100-(round(ind.item(2), 2)))
+global_accuracy.append(round(ind.item(2), 2))
 
 print('Optimal trees: ', trees_depth[0],
       '\nOptimal depth: ', trees_depth[1])
@@ -835,7 +835,7 @@ trees_depth.append(int(ind.item(0)))
 trees_depth.append(int(ind.item(1)))
 
 # append the models accruacy to the accuracy list
-global_accuracy.append(100-(round(ind.item(2), 2)))
+global_accuracy.append(round(ind.item(2), 2))
 
 print('Optimal trees: ', trees_depth[2],
       '\nOptimal depth: ', trees_depth[3])
@@ -877,7 +877,7 @@ trees_depth.append(int(ind.item(0)))
 trees_depth.append(int(ind.item(1)))
 
 # append the models accruacy to the accuracy list
-global_accuracy.append(100-(round(ind.item(2), 2)))
+global_accuracy.append(round(ind.item(2), 2))
 
 print('Optimal trees: ', trees_depth[4],
       '\nOptimal depth: ', trees_depth[5])
@@ -920,7 +920,7 @@ trees_depth.append(int(ind.item(0)))
 trees_depth.append(int(ind.item(1)))
 
 # append the models accruacy to the accuracy list
-global_accuracy.append(100-(round(ind.item(2), 2)))
+global_accuracy.append(round(ind.item(2), 2))
 
 print('Optimal trees: ', trees_depth[6],
       '\nOptimal depth: ', trees_depth[7])
@@ -962,7 +962,7 @@ trees_depth.append(int(ind.item(0)))
 trees_depth.append(int(ind.item(1)))
 
 # append the models accruacy to the accuracy list
-global_accuracy.append(100-(round(ind.item(2), 2)))
+global_accuracy.append(round(ind.item(2), 2))
 
 print('Optimal trees: ', trees_depth[8],
       '\nOptimal depth: ', trees_depth[9])
@@ -1004,7 +1004,7 @@ trees_depth.append(int(ind.item(0)))
 trees_depth.append(int(ind.item(1)))
 
 # append the models accruacy to the accuracy list
-global_accuracy.append(100-(round(ind.item(2), 2)))
+global_accuracy.append(round(ind.item(2), 2))
 
 print('Optimal trees: ', trees_depth[10],
       '\nOptimal depth: ', trees_depth[11])
@@ -1343,6 +1343,7 @@ knn_classifier.fit(lasso_scaled_df_train_x,
 # Perform predictions
 pred_k = knn_classifier.predict(lasso_scaled_df_test_x)
 
+###!!!!!WHY IS THIS IMPLEMENTED DIFFERENTLY ???!!!!
 # Store accuracy
 global_accuracy.append(round(sum(pred_k == lasso_scaled_df_test_y) 
                               / len(pred_k) * 100, 2))
