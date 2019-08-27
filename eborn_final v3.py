@@ -757,6 +757,8 @@ global_accuracy.append(100-(round(np.mean(lasso_df_prediction
 # for each random forest classifier
 trees_depth = []
 
+full_df = pd.DataFrame()
+
 ####
 # Start pear five dataset
 ####
@@ -779,12 +781,15 @@ for trees in range(1, 26):
 forest_df_1 = pd.DataFrame(pred_list, columns = ['estimators', 'depth',
                                                  'error_rate', 'set'])
 
+# append forest 1 to full df
+full_df = full_df.append(forest_df_1)
+
 # Plot the classifier data
-plot1 = sns.lineplot(x='estimators', y='error_rate', hue='depth', 
-                     data=forest_df_1, palette="tab10", legend='full', ci = None)
-plt.title('Random Forest error rates using pearson ten attributes')
-plt.ylabel('Error Rate')
-plt.xlabel('Estimators')
+#plot1 = sns.lineplot(x='estimators', y='error_rate', hue='depth', 
+#                     data=forest_df_1, palette="tab10", legend='full', ci = None)
+#plt.title('Random Forest error rates using pearson ten attributes')
+#plt.ylabel('Error Rate')
+#plt.xlabel('Estimators')
 #plt.show()
 
 # store the lowest error rate value from the classifier
@@ -826,12 +831,15 @@ for trees in range(1, 26):
 forest_df_2 = pd.DataFrame(pred_list, columns = ['estimators', 'depth',
                                                  'error_rate', 'set'])
 
+# append forest 2 to full df
+full_df = full_df.append(forest_df_2)
+
 # Plot the classifier data
-plot2 = sns.lineplot(x='estimators', y='error_rate', hue='depth', 
-                     data=forest_df_2, palette="tab10", legend='full', ci = None)
-plt.title('Random Forest error rates using pearson ten attributes')
-plt.ylabel('Error Rate')
-plt.xlabel('Estimators')
+#plot2 = sns.lineplot(x='estimators', y='error_rate', hue='depth', 
+#                     data=forest_df_2, palette="tab10", legend='full', ci = None)
+#plt.title('Random Forest error rates using pearson ten attributes')
+#plt.ylabel('Error Rate')
+#plt.xlabel('Estimators')
 #plt.show()
 
 # store the lowest error rate value from the classifier
@@ -873,12 +881,15 @@ for trees in range(1, 26):
 forest_df_3 = pd.DataFrame(pred_list, columns = ['estimators', 'depth',
                                                  'error_rate', 'set'])
 
+# append forest 3 to full df
+full_df = full_df.append(forest_df_3)
+    
 # Plot the classifier data
-plot3 = sns.lineplot(x='estimators', y='error_rate', hue='depth', 
-                     data=forest_df_3, palette="tab10", legend='full', ci = None)
-plt.title('Random Forest error rates using pearson ten attributes')
-plt.ylabel('Error Rate')
-plt.xlabel('Estimators')
+#plot3 = sns.lineplot(x='estimators', y='error_rate', hue='depth', 
+#                     data=forest_df_3, palette="tab10", legend='full', ci = None)
+#plt.title('Random Forest error rates using pearson ten attributes')
+#plt.ylabel('Error Rate')
+#plt.xlabel('Estimators')
 #plt.show()
 
 # store the lowest error rate value from the classifier
@@ -921,12 +932,15 @@ for trees in range(1, 26):
 forest_df_4 = pd.DataFrame(pred_list, columns = ['estimators', 'depth',
                                                  'error_rate', 'set'])
 
+# append forest 4 to full df
+full_df = full_df.append(forest_df_4)
+
 # Plot the classifier data
-plot4 = sns.lineplot(x='estimators', y='error_rate', hue='depth', 
-                     data=forest_df_4, palette="tab10", legend='full', ci = None)
-plt.title('Random Forest error rates using pearson ten attributes')
-plt.ylabel('Error Rate')
-plt.xlabel('Estimators')
+#plot4 = sns.lineplot(x='estimators', y='error_rate', hue='depth', 
+#                     data=forest_df_4, palette="tab10", legend='full', ci = None)
+#plt.title('Random Forest error rates using pearson ten attributes')
+#plt.ylabel('Error Rate')
+#plt.xlabel('Estimators')
 #plt.show()
 
 # store the lowest error rate value from the classifier
@@ -968,12 +982,15 @@ for trees in range(1, 26):
 forest_df_5 = pd.DataFrame(pred_list, columns = ['estimators', 'depth',
                                                  'error_rate', 'set'])
 
+# append forest 5 to full df
+full_df = full_df.append(forest_df_5)
+
 # Plot the classifier data
-plot5 = sns.lineplot(x='estimators', y='error_rate', hue='depth', 
-                     data=forest_df_5, palette="tab10", legend='full', ci = None)
-plt.title('Random Forest error rates using pearson ten attributes')
-plt.ylabel('Error Rate')
-plt.xlabel('Estimators')
+#plot5 = sns.lineplot(x='estimators', y='error_rate', hue='depth', 
+#                     data=forest_df_5, palette="tab10", legend='full', ci = None)
+#plt.title('Random Forest error rates using pearson ten attributes')
+#plt.ylabel('Error Rate')
+#plt.xlabel('Estimators')
 #plt.show()
 
 # store the lowest error rate value from the classifier
@@ -1008,13 +1025,16 @@ for trees in range(1, 26):
         rf_clf.fit(full_df_train_x, full_df_train_y)
         pred_list.append([trees, depth, 
                     round(np.mean(rf_clf.predict(full_df_test_x) 
-                    != full_df_test_y) 
+                    == full_df_test_y) 
                     * 100, 2), 'full'])
 
 # create a dataframe from the classifer data
-forest_df_6 = pd.DataFrame(pred_list, columns = ['estimators', 'depth',
-                                                 'error_rate', 'set'])
+forest_df_6 = pd.DataFrame(pred_list, columns = ['Estimators', 'Depth',
+                                                 'Accuracy', 'set'])
 
+# append forest 6 to full df
+full_df = full_df.append(forest_df_6)
+    
 # Plot the classifier data
 plot6 = sns.lineplot(x='estimators', y='error_rate', hue='depth', 
                      data=forest_df_6, palette="tab10", legend='full', ci = None)
@@ -1041,69 +1061,15 @@ print('Optimal trees: ', trees_depth[10],
 # End full dataset
 ####
 
-dots = sns.load_dataset("dots")
+# Create palette
+palette = dict(zip(full_df.Depth.unique(),
+                   sns.color_palette("tab10", 10)))
 
-forest_df_1.columns = ['estimators', 'depth', 'pear_five']
-
-forest_df_1['set'] = 'pear_five'
-
-
-
-
-test_df = forest_df_1
-test_df['pear_ten'] = forest_df_2['error_rate']
-test_df['OLS'] = forest_df_3['error_rate']
-test_df['RFE'] = forest_df_4['error_rate']
-test_df['Lasso'] = forest_df_5['error_rate']
-test_df['Full'] = forest_df_6['error_rate']
-test_df['set'] = 'pear_five'
-
-test_df.iloc[0:5,8] = 'test'
-
-sns.FacetGrid(test_df, col='')
-
-
-import seaborn as sns
-sns.set(style="ticks")
-
-# Plot the lines on two facets
-sns.relplot(x="estimators", y="depth", palette='tab10',
-            height=5, aspect=.75, facet_kws=dict(sharex=False),
-            kind="line", legend="full", data=test_df)
-
-
-
-
-
-sns.lineplot(x='estimators', y='error_rate', hue='depth', data=forest_df_1,
-             ax=axs[0],palette="tab10", legend='full', ci = None)
-sns.lineplot(x='estimators', y='error_rate', hue='depth', data=forest_df_2,
-             ax=axs[1],palette="tab10", legend='full', ci = None)       
-sns.lineplot(x='estimators', y='error_rate', hue='depth', data=forest_df_3,
-             ax=axs[2],palette="tab10", legend='full', ci = None)        
-sns.lineplot(x='estimators', y='error_rate', hue='depth', data=forest_df_4,
-             ax=axs[0],palette="tab10", legend='full', ci = None)
-sns.lineplot(x='estimators', y='error_rate', hue='depth', data=forest_df_5,
-             ax=axs[1],palette="tab10", legend='full', ci = None)       
-sns.lineplot(x='estimators', y='error_rate', hue='depth', data=forest_df_6,
-             ax=axs[2],palette="tab10", legend='full', ci = None)      
-
-
-
-
-
-
-palette="tab10", legend='full', ci = None)
-plt.title('pearson ten attributes')
-plt.ylabel('Error Rate')
-plt.xlabel('Estimators')
-
-sns.lineplot(x='estimators', y='error_rate', hue='depth', 
-                     data=forest_df_5, palette="tab10", legend='full', ci = None)
-plt.title('Random Forest error rates using pearson ten attributes')
-plt.ylabel('Error Rate')
-plt.xlabel('Estimators')
-plt.show()
+sns.relplot(x="estimators", y="error_rate",
+            hue="depth", col="set",
+            palette=palette, col_wrap=3,
+            height=3, aspect=1, facet_kws=dict(sharex=False),
+            kind="line", legend="full", data=full_df)
 
 #############
 # End Random Forest
