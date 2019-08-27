@@ -776,8 +776,8 @@ for trees in range(1, 26):
                     round(np.mean(rf_clf.predict(pear_five_df_test_x) 
                     == pear_five_df_test_y) 
                     * 100, 2), 'pear_five'])
-      
-# create a dataframe from the classifer data
+         
+#create a dataframe from the classifer data
 forest_df_1 = pd.DataFrame(pred_list, columns = ['Estimators', 'Depth',
                                                  'Accuracy', 'Set'])
 
@@ -795,8 +795,8 @@ trees_depth.append(int(ind.item(1)))
 # append the models accruacy to the accuracy list
 global_accuracy.append(round(ind.item(2), 2))
 
-print('Optimal trees: ', trees_depth[0],
-      '\nOptimal depth: ', trees_depth[1])
+print('Pearsons Five:\nOptimal trees:', trees_depth[0],
+      '\nOptimal depth:', trees_depth[1])
 
 ####
 # End pear five dataSet
@@ -837,8 +837,8 @@ trees_depth.append(int(ind.item(1)))
 # append the models accruacy to the accuracy list
 global_accuracy.append(round(ind.item(2), 2))
 
-print('Optimal trees: ', trees_depth[2],
-      '\nOptimal depth: ', trees_depth[3])
+print('Pearsons Ten:\nOptimal trees:', trees_depth[2],
+      '\nOptimal depth:', trees_depth[3])
 
 ####
 # End pear ten dataSet
@@ -879,8 +879,8 @@ trees_depth.append(int(ind.item(1)))
 # append the models accruacy to the accuracy list
 global_accuracy.append(round(ind.item(2), 2))
 
-print('Optimal trees: ', trees_depth[4],
-      '\nOptimal depth: ', trees_depth[5])
+print('OLS:\nOptimal trees:', trees_depth[4],
+      '\nOptimal depth:', trees_depth[5])
 
 
 ####
@@ -922,8 +922,8 @@ trees_depth.append(int(ind.item(1)))
 # append the models accruacy to the accuracy list
 global_accuracy.append(round(ind.item(2), 2))
 
-print('Optimal trees: ', trees_depth[6],
-      '\nOptimal depth: ', trees_depth[7])
+print('RFE:\nOptimal trees:', trees_depth[6],
+      '\nOptimal depth:', trees_depth[7])
 
 ####
 # End rfe dataSet
@@ -964,8 +964,8 @@ trees_depth.append(int(ind.item(1)))
 # append the models accruacy to the accuracy list
 global_accuracy.append(round(ind.item(2), 2))
 
-print('Optimal trees: ', trees_depth[8],
-      '\nOptimal depth: ', trees_depth[9])
+print('Lasso:\nOptimal trees:', trees_depth[8],
+      '\nOptimal depth:', trees_depth[9])
 
 ####
 # End lasso dataSet
@@ -1006,8 +1006,8 @@ trees_depth.append(int(ind.item(1)))
 # append the models accruacy to the accuracy list
 global_accuracy.append(round(ind.item(2), 2))
 
-print('Optimal trees: ', trees_depth[10],
-      '\nOptimal depth: ', trees_depth[11])
+print('Full:\nOptimal trees:', trees_depth[10],
+      '\nOptimal depth:', trees_depth[11])
 
 ####
 # End full dataSet
