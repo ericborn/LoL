@@ -3,6 +3,7 @@
 Eric Born
 Date: 12 Aug 2019
 Predicting the winning team in the video game League of Legends
+utilizing various machine learning algorithms
 """
 
 import os
