@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Eric Born
-Class: CS677 - Summer 2
 Date: 12 Aug 2019
-Final project
 Predicting the winning team in the video game League of Legends
 """
 
