@@ -4,8 +4,11 @@ League of Legends (LoL for short), is a multiplayer online battle arena video ga
 
 This was a project I worked on utilizing various machine learning algorithms to predict the winning team from a dataset containing over 51K matches.
 
-I first cleaned the data, then performed feature selection with five different methods to create various subsets of the data to train and test the models on.
+A full analysis on the performance of the algorithms can be found here: https://ericborn.github.io/LoL/ or within the Juypter notebook Lol_predictions.ipynb.
 
-After the setup was completed, I used KNN, SVM, Logistic Regression, Decision tree, Naive Bayes and Random Forest to perform a total of 51 different predictions on the data.
+## Author
+**Eric Born**
 
-A full analysis on their performance can be found within the LoL analysis.docx and the code within the Juypter notebook Lol_predictions.ipynb or within the LoL_Predictions.py file.
+[**PORTFOLIO**](https://ericborn.github.io)
+
+[**GITHUB**](https://github.com/ericborn)
