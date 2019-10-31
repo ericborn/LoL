@@ -9,3 +9,10 @@ I first cleaned the data, then performed feature selection with five different m
 After the setup was completed, I used KNN, SVM, Logistic Regression, Decision tree, Naive Bayes and Random Forest to perform a total of 51 different predictions on the data.
 
 A full analysis on their performance can be found within the LoL analysis.docx and the code within the Juypter notebook Lol_predictions.ipynb or within the LoL_Predictions.py file.
+
+## Author
+**Eric Born**
+
+[**PORTFOLIO**](https://ericborn.github.io)
+
+[**GITHUB**](https://github.com/ericborn)
