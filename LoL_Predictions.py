@@ -23,7 +23,8 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LassoCV, LogisticRegression, LinearRegression
-from sklearn.metrics import confusion_matrix, recall_score
+from sklearn.metrics import confusion_matrix, recall_score,\
+                            classification_report
 
 # Set display options for dataframes
 #pd.set_option('display.max_rows', 100)
@@ -44,7 +45,7 @@ timings_list.append(['Data clean up duration:', time.time()])
 
 # setup input directory and filename
 data = 'LoL'
-input_dir = r'C:\Users\TomBrody\Desktop\School\677\Final'
+input_dir = r'C:\Code projects\BU\677 - Data Science with py\Final'
 csv_file = os.path.join(input_dir, data + '.csv')
 
 # read csv file into dataframe
@@ -756,6 +757,10 @@ timings_list.append(['naive time end', time.time()])
 # for each random forest classifier
 trees_depth = []
 
+# create an empty list to store the rf accuracy at various settings
+rf_accuracy = []
+
+# setup an empty dataframe for the rf tests
 rf_accuracy_df = pd.DataFrame()
 
 ####
@@ -767,12 +772,12 @@ pred_list = []
 # RF with iterator
 for trees in range(1, 26):
     for depth in range(1, 11):
-        rf_clf = RandomForestClassifier(n_estimators = trees, 
+        rf_clf_test = RandomForestClassifier(n_estimators = trees, 
                                     max_depth = depth, criterion ='entropy',
                                     random_state = 1337)
-        rf_clf.fit(pear_five_df_train_x, pear_five_df_train_y)
+        rf_clf_test.fit(pear_five_df_train_x, pear_five_df_train_y)
         pred_list.append([trees, depth, 
-                    round(np.mean(rf_clf.predict(pear_five_df_test_x) 
+                    round(np.mean(rf_clf_test.predict(pear_five_df_test_x) 
                     == pear_five_df_test_y) 
                     * 100, 2), 'pear_five'])
          
@@ -792,7 +797,7 @@ trees_depth.append(int(ind.item(0)))
 trees_depth.append(int(ind.item(1)))
 
 # append the models accruacy to the accuracy list
-global_accuracy.append(round(ind.item(2), 2))
+rf_accuracy.append(round(ind.item(2), 2))
 
 print('Pearsons Five:\nOptimal trees:', trees_depth[0],
       '\nOptimal depth:', trees_depth[1])
@@ -809,12 +814,12 @@ pred_list = []
 
 for trees in range(1, 26):
     for depth in range(1, 11):
-        rf_clf = RandomForestClassifier(n_estimators = trees, 
+        rf_clf_test = RandomForestClassifier(n_estimators = trees, 
                                     max_depth = depth, criterion ='entropy',
                                     random_state = 1337)
-        rf_clf.fit(pear_ten_df_train_x, pear_ten_df_train_y)
+        rf_clf_test.fit(pear_ten_df_train_x, pear_ten_df_train_y)
         pred_list.append([trees, depth, 
-                    round(np.mean(rf_clf.predict(pear_ten_df_test_x) 
+                    round(np.mean(rf_clf_test.predict(pear_ten_df_test_x) 
                     == pear_ten_df_test_y) 
                     * 100, 2), 'pear_ten'])
 
@@ -834,7 +839,7 @@ trees_depth.append(int(ind.item(0)))
 trees_depth.append(int(ind.item(1)))
 
 # append the models accruacy to the accuracy list
-global_accuracy.append(round(ind.item(2), 2))
+rf_accuracy.append(round(ind.item(2), 2))
 
 print('Pearsons Ten:\nOptimal trees:', trees_depth[2],
       '\nOptimal depth:', trees_depth[3])
@@ -851,12 +856,12 @@ pred_list = []
 
 for trees in range(1, 26):
     for depth in range(1, 11):
-        rf_clf = RandomForestClassifier(n_estimators = trees, 
+        rf_clf_test = RandomForestClassifier(n_estimators = trees, 
                                     max_depth = depth, criterion ='entropy',
                                     random_state = 1337)
-        rf_clf.fit(ols_df_train_x, ols_df_train_y)
+        rf_clf_test.fit(ols_df_train_x, ols_df_train_y)
         pred_list.append([trees, depth, 
-                    round(np.mean(rf_clf.predict(ols_df_test_x) 
+                    round(np.mean(rf_clf_test.predict(ols_df_test_x) 
                     == ols_df_test_y) 
                     * 100, 2), 'ols'])
 
@@ -876,7 +881,7 @@ trees_depth.append(int(ind.item(0)))
 trees_depth.append(int(ind.item(1)))
 
 # append the models accruacy to the accuracy list
-global_accuracy.append(round(ind.item(2), 2))
+rf_accuracy.append(round(ind.item(2), 2))
 
 print('OLS:\nOptimal trees:', trees_depth[4],
       '\nOptimal depth:', trees_depth[5])
@@ -894,12 +899,12 @@ pred_list = []
 
 for trees in range(1, 26):
     for depth in range(1, 11):
-        rf_clf = RandomForestClassifier(n_estimators = trees, 
+        rf_clf_test = RandomForestClassifier(n_estimators = trees, 
                                     max_depth = depth, criterion ='entropy',
                                     random_state = 1337)
-        rf_clf.fit(rfe_df_train_x, rfe_df_train_y)
+        rf_clf_test.fit(rfe_df_train_x, rfe_df_train_y)
         pred_list.append([trees, depth, 
-                    round(np.mean(rf_clf.predict(rfe_df_test_x) 
+                    round(np.mean(rf_clf_test.predict(rfe_df_test_x) 
                     == rfe_df_test_y) 
                     * 100, 2), 'rfe'])
 
@@ -919,7 +924,7 @@ trees_depth.append(int(ind.item(0)))
 trees_depth.append(int(ind.item(1)))
 
 # append the models accruacy to the accuracy list
-global_accuracy.append(round(ind.item(2), 2))
+rf_accuracy.append(round(ind.item(2), 2))
 
 print('RFE:\nOptimal trees:', trees_depth[6],
       '\nOptimal depth:', trees_depth[7])
@@ -936,12 +941,12 @@ pred_list = []
 
 for trees in range(1, 26):
     for depth in range(1, 11):
-        rf_clf = RandomForestClassifier(n_estimators = trees, 
+        rf_clf_test = RandomForestClassifier(n_estimators = trees, 
                                     max_depth = depth, criterion ='entropy',
                                     random_state = 1337)
-        rf_clf.fit(lasso_df_train_x, lasso_df_train_y)
+        rf_clf_test.fit(lasso_df_train_x, lasso_df_train_y)
         pred_list.append([trees, depth, 
-                    round(np.mean(rf_clf.predict(lasso_df_test_x) 
+                    round(np.mean(rf_clf_test.predict(lasso_df_test_x) 
                     == lasso_df_test_y) 
                     * 100, 2), 'lasso'])
 
@@ -961,7 +966,7 @@ trees_depth.append(int(ind.item(0)))
 trees_depth.append(int(ind.item(1)))
 
 # append the models accruacy to the accuracy list
-global_accuracy.append(round(ind.item(2), 2))
+rf_accuracy.append(round(ind.item(2), 2))
 
 print('Lasso:\nOptimal trees:', trees_depth[8],
       '\nOptimal depth:', trees_depth[9])
@@ -978,12 +983,12 @@ pred_list = []
 
 for trees in range(1, 26):
     for depth in range(1, 11):
-        rf_clf = RandomForestClassifier(n_estimators = trees, 
+        rf_clf_test = RandomForestClassifier(n_estimators = trees, 
                                     max_depth = depth, criterion ='entropy',
                                     random_state = 1337)
-        rf_clf.fit(full_df_train_x, full_df_train_y)
+        rf_clf_test.fit(full_df_train_x, full_df_train_y)
         pred_list.append([trees, depth, 
-                    round(np.mean(rf_clf.predict(full_df_test_x) 
+                    round(np.mean(rf_clf_test.predict(full_df_test_x) 
                     == full_df_test_y) 
                     * 100, 2), 'full'])
 
@@ -1003,7 +1008,7 @@ trees_depth.append(int(ind.item(0)))
 trees_depth.append(int(ind.item(1)))
 
 # append the models accruacy to the accuracy list
-global_accuracy.append(round(ind.item(2), 2))
+rf_accuracy.append(round(ind.item(2), 2))
 
 print('Full:\nOptimal trees:', trees_depth[10],
       '\nOptimal depth:', trees_depth[11])
