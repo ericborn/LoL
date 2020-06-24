@@ -51,7 +51,7 @@ csv_file = os.path.join(input_dir, data + '.csv')
 # read csv file into dataframe
 try:
     lol_df = pd.read_csv(csv_file)
-    print('opened file for ticker: ', data, '\n')
+    print('opened file for LoL data: ', data, '\n')
 
 except Exception as e:
     print(e)
@@ -1061,7 +1061,7 @@ rf_clf = RandomForestClassifier(n_estimators = 12,
                                     random_state = 1337)
 rf_clf.fit(pear_five_df_train_x, pear_five_df_train_y)
 
-pear_five_pred = rf_clf.predict(pear_five_df_test_x)
+rf_pear_five_pred = rf_clf.predict(pear_five_df_test_x)
 
 # store accuracy
 global_accuracy.append(100-(round(np.mean(rf_clf.predict(pear_five_df_test_x) 
@@ -2550,8 +2550,9 @@ print('The least accurate classifier was', least_accurate[0][0], 'using',
       'attribute set with an accuracy of', least_accurate[0][3],'%')
 
 # confusion matrix for random forest 8/8
-cm_one = confusion_matrix(pear_five_df_test_y, pear_five_pred)
-tn, fp, fn, tp  = confusion_matrix(pear_five_df_test_y, pear_five_pred).ravel()
+cm_one = confusion_matrix(pear_five_df_test_y, rf_pear_five_pred)
+tn, fp, fn, tp  = confusion_matrix(pear_five_df_test_y, \
+                                   rf_pear_five_pred).ravel()
 
 # Create confusion matrix heatmap
 # setup class names and tick marks
@@ -2562,16 +2563,20 @@ plt.xticks(tick_marks, class_names)
 plt.yticks(tick_marks, class_names)
 
 # Create heatmap and labels
-sns.heatmap(pd.DataFrame(cm_one), annot=True, cmap="summer" ,fmt='g')
+sns.heatmap(pd.DataFrame(cm_one), annot=True, cmap="summer", fmt='g')
 ax.xaxis.set_label_position("top")
+ax.set_ylim([0,2])
 plt.tight_layout()
 plt.title('Confusion matrix for Random Forest', y=1.1)
 plt.ylabel('Actual label')
 plt.xlabel('Predicted label')
 
+# print precision and recall values
+print(classification_report(pear_five_df_test_y, rf_pear_five_pred))
+
 # TPR/TNR rates
 print('The TPR is:', str(tp) + '/' + str(tp + fn) + ',',
-      round(recall_score(pear_five_df_test_y, pear_five_pred) * 100, 2),'%')
+      round(recall_score(pear_five_df_test_y, rf_pear_five_pred) * 100, 2),'%')
 print('The TNR is:', str(tn) + '/' + str(tn + fp) + ',',
     round(tn / (tn + fp) * 100, 2),'%')
 
